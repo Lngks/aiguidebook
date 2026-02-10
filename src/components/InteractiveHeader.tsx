@@ -6,7 +6,9 @@ const InteractiveHeader = () => (
     <Link to="/" className="text-white/80 hover:text-white transition-colors">
       <ArrowLeft className="h-6 w-6" />
     </Link>
-    <img src="/favicon.svg" alt="Logo" className="h-7 w-7" />
+    <Link to="/interactive" reloadDocument className="hover:opacity-80 transition-opacity">
+      <img src="/favicon.svg" alt="Logo" className="h-7 w-7" />
+    </Link>
   </header>
 );
 
