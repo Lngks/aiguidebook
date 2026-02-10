@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import Logo from "./Logo";
 
 const navItems = [
   { label: "Verktøy", path: "/tools" },
@@ -16,10 +17,8 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-primary-foreground/10 bg-primary">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 font-bold text-primary-foreground">
-          <span className="text-xl" style={{ fontFamily: "'Merriweather', serif" }}>
-            AI Guidebook
-          </span>
+        <Link to="/" className="flex items-center gap-2">
+          <Logo variant="light" className="h-7" />
         </Link>
 
         {/* Desktop nav */}
