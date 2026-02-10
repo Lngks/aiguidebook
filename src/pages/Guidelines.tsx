@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, HelpCircle, AlertTriangle, Image as ImageIcon, Scale } from "lucide-react";
+import { ArrowRight, HelpCircle, Image as ImageIcon } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -13,11 +13,11 @@ import {
 const keyTopics = [
   {
     title: "Akseptabel og uakseptabel bruk",
-    description: "Bruk AI til å forstå. Ikke til å kopiere. Aldri send inn AI-generert tekst som ditt eget arbeid.",
+    description: "Bruk AI til å forstå, ikke til å kopiere. Aldri send inn AI-generert tekst som ditt eget arbeid.",
   },
   {
     title: "Personvern og databeskyttelse",
-    description: "Dine data er viktige. Aldri del sensitive opplysninger med AI-verktøy. Les personvernreglene.",
+    description: "Dataene dine er viktige. Del aldri sensitive opplysninger med AI-verktøy, og les alltid personvernreglene.",
   },
   {
     title: "Akademisk integritet og plagiat",
@@ -33,16 +33,16 @@ const checklistItems = [
   "Jeg kan forklare og forsvare alle deler av innleveringen med egne ord.",
   "Jeg har oppgitt bruken av AI-verktøy som påkrevd.",
   "Jeg har sitert AI-assistert innhold etter institusjonens retningslinjer.",
-  "Jeg har gjennomgått output for bias, feil og hallusinasjoner.",
+  "Jeg har gjennomgått resultatene for skjevheter, feil og hallusinasjoner.",
 ];
 
 const faqs = [
-  { q: "Kan jeg bruke AI til alt?", a: "Nei. Det er viktige områder som er basert på forelesning, forskning og fagkunnskap, oppdagelse, eller lignende, der du trenger å bruke andre metoder enn AI for å lære." },
-  { q: "Hva skjer med datasikkerhet mitt?", a: "Det kan varieres noe, men er lik. Les om brukerens og retningslinjer og la oss bli med i å bruke AI-verktøy. Sjekk alltid verktøyenes personvernerklæring." },
-  { q: "Hva er hallusinasjoner i AI?", a: "Hallusinasjoner skjer at AI-genererer informasjon som låter riktig, men som ikke finnes. Det kan være falske kilder og fakta." },
-  { q: "Er det plagiat å bruke AI?", a: "Hvis du avslører det. Hvis du bruker fakta, oppgaver etc, i forsøk av det som ikke er sant, kan det anses som plagiat." },
-  { q: "Hvordan siterer jeg AI?", a: "Oppgi verktøyet du har brukt, for eksempel \"Denne teksten ble generert med ChatGPT\", en kontroll for å sjekke det etter dine metoder." },
-  { q: "Har du flere spørsmål?", a: "Kontakt dine veiled- eller fagansatte ved ditt universitet." },
+  { q: "Kan jeg bruke AI til alt?", a: "Nei. Det finnes viktige områder, som forelesningsbasert forskning og fagkunnskap, der du trenger andre metoder enn AI for å lære." },
+  { q: "Hva skjer med dataene mine?", a: "Det varierer mellom verktøy. Les alltid personvernerklæringen og sjekk hvilke data som lagres når du bruker AI-verktøy." },
+  { q: "Hva er hallusinasjoner i AI?", a: "Hallusinasjoner oppstår når AI genererer informasjon som høres riktig ut, men som ikke stemmer. Det kan være falske kilder og oppdiktede fakta." },
+  { q: "Er det plagiat å bruke AI?", a: "Ikke i seg selv, men hvis du leverer AI-generert innhold som ditt eget uten å oppgi det, kan det anses som plagiat." },
+  { q: "Hvordan siterer jeg AI?", a: "Oppgi verktøyet du har brukt, for eksempel: «Denne teksten ble utarbeidet med hjelp av ChatGPT.» Følg institusjonens retningslinjer for korrekt sitering." },
+  { q: "Har du flere spørsmål?", a: "Kontakt veilederen din eller fagansatte ved universitetet ditt." },
 ];
 
 const Guidelines = () => {
@@ -62,7 +62,7 @@ const Guidelines = () => {
           <p className="section-fade-in mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/60">Retningslinjer</p>
           <h1 className="section-fade-in text-4xl font-bold md:text-5xl">Bruk AI ansvarlig</h1>
           <p className="section-fade-in-delay-1 mx-auto mt-4 max-w-xl text-lg text-primary-foreground/70">
-            Lær hvordan du holder kursing, intelligens, riktig i dine studier.
+            Lær hvordan du bruker kunnskap, teknologi og integritet riktig i studiene dine.
           </p>
           <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
             <a href="#checklist" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground">Les</a>
@@ -77,7 +77,7 @@ const Guidelines = () => {
           <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Kjernepunktene</p>
           <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite før du bruker AI</h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Retningslinjene inneholder tips som hjelper deg å navigere AI-bruken på en måte som er trygg, ærlig og ansvarlig.
+            Retningslinjene inneholder tips som hjelper deg å navigere AI-bruken på en trygg, ærlig og ansvarlig måte.
           </p>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
@@ -110,12 +110,12 @@ const Guidelines = () => {
             </div>
             <h2 className="text-3xl font-bold text-foreground">Slik bruker du AI korrekt</h2>
             <p className="mt-3 text-muted-foreground">
-              Det er et enkelt ansvar som følger med å bruke AI. Bruk det til å utforske emner, sjekke din forståelse og lære mer. Men still alltid spørsmål og kontroller alt selv.
+              Det følger et ansvar med å bruke AI. Bruk det til å utforske emner, sjekke forståelsen din og lære mer. Men still alltid spørsmål og kontroller alt selv.
             </p>
             <div className="mt-6 flex justify-center gap-3">
               <Link to="/tools" className="rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">Les mer</Link>
               <Link to="/privacy" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
-                Mer <ArrowRight className="h-3 w-3" />
+                Personvern <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
           </div>
@@ -136,7 +136,7 @@ const Guidelines = () => {
             <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Risikoer</p>
             <h2 className="text-3xl font-bold text-foreground">Kjenn farene</h2>
             <p className="mt-3 text-muted-foreground">
-              AI-systemer kan gjøre feil. Du kan aldri påvirke et utspørre rolle, applikasjonen baker, og andre elementer. Kontroller alt.
+              AI-systemer kan gjøre feil. Du kan ikke alltid vite hvordan modellen tolker spørsmålet ditt, eller hvilke data den baserer svaret på. Kontroller alltid resultatene.
             </p>
           </div>
           <div className="flex aspect-video items-center justify-center rounded-xl bg-muted">
@@ -150,10 +150,10 @@ const Guidelines = () => {
         <div className="container mx-auto px-4">
           <div className="grid items-center gap-10 md:grid-cols-2">
             <div className="section-fade-in">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Objektiv</p>
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Objektivitet</p>
               <h2 className="text-3xl font-bold text-foreground">AI kan arve fordommer fra treningsdata</h2>
               <p className="mt-3 text-muted-foreground">
-                AI modeller kan gjøre feil som resultat av skjevheter i treningsdataen. Det kan resultere i stereotypiske svar. Aldri stol blindt på AI.
+                AI-modeller kan gjøre feil som følge av skjevheter i treningsdataene. Det kan resultere i stereotype eller ubalanserte svar. Stol aldri blindt på AI.
               </p>
               <div className="mt-6 flex gap-3">
                 <Link to="/privacy" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
@@ -176,7 +176,7 @@ const Guidelines = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Sjekkliste</h2>
           <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
-            Last ned vår sjekkliste og bruk den hver gang du skriver en innlevering.
+            Bruk sjekklisten vår hver gang du skriver en innlevering med AI-støtte.
           </p>
           <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
             <a href="#checklist-section" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground">Start</a>
@@ -246,7 +246,7 @@ const Guidelines = () => {
         </div>
         <div className="mt-10 text-center">
           <p className="text-lg font-bold text-foreground">Har du flere spørsmål?</p>
-          <p className="mt-1 text-sm text-muted-foreground">Kontakt dine veiled- eller fagansatte ved ditt universitet.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Kontakt veilederen din eller fagansatte ved universitetet ditt.</p>
           <Link to="#" className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
             Kontakt
           </Link>
@@ -259,15 +259,15 @@ const Guidelines = () => {
           <h2 className="section-fade-in mb-6 text-3xl font-bold text-foreground">Juridiske rammer</h2>
           <div className="section-fade-in-delay-1 space-y-4 text-sm leading-relaxed text-muted-foreground">
             <p>
-              AIGuidebook er utviklet for å hjelpe deg med å forstå AI-bruk i kontekst med gjeldende retningslinjer og regler.
-              Ikke noe av dette innholdet skal brukes som juridisk rådgivning eller erstatte offisielle retningslinjer fra din utdanningsinstitusjon.
+              AIGuidebook er utviklet for å hjelpe deg med å forstå AI-bruk i lys av gjeldende retningslinjer og regler.
+              Innholdet skal ikke brukes som juridisk rådgivning eller erstatte offisielle retningslinjer fra din utdanningsinstitusjon.
             </p>
             <p>
-              Personvernforordningen (GDPR) regulerer hvordan personopplysninger behandles, og dette gjelder AI-verktøy som behandler slike data.
-              Åndsverksloven beskytter opphavsrett, og studenters innleveringer er beskyttet som åndsverk.
+              Personvernforordningen (GDPR) regulerer hvordan personopplysninger behandles, og dette gjelder også AI-verktøy som behandler slike data.
+              Åndsverkloven beskytter opphavsrett, og studenters innleveringer er beskyttet som åndsverk.
             </p>
             <p>
-              Universitetsloven inneholder viktige bestemmelser om akademisk integritet. Ved brudd på reglene kan studentene bli utestengt.
+              Universitetsloven inneholder viktige bestemmelser om akademisk integritet. Ved brudd på reglene kan studenter bli utestengt.
             </p>
           </div>
         </div>

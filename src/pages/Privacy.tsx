@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Shield, Eye, AlertTriangle, Brain, Lock, Fingerprint, ArrowRight, Image as ImageIcon } from "lucide-react";
+import { Shield, Eye, AlertTriangle, Brain, Lock, Fingerprint, ArrowRight } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -11,58 +11,58 @@ const risks = [
   {
     title: "Dataprivatliv",
     icon: Eye,
-    description: "Når du bruker AI-verktøy, kan dine inndata bli lagret, brukt til trening, eller delt med tredjeparter.",
+    description: "Når du bruker AI-verktøy, kan det du skriver inn bli lagret, brukt til trening, eller delt med tredjeparter.",
     tips: [
       "Unngå å dele personlig eller sensitiv informasjon i AI-spørsmål.",
-      "Sjekk verktøyets personvernpolicy før bruk.",
-      "Bruk anonymiserte data når mulig.",
+      "Sjekk verktøyets personvernerklæring før bruk.",
+      "Bruk anonymiserte data når det er mulig.",
     ],
   },
   {
-    title: "Bias i AI",
+    title: "Skjevheter i AI",
     icon: Brain,
-    description: "AI-modeller kan reflektere og forsterke fordommer i treningsdataene, noe som fører til urettferdige eller skjeve resultater.",
+    description: "AI-modeller kan reflektere og forsterke fordommer i treningsdataene, noe som kan føre til urettferdige eller skjeve resultater.",
     tips: [
-      "Kryssreferanse AI-output med mangfoldige, pålitelige kilder.",
+      "Sammenlign AI-resultater med mangfoldige, pålitelige kilder.",
       "Vær kritisk til AI-genererte sammendrag og perspektiver.",
-      "Rapporter partiske resultater når du møter dem.",
+      "Rapporter partiske resultater når du oppdager dem.",
     ],
   },
   {
     title: "Hallusinasjoner",
     icon: AlertTriangle,
-    description: "AI kan generere selvsikker, men helt feilaktig informasjon, inkludert falske sitater og oppdiktede fakta.",
+    description: "AI kan generere selvsikre, men helt feilaktige svar — inkludert falske sitater og oppdiktede fakta.",
     tips: [
-      "Alltid verifiser AI-genererte fakta og sitater i originale kilder.",
-      "Aldri stol på en AI-generert referanse uten å sjekke at den eksisterer.",
+      "Verifiser alltid AI-genererte fakta og sitater mot originale kilder.",
+      "Stol aldri på en AI-generert referanse uten å sjekke at den faktisk eksisterer.",
       "Bruk AI for ideer, ikke som primær kilde til sannhet.",
     ],
   },
   {
     title: "Akademisk integritet",
     icon: Shield,
-    description: "Å levere AI-generert arbeid som ditt eget kan utgjøre akademisk uredelighet og ha alvorlige konsekvenser.",
+    description: "Å levere AI-generert arbeid som ditt eget kan utgjøre akademisk uredelighet og få alvorlige konsekvenser.",
     tips: [
       "Sjekk alltid kursets spesifikke retningslinjer for AI-bruk.",
       "Oppgi AI-bruk åpent og ærlig.",
-      "Bruk vår sjekkliste i Retningslinjer før innlevering.",
+      "Bruk sjekklisten vår under Retningslinjer før innlevering.",
     ],
   },
 ];
 
 const protectionTips = [
   { icon: Lock, title: "Sterke personverninnstillinger", text: "Velg bort datadeling og trening der det er mulig." },
-  { icon: Fingerprint, title: "Unngå PII i spørsmål", text: "Aldri skriv inn passord, student-ID, eller personlige detaljer." },
+  { icon: Fingerprint, title: "Unngå personopplysninger", text: "Skriv aldri inn passord, student-ID eller personlige detaljer i AI-verktøy." },
   { icon: Shield, title: "Bruk institusjonelle verktøy", text: "Foretrekk AI-verktøy fra universitetet — de har ofte bedre dataavtaler." },
 ];
 
 const faqs = [
-  { q: "Hvordan beskytter jeg personvernet mitt?", a: "Les privatlivsvilkårene for alle AI-verktøy du bruker. Ikke del personlige data. Unngå sensitiv informasjon i spørsmål." },
+  { q: "Hvordan beskytter jeg personvernet mitt?", a: "Les personvernvilkårene for alle AI-verktøy du bruker. Ikke del personlige data, og unngå sensitiv informasjon i spørsmålene dine." },
   { q: "Hva er hallusinasjoner i AI?", a: "AI kan generere informasjon som høres riktig ut, men som ikke stemmer. Sjekk alltid mot pålitelige kilder." },
-  { q: "Når er det uakseptabelt å bruke KI?", a: "Det er ikke tillatt å bruke KI for å generere svar uten å oppgi det. Sjekk alltid retningslinjene for din oppgave." },
-  { q: "Er det plagiat å bruke KI?", a: "Hvis du avslører og siterer ditt AI-bruk, er det vanligvis akseptabelt. Men sjekk retningslinjene for din institusjon." },
-  { q: "Hvilken KI-verktøy er billigst?", a: "GitHub Copilot, Microsoft Copilot er gratis for studenter. Andre verktøy varierer i pris." },
-  { q: "Er personvernet mitt sikker?", a: "Det avhenger av verktøyet. Bruk bare tjenester du stoler på. Sjekk personvernerklæring for å se hva som lagres." },
+  { q: "Når er det uakseptabelt å bruke AI?", a: "Det er ikke tillatt å bruke AI til å generere svar uten å oppgi det. Sjekk alltid retningslinjene for din oppgave." },
+  { q: "Er det plagiat å bruke AI?", a: "Hvis du oppgir og siterer AI-bruken din, er det vanligvis akseptabelt. Men sjekk alltid retningslinjene ved din institusjon." },
+  { q: "Hvilket AI-verktøy er billigst?", a: "GitHub Copilot og Microsoft Copilot er gratis for studenter. Andre verktøy varierer i pris." },
+  { q: "Er personvernet mitt ivaretatt?", a: "Det avhenger av verktøyet. Bruk bare tjenester du stoler på, og sjekk personvernerklæringen for å se hva som lagres." },
 ];
 
 const Privacy = () => {
@@ -72,7 +72,7 @@ const Privacy = () => {
       <section className="bg-primary py-16 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <p className="section-fade-in mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/60">Personvern</p>
-          <h1 className="section-fade-in text-4xl font-bold md:text-5xl">Personvern & Risikoer</h1>
+          <h1 className="section-fade-in text-4xl font-bold md:text-5xl">Personvern og risikoer</h1>
           <p className="section-fade-in-delay-1 mx-auto mt-4 max-w-xl text-lg text-primary-foreground/70">
             Forstå risikoene ved AI-verktøy — fra dataprivatliv til hallusinasjoner — og lær hvordan du beskytter deg.
           </p>
@@ -157,7 +157,7 @@ const Privacy = () => {
       {/* CTA Banner */}
       <section className="bg-primary py-16 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Bruk KI med omtanke</h2>
+          <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Bruk AI med omtanke</h2>
           <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
             Ansvarlig bruk starter med kunnskap. Les retningslinjene våre.
           </p>
