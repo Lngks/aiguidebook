@@ -895,15 +895,33 @@ const CRTMonitorScene = () => {
     }
   }, []);
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter" && inputText.trim()) {
-        setJourneyStarted(true);
-        startAIStream(inputText.trim());
+  // Global keyboard listener for typing into the CRT screen
+  useEffect(() => {
+    if (journeyStarted) return;
+
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        setInputText(prev => {
+          if (prev.trim()) {
+            setJourneyStarted(true);
+            startAIStream(prev.trim());
+          }
+          return prev;
+        });
+        return;
       }
-    },
-    [inputText, startAIStream]
-  );
+      if (e.key === "Backspace") {
+        setInputText(prev => prev.slice(0, -1));
+        return;
+      }
+      if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+        setInputText(prev => prev + e.key);
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, [journeyStarted, startAIStream]);
 
   return (
     <div className="relative w-full" style={{ height: journeyStarted ? "500vh" : "85vh" }}>
@@ -919,21 +937,10 @@ const CRTMonitorScene = () => {
         </Canvas>
 
         {!journeyStarted && (
-          <div className="absolute bottom-8 left-1/2 w-full max-w-md -translate-x-1/2 px-4">
-            <div className="rounded-lg border border-[#0aff0a]/30 bg-[#0a1a0a]/90 px-4 py-3 backdrop-blur-sm">
-              <label className="mb-1 block text-xs text-[#0aff0a]/60 font-mono">
-                Skriv et spørsmål og trykk Enter for å starte reisen
-              </label>
-              <input
-                type="text"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Hva vil du vite om AI?"
-                className="w-full bg-transparent font-mono text-sm text-[#0aff0a] placeholder:text-[#0aff0a]/30 focus:outline-none"
-                autoFocus
-              />
-            </div>
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+            <p className="font-mono text-xs text-[#0aff0a]/50 text-center">
+              Skriv et spørsmål og trykk Enter
+            </p>
           </div>
         )}
 
