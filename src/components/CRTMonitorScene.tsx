@@ -151,7 +151,7 @@ const ScreenContent = ({ inputText }: { inputText: string }) => {
             alt="AI Guidebook"
             style={{
               width: '200px', height: 'auto',
-              filter: 'invert(1) brightness(2) sepia(1) saturate(20) hue-rotate(85deg) drop-shadow(0 0 6px #0aff0a)',
+              filter: 'drop-shadow(0 0 8px #0aff0a)',
               animation: 'crt-glitch 3s infinite',
             }}
           />
