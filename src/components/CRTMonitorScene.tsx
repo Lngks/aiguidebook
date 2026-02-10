@@ -190,10 +190,10 @@ const CRTMonitor = ({ inputText, visible }: { inputText: string; visible: boolea
   return (
     <group ref={monitorRef} position={[0, 0.2, 0]}>
       <RoundedBox args={[2.6, 2.0, 1.2]} radius={0.08} position={[0, 0, -0.3]}>
-        <meshStandardMaterial color="#2a2a2a" roughness={0.8} metalness={0.1} />
+        <meshStandardMaterial color="#4a4a4a" roughness={0.7} metalness={0.15} />
       </RoundedBox>
       <RoundedBox args={[2.5, 1.9, 0.15]} radius={0.05} position={[0, 0, 0.38]}>
-        <meshStandardMaterial color="#3a3a3a" roughness={0.6} metalness={0.2} />
+        <meshStandardMaterial color="#5a5a5a" roughness={0.5} metalness={0.2} />
       </RoundedBox>
       <mesh position={[0, 0.05, 0.46]}>
         <planeGeometry args={[1.9, 1.45]} />
@@ -211,15 +211,15 @@ const CRTMonitor = ({ inputText, visible }: { inputText: string; visible: boolea
         <meshBasicMaterial color="#0aff0a" />
       </mesh>
       <RoundedBox args={[0.4, 0.3, 0.4]} radius={0.03} position={[0, -1.15, 0]}>
-        <meshStandardMaterial color="#2a2a2a" roughness={0.7} metalness={0.15} />
+        <meshStandardMaterial color="#4a4a4a" roughness={0.7} metalness={0.15} />
       </RoundedBox>
       <RoundedBox args={[1.2, 0.08, 0.7]} radius={0.03} position={[0, -1.34, 0.1]}>
-        <meshStandardMaterial color="#333333" roughness={0.6} metalness={0.2} />
+        <meshStandardMaterial color="#505050" roughness={0.6} metalness={0.2} />
       </RoundedBox>
       {Array.from({ length: 5 }).map((_, i) => (
         <mesh key={i} position={[1.31, 0.3 - i * 0.15, -0.1]} rotation={[0, Math.PI / 2, 0]}>
           <planeGeometry args={[0.4, 0.02]} />
-          <meshStandardMaterial color="#1a1a1a" />
+          <meshStandardMaterial color="#3a3a3a" />
         </mesh>
       ))}
       <Text position={[0, -0.78, 0.46]} fontSize={0.06} color="#666666" anchorX="center">
@@ -774,9 +774,9 @@ const FullScene = ({ inputText, journeyStarted, onJourneyComplete }: { inputText
       <color attach="background" args={["#050a05"]} />
       <fog attach="fog" args={["#050a05", 10, 50]} />
 
-      <ambientLight intensity={0.15} />
-      <directionalLight position={[3, 4, 5]} intensity={0.3} color="#ffffff" />
-      <pointLight position={[0, 0, 3]} intensity={0.5} color="#0aff0a" distance={8} />
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[3, 4, 5]} intensity={0.6} color="#ffffff" />
+      <pointLight position={[0, 0, 3]} intensity={0.8} color="#0aff0a" distance={8} />
 
       <CameraController journeyStarted={journeyStarted} onJourneyComplete={onJourneyComplete} />
 
@@ -952,9 +952,9 @@ const CRTMonitorScene = () => {
             dpr={[1, 2]}
           >
             <color attach="background" args={["#050a05"]} />
-            <ambientLight intensity={0.15} />
-            <directionalLight position={[3, 4, 5]} intensity={0.3} color="#ffffff" />
-            <pointLight position={[0, 0, 3]} intensity={0.5} color="#0aff0a" distance={8} />
+            <ambientLight intensity={0.4} />
+            <directionalLight position={[3, 4, 5]} intensity={0.6} color="#ffffff" />
+            <pointLight position={[0, 0, 3]} intensity={0.8} color="#0aff0a" distance={8} />
 
             {/* Same CRT monitor as start, but showing the answer */}
             <group position={[0, 0.2, 0]}>
