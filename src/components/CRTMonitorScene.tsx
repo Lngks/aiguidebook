@@ -648,10 +648,10 @@ const CameraController = ({ journeyStarted, onJourneyComplete }: { journeyStarte
       camera.position.set(x, y, z);
       camera.lookAt(x * 0.3, y - 0.5, z - 15);
 
-      // Trigger journey complete when near the end
+      // Trigger journey complete when near the end (deferred to avoid unmounting during useFrame)
       if (landscapeT > 0.95 && !completedRef.current) {
         completedRef.current = true;
-        onJourneyComplete();
+        setTimeout(() => onJourneyComplete(), 0);
       }
     }
   });
