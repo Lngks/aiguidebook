@@ -666,8 +666,99 @@ const TunnelRings = () => {
   );
 };
 
+/* ─── End CRT Monitor showing AI response ─── */
+const EndScreenContent = ({ question, response, isLoading, error }: { question: string; response: string; isLoading: boolean; error: string | null }) => {
+  const groupRef = useRef<THREE.Group>(null);
+  useFrame((state) => {
+    if (groupRef.current) groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.02;
+  });
+
+  const displayText = error
+    ? `Feil: ${error}`
+    : isLoading && !response
+    ? "Laster svar..."
+    : response || "";
+
+  // Truncate for display in 3D text
+  const truncated = displayText.length > 300 ? displayText.slice(0, 300) + "..." : displayText;
+
+  return (
+    <group ref={groupRef} position={[0, 0, 0.01]}>
+      <Text position={[0, 0.55, 0]} fontSize={0.18} color="#0aff0a" anchorX="center" anchorY="middle">
+        AI Svar
+      </Text>
+      <mesh position={[0, 0.42, 0]}>
+        <planeGeometry args={[1.6, 0.003]} />
+        <meshBasicMaterial color="#0aff0a" opacity={0.3} transparent />
+      </mesh>
+      <Text position={[-0.78, 0.3, 0]} fontSize={0.045} color="#078a07" anchorX="left" anchorY="top" maxWidth={1.5}>
+        {">"} {question}
+      </Text>
+      <mesh position={[0, 0.15, 0]}>
+        <planeGeometry args={[1.4, 0.002]} />
+        <meshBasicMaterial color="#0aff0a" opacity={0.15} transparent />
+      </mesh>
+      <Text position={[-0.78, 0.08, 0]} fontSize={0.05} color="#0aff0a" anchorX="left" anchorY="top" maxWidth={1.5} lineHeight={1.4}>
+        {truncated}
+      </Text>
+      {isLoading && <BlinkingCursor x={-0.78 + Math.min((truncated.length % 40) * 0.033, 0.72)} />}
+      {!isLoading && !error && (
+        <Text position={[-0.78, -0.65, 0]} fontSize={0.04} color="#056605" anchorX="left" anchorY="middle">
+          FERDIG — Scroll opp for å starte på nytt
+        </Text>
+      )}
+    </group>
+  );
+};
+
+const EndCRTMonitor = ({ question, response, isLoading, error }: { question: string; response: string; isLoading: boolean; error: string | null }) => {
+  const monitorRef = useRef<THREE.Group>(null);
+  useFrame((state) => {
+    if (monitorRef.current) {
+      monitorRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.03;
+      monitorRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.01 - 0.05;
+    }
+  });
+
+  return (
+    <group ref={monitorRef} position={[0, 0.2, -185]}>
+      <RoundedBox args={[2.6, 2.0, 1.2]} radius={0.08} position={[0, 0, -0.3]}>
+        <meshStandardMaterial color="#2a2a2a" roughness={0.8} metalness={0.1} />
+      </RoundedBox>
+      <RoundedBox args={[2.5, 1.9, 0.15]} radius={0.05} position={[0, 0, 0.38]}>
+        <meshStandardMaterial color="#3a3a3a" roughness={0.6} metalness={0.2} />
+      </RoundedBox>
+      <mesh position={[0, 0.05, 0.46]}>
+        <planeGeometry args={[1.9, 1.45]} />
+        <ScanlineMaterial />
+      </mesh>
+      <mesh position={[0, 0.05, 0.465]}>
+        <planeGeometry args={[1.9, 1.45]} />
+        <meshPhysicalMaterial color="#000000" transparent opacity={0.08} roughness={0.05} metalness={0.5} clearcoat={1} clearcoatRoughness={0.1} />
+      </mesh>
+      <group position={[0, 0.05, 0.47]}>
+        <EndScreenContent question={question} response={response} isLoading={isLoading} error={error} />
+      </group>
+      <mesh position={[0.95, -0.75, 0.46]}>
+        <circleGeometry args={[0.03, 16]} />
+        <meshBasicMaterial color="#0aff0a" />
+      </mesh>
+      <RoundedBox args={[0.4, 0.3, 0.4]} radius={0.03} position={[0, -1.15, 0]}>
+        <meshStandardMaterial color="#2a2a2a" roughness={0.7} metalness={0.15} />
+      </RoundedBox>
+      <RoundedBox args={[1.2, 0.08, 0.7]} radius={0.03} position={[0, -1.34, 0.1]}>
+        <meshStandardMaterial color="#333333" roughness={0.6} metalness={0.2} />
+      </RoundedBox>
+      <pointLight position={[0, 0, 2]} intensity={0.5} color="#0aff0a" distance={8} />
+      <Text position={[0, -0.78, 0.46]} fontSize={0.06} color="#666666" anchorX="center">
+        AIGuidebook CRT-2024
+      </Text>
+    </group>
+  );
+};
+
 /* ─── Complete scene ─── */
-const FullScene = ({ inputText, journeyStarted }: { inputText: string; journeyStarted: boolean }) => {
+const FullScene = ({ inputText, journeyStarted, aiResponse, isLoadingAI, aiError }: { inputText: string; journeyStarted: boolean; aiResponse: string; isLoadingAI: boolean; aiError: string | null }) => {
   return (
     <>
       <color attach="background" args={["#050a05"]} />
@@ -712,15 +803,8 @@ const FullScene = ({ inputText, journeyStarted }: { inputText: string; journeySt
             </group>
           ))}
 
-          {/* End screen */}
-          <group position={[0, 0, -185]}>
-            <Text position={[0, 1, 0]} fontSize={0.8} color="#facc15" anchorX="center" anchorY="middle">
-              Svaret ditt er klart
-            </Text>
-            <Text position={[0, -0.2, 0]} fontSize={0.3} color="#facc15" anchorX="center" anchorY="middle" maxWidth={10} fillOpacity={0.7}>
-              Du har reist gjennom hele AI-pipelinen — fra spørsmål til svar.
-            </Text>
-          </group>
+          {/* End CRT Monitor with AI response */}
+          <EndCRTMonitor question={inputText} response={aiResponse} isLoading={isLoadingAI} error={aiError} />
         </>
       )}
     </>
@@ -728,17 +812,97 @@ const FullScene = ({ inputText, journeyStarted }: { inputText: string; journeySt
 };
 
 /* ─── Exported component ─── */
+const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
+
 const CRTMonitorScene = () => {
   const [inputText, setInputText] = useState("");
   const [journeyStarted, setJourneyStarted] = useState(false);
+  const [aiResponse, setAiResponse] = useState("");
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+
+  const startAIStream = useCallback(async (question: string) => {
+    setIsLoadingAI(true);
+    setAiResponse("");
+    setAiError(null);
+
+    try {
+      const resp = await fetch(CHAT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ question }),
+      });
+
+      if (!resp.ok || !resp.body) {
+        const errData = await resp.json().catch(() => ({}));
+        throw new Error(errData.error || `Feil ${resp.status}`);
+      }
+
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let textBuffer = "";
+      let streamDone = false;
+
+      while (!streamDone) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        textBuffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") { streamDone = true; break; }
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) setAiResponse(prev => prev + content);
+          } catch {
+            textBuffer = line + "\n" + textBuffer;
+            break;
+          }
+        }
+      }
+
+      // Final flush
+      if (textBuffer.trim()) {
+        for (let raw of textBuffer.split("\n")) {
+          if (!raw) continue;
+          if (raw.endsWith("\r")) raw = raw.slice(0, -1);
+          if (raw.startsWith(":") || raw.trim() === "") continue;
+          if (!raw.startsWith("data: ")) continue;
+          const jsonStr = raw.slice(6).trim();
+          if (jsonStr === "[DONE]") continue;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) setAiResponse(prev => prev + content);
+          } catch { /* ignore */ }
+        }
+      }
+    } catch (e) {
+      console.error("AI stream error:", e);
+      setAiError(e instanceof Error ? e.message : "Ukjent feil");
+    } finally {
+      setIsLoadingAI(false);
+    }
+  }, []);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter" && inputText.trim()) {
         setJourneyStarted(true);
+        startAIStream(inputText.trim());
       }
     },
-    [inputText]
+    [inputText, startAIStream]
   );
 
   return (
@@ -750,7 +914,7 @@ const CRTMonitorScene = () => {
           dpr={[1, 2]}
         >
           <ScrollControls pages={journeyStarted ? 5 : 0} damping={0.25}>
-            <FullScene inputText={inputText} journeyStarted={journeyStarted} />
+            <FullScene inputText={inputText} journeyStarted={journeyStarted} aiResponse={aiResponse} isLoadingAI={isLoadingAI} aiError={aiError} />
           </ScrollControls>
         </Canvas>
 
