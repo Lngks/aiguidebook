@@ -147,7 +147,7 @@ const ScreenContent = ({ inputText }: { inputText: string }) => {
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
         }}>
           <img
-            src="/crt-logo.svg"
+            src="/crt-logo.svg?v=2"
             alt="AI Guidebook"
             style={{
               width: '200px', height: 'auto',
