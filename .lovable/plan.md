@@ -1,38 +1,54 @@
 
-## Tilpasset header og ingen footer for /interactive
+
+## Vis AI-svar pa CRT-monitor ved slutten av reisen
 
 ### Oversikt
-Den interaktive siden skal ha et eget, minimalistisk header-design med transparent bakgrunn, og footeren skal fjernes helt. Dette gir en mer immersiv 3D-opplevelse.
+Nar brukeren scroller til slutten av landskapet, vises en ny CRT-monitor (samme design som start-monitoren) som viser et AI-generert svar pa sporsmalet brukeren skrev inn i starten. Svaret streames via Lovable AI (gratis inkludert).
 
-### Endringer
+### Brukeropplevelse
+1. Brukeren skriver et sporsmal pa CRT-monitoren og trykker Enter
+2. Brukeren reiser gjennom AI-pipelinen (6 steg)
+3. Ved enden av reisen (z = -185) dukker en ny CRT-monitor opp med svaret
+4. Svaret streames inn token for token med CRT-estetikk (gron tekst, scanlines)
 
-**1. Oppdater Layout.tsx** -- Gjør navbar og footer betinget basert på rute
-- Bruk `useLocation()` for å sjekke om vi er på `/interactive`
-- Skjul standard Navbar og Footer på denne ruten
-- Vis en egen `InteractiveHeader`-komponent i stedet
+### Tekniske endringer
 
-**2. Opprett ny komponent: `InteractiveHeader.tsx`**
-- Transparent bakgrunn (absolute posisjonert over 3D-scenen)
-- Venstre side: Pil-ikon (ArrowLeft fra lucide-react) som lenker tilbake til forsiden (`/`)
-- Hoyre side: Favicon-bildet (`/favicon.svg`) vist i liten storrelse (ca. h-6/h-8)
-- Ingen nav-linker, ingen logo, ingen "Kom i gang"-knapp
-- Hvit/lys farge pa tekst/ikoner for synlighet mot mork bakgrunn
+**1. Opprett edge function: `supabase/functions/chat/index.ts`**
+- Mottar brukerens sporsmal
+- Kaller Lovable AI Gateway med `google/gemini-3-flash-preview`
+- Streamer svaret tilbake via SSE
+- Hanterer 429/402 feilkoder
 
-### Tekniske detaljer
+**2. Oppdater `src/components/CRTMonitorScene.tsx`**
 
-**Layout.tsx:**
-```tsx
-const location = useLocation();
-const isInteractive = location.pathname === "/interactive";
+Nye komponenter og endringer:
+- **EndCRTMonitor**: En ny CRT-monitor ved z=-185 som viser AI-svaret med samme retro-stil (gron tekst, scanlines, CRT-ramme)
+- **ScreenContent for svar**: Viser "Svar:" header og streamet tekst med blinkende cursor
+- **AI-kall trigger**: Nar brukeren starter reisen, sendes sporsmalet til edge function. Svaret lagres i state og vises pa slutt-monitoren
+- Erstatter det eksisterende "Svaret ditt er klart"-tekst-elementet (linje 716-723) med EndCRTMonitor
+- `inputText` sendes videre slik at sporsmalet ogsa kan vises pa slutt-monitoren
 
-// Vis InteractiveHeader i stedet for Navbar pa /interactive
-// Skjul Footer helt pa /interactive
+State-endringer i hovedkomponenten:
+- `aiResponse: string` - akkumulert svar fra AI
+- `isLoadingAI: boolean` - viser loading-indikator pa monitoren
+- `aiError: string | null` - viser feilmelding om noe gar galt
+
+Flyten:
+```text
+[Enter trykket] --> setJourneyStarted(true)
+                --> fetch() til /functions/v1/chat (SSE stream)
+                --> onDelta oppdaterer aiResponse state
+                --> EndCRTMonitor viser aiResponse ved z=-185
 ```
 
-**InteractiveHeader.tsx:**
-```tsx
-// Transparent, absolutt posisjonert header
-// ArrowLeft-ikon til venstre -> Link to="/"
-// favicon.svg bilde til hoyre, lite format
-// z-index hoyere enn 3D-scenen
-```
+**3. Oppdater `supabase/config.toml`**
+- Legg til chat-funksjonen med `verify_jwt = false` (offentlig tilgjengelig)
+
+### Detaljer om EndCRTMonitor
+- Samme visuelle design som start-CRTMonitor (RoundedBox, ScanlineMaterial, gron tekst)
+- Plassert ved `[0, 0.2, -185]` (der slutt-teksten er na)
+- Viser brukerens sporsmal oppe og AI-svaret under
+- Scrollbar tekst hvis svaret er langt (begrenset maxWidth)
+- Blinkende cursor mens svaret streames
+- "Laster svar..." tekst mens AI jobber
+
