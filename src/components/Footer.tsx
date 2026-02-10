@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 const footerColumns = [
   {
@@ -79,8 +80,8 @@ const Footer = () => (
     <div className="container mx-auto px-4 py-10">
       <div className="grid gap-8 md:grid-cols-6">
         <div className="md:col-span-1">
-          <Link to="/" className="text-lg font-bold text-foreground" style={{ fontFamily: "'Merriweather', serif" }}>
-            Logo
+          <Link to="/">
+            <Logo variant="dark" className="h-7" />
           </Link>
         </div>
         {footerColumns.map((col) => (
