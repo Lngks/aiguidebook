@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState, useCallback, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Text, RoundedBox, ScrollControls, useScroll } from "@react-three/drei";
+import { Text, RoundedBox, ScrollControls, useScroll, Html } from "@react-three/drei";
 import * as THREE from "three";
 
 /* ─── AI Pipeline stages with distinct colors ─── */
@@ -28,13 +28,11 @@ function getStageColor(z: number): THREE.Color {
   return new THREE.Color(STAGES[STAGES.length - 1].color);
 }
 
-/* ─── Scanline shader for CRT screen ─── */
+/* ─── Glitchy CRT shader with static/noise ─── */
 const ScanlineMaterial = () => {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
-    uColor: { value: new THREE.Color("#0aff0a") },
-    uBgColor: { value: new THREE.Color("#0a1a0a") },
   }), []);
 
   useFrame((_, delta) => {
@@ -54,25 +52,63 @@ const ScanlineMaterial = () => {
       `}
       fragmentShader={`
         uniform float uTime;
-        uniform vec3 uColor;
-        uniform vec3 uBgColor;
         varying vec2 vUv;
+
+        // Hash for noise
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+        }
+
         void main() {
           vec2 uv = vUv * 2.0 - 1.0;
+          // CRT barrel distortion
           uv *= 1.0 + pow(length(uv * 0.3), 2.0);
           uv = (uv + 1.0) * 0.5;
+
           if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
             gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
             return;
           }
-          float scanline = sin(uv.y * 300.0 + uTime * 2.0) * 0.04;
-          float flicker = 0.97 + 0.03 * sin(uTime * 8.0);
+
+          // Static noise
+          float noise = hash(uv * 500.0 + uTime * 100.0) * 0.08;
+
+          // Scanlines
+          float scanline = sin(uv.y * 400.0 + uTime * 3.0) * 0.03;
+
+          // Horizontal glitch bands
+          float glitchBand = step(0.98, hash(vec2(floor(uv.y * 20.0), floor(uTime * 4.0))));
+          float glitchShift = glitchBand * (hash(vec2(uTime, floor(uv.y * 20.0))) - 0.5) * 0.1;
+
+          // Color channels with chromatic aberration
+          float r = noise + scanline * 0.5;
+          float g = noise + scanline;
+          float b = noise + scanline * 0.7;
+
+          // Base dark background with tinted noise
+          vec3 bgColor = vec3(0.02, 0.04, 0.03);
+          vec3 noiseColor = vec3(r * 0.3, g * 0.6, b * 0.4);
+
+          // Flicker
+          float flicker = 0.95 + 0.05 * sin(uTime * 12.0);
+
+          // Vignette
           vec2 vigUv = uv * (1.0 - uv);
-          float vig = pow(vigUv.x * vigUv.y * 15.0, 0.25);
-          float distLine = smoothstep(0.0, 0.02, abs(uv.y - mod(uTime * 0.1, 1.4)));
-          vec3 color = mix(uBgColor, uBgColor * 1.2, scanline);
+          float vig = pow(vigUv.x * vigUv.y * 15.0, 0.3);
+
+          // Rolling scan line
+          float distLine = smoothstep(0.0, 0.03, abs(uv.y - mod(uTime * 0.08, 1.4)));
+
+          // Glitch color burst
+          vec3 glitchColor = vec3(
+            hash(vec2(uTime * 3.0, uv.y * 10.0)) * 0.15 * glitchBand,
+            hash(vec2(uTime * 5.0, uv.y * 10.0)) * 0.1 * glitchBand,
+            hash(vec2(uTime * 7.0, uv.y * 10.0)) * 0.2 * glitchBand
+          );
+
+          vec3 color = bgColor + noiseColor + glitchColor;
           color *= flicker * vig * distLine;
-          color += uColor * 0.03 * (1.0 - vig);
+
           gl_FragColor = vec4(color, 1.0);
         }
       `}
@@ -103,12 +139,24 @@ const ScreenContent = ({ inputText }: { inputText: string }) => {
 
   return (
     <group ref={groupRef} position={[0, 0, 0.01]}>
-      <Text position={[0, 0.55, 0]} fontSize={0.18} color="#0aff0a" anchorX="center" anchorY="middle">
-        AI Guidebook
-      </Text>
-      <Text position={[0, 0.32, 0]} fontSize={0.06} color="#078a07" anchorX="center" anchorY="middle" maxWidth={2}>
-        Din guide til ansvarlig AI-bruk
-      </Text>
+      {/* Logo rendered via Html overlay with CRT glitch effects */}
+      <Html position={[0, 0.5, 0]} center transform distanceFactor={2.2}
+        style={{ pointerEvents: 'none' }}
+      >
+        <div className="crt-logo-wrap" style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
+        }}>
+          <img
+            src="/favicon.svg"
+            alt="AI Guidebook"
+            style={{
+              width: '280px', height: 'auto',
+              filter: 'invert(1) brightness(1.5) sepia(1) saturate(5) hue-rotate(85deg)',
+              animation: 'crt-glitch 3s infinite',
+            }}
+          />
+        </div>
+      </Html>
       <mesh position={[0, 0.22, 0]}>
         <planeGeometry args={[1.6, 0.003]} />
         <meshBasicMaterial color="#0aff0a" opacity={0.3} transparent />
