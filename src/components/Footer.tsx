@@ -81,7 +81,7 @@ const Footer = () => (
       <div className="grid gap-8 md:grid-cols-6">
         <div className="md:col-span-1">
           <Link to="/">
-            <Logo variant="dark" className="h-7" />
+            <Logo variant="dark" className="h-5" />
           </Link>
         </div>
         {footerColumns.map((col) => (
