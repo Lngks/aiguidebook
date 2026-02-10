@@ -22,29 +22,6 @@ const Interactive = () => {
         </Suspense>
       </section>
 
-      {/* CTA */}
-      <section className="bg-primary py-16 text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold">Utforsk mer</h2>
-          <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
-            Nå som du har sett hvordan AI fungerer, les retningslinjene for ansvarlig bruk.
-          </p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Link
-              to="/guidelines"
-              className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground"
-            >
-              Retningslinjer
-            </Link>
-            <Link
-              to="/tools"
-              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-            >
-              Verktøy
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
   );
 };
