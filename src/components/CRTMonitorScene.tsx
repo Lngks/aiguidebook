@@ -616,9 +616,10 @@ const FloatingParticles = () => {
 };
 
 /* ─── Camera controller driven by scroll ─── */
-const CameraController = ({ journeyStarted }: { journeyStarted: boolean }) => {
+const CameraController = ({ journeyStarted, onJourneyComplete }: { journeyStarted: boolean; onJourneyComplete: () => void }) => {
   const scroll = useScroll();
   const { camera } = useThree();
+  const completedRef = useRef(false);
 
   useFrame(() => {
     if (!journeyStarted) {
@@ -646,6 +647,12 @@ const CameraController = ({ journeyStarted }: { journeyStarted: boolean }) => {
 
       camera.position.set(x, y, z);
       camera.lookAt(x * 0.3, y - 0.5, z - 15);
+
+      // Trigger journey complete when near the end
+      if (landscapeT > 0.95 && !completedRef.current) {
+        completedRef.current = true;
+        onJourneyComplete();
+      }
     }
   });
 
@@ -711,54 +718,9 @@ const EndScreenContent = ({ question, response, isLoading, error }: { question: 
   );
 };
 
-const EndCRTMonitor = ({ question, response, isLoading, error }: { question: string; response: string; isLoading: boolean; error: string | null }) => {
-  const monitorRef = useRef<THREE.Group>(null);
-  useFrame((state) => {
-    if (monitorRef.current) {
-      monitorRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.03;
-      monitorRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.01 - 0.05;
-    }
-  });
-
-  return (
-    <group ref={monitorRef} position={[0, 0.2, -185]}>
-      <RoundedBox args={[2.6, 2.0, 1.2]} radius={0.08} position={[0, 0, -0.3]}>
-        <meshStandardMaterial color="#2a2a2a" roughness={0.8} metalness={0.1} />
-      </RoundedBox>
-      <RoundedBox args={[2.5, 1.9, 0.15]} radius={0.05} position={[0, 0, 0.38]}>
-        <meshStandardMaterial color="#3a3a3a" roughness={0.6} metalness={0.2} />
-      </RoundedBox>
-      <mesh position={[0, 0.05, 0.46]}>
-        <planeGeometry args={[1.9, 1.45]} />
-        <ScanlineMaterial />
-      </mesh>
-      <mesh position={[0, 0.05, 0.465]}>
-        <planeGeometry args={[1.9, 1.45]} />
-        <meshPhysicalMaterial color="#000000" transparent opacity={0.08} roughness={0.05} metalness={0.5} clearcoat={1} clearcoatRoughness={0.1} />
-      </mesh>
-      <group position={[0, 0.05, 0.47]}>
-        <EndScreenContent question={question} response={response} isLoading={isLoading} error={error} />
-      </group>
-      <mesh position={[0.95, -0.75, 0.46]}>
-        <circleGeometry args={[0.03, 16]} />
-        <meshBasicMaterial color="#0aff0a" />
-      </mesh>
-      <RoundedBox args={[0.4, 0.3, 0.4]} radius={0.03} position={[0, -1.15, 0]}>
-        <meshStandardMaterial color="#2a2a2a" roughness={0.7} metalness={0.15} />
-      </RoundedBox>
-      <RoundedBox args={[1.2, 0.08, 0.7]} radius={0.03} position={[0, -1.34, 0.1]}>
-        <meshStandardMaterial color="#333333" roughness={0.6} metalness={0.2} />
-      </RoundedBox>
-      <pointLight position={[0, 0, 2]} intensity={0.5} color="#0aff0a" distance={8} />
-      <Text position={[0, -0.78, 0.46]} fontSize={0.06} color="#666666" anchorX="center">
-        AIGuidebook CRT-2024
-      </Text>
-    </group>
-  );
-};
 
 /* ─── Complete scene ─── */
-const FullScene = ({ inputText, journeyStarted, aiResponse, isLoadingAI, aiError }: { inputText: string; journeyStarted: boolean; aiResponse: string; isLoadingAI: boolean; aiError: string | null }) => {
+const FullScene = ({ inputText, journeyStarted, onJourneyComplete }: { inputText: string; journeyStarted: boolean; onJourneyComplete: () => void }) => {
   return (
     <>
       <color attach="background" args={["#050a05"]} />
@@ -768,7 +730,7 @@ const FullScene = ({ inputText, journeyStarted, aiResponse, isLoadingAI, aiError
       <directionalLight position={[3, 4, 5]} intensity={0.3} color="#ffffff" />
       <pointLight position={[0, 0, 3]} intensity={0.5} color="#0aff0a" distance={8} />
 
-      <CameraController journeyStarted={journeyStarted} />
+      <CameraController journeyStarted={journeyStarted} onJourneyComplete={onJourneyComplete} />
 
       <CRTMonitor inputText={inputText} visible={!journeyStarted} />
       {!journeyStarted && <FloatingParticles />}
@@ -802,9 +764,6 @@ const FullScene = ({ inputText, journeyStarted, aiResponse, isLoadingAI, aiError
               <pointLight position={[0, 4, 0]} intensity={0.4} color={STAGES[i % STAGES.length].color} distance={8} />
             </group>
           ))}
-
-          {/* End CRT Monitor with AI response */}
-          <EndCRTMonitor question={inputText} response={aiResponse} isLoading={isLoadingAI} error={aiError} />
         </>
       )}
     </>
@@ -817,6 +776,7 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 const CRTMonitorScene = () => {
   const [inputText, setInputText] = useState("");
   const [journeyStarted, setJourneyStarted] = useState(false);
+  const [journeyComplete, setJourneyComplete] = useState(false);
   const [aiResponse, setAiResponse] = useState("");
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
@@ -895,6 +855,10 @@ const CRTMonitorScene = () => {
     }
   }, []);
 
+  const handleJourneyComplete = useCallback(() => {
+    setJourneyComplete(true);
+  }, []);
+
   // Global keyboard listener for typing into the CRT screen
   useEffect(() => {
     if (journeyStarted) return;
@@ -923,6 +887,80 @@ const CRTMonitorScene = () => {
     return () => window.removeEventListener("keydown", handleGlobalKeyDown);
   }, [journeyStarted, startAIStream]);
 
+  // Show answer CRT screen when journey is complete
+  if (journeyComplete) {
+    const displayText = aiError
+      ? `Feil: ${aiError}`
+      : isLoadingAI && !aiResponse
+      ? ""
+      : aiResponse || "";
+
+    return (
+      <div className="relative w-full" style={{ height: "85vh" }}>
+        <div className="sticky top-0 h-screen w-full">
+          <Canvas
+            camera={{ position: [0, 0.3, 4.5], fov: 45 }}
+            gl={{ antialias: true, alpha: false }}
+            dpr={[1, 2]}
+          >
+            <color attach="background" args={["#050a05"]} />
+            <ambientLight intensity={0.15} />
+            <directionalLight position={[3, 4, 5]} intensity={0.3} color="#ffffff" />
+            <pointLight position={[0, 0, 3]} intensity={0.5} color="#0aff0a" distance={8} />
+
+            {/* Same CRT monitor as start, but showing the answer */}
+            <group position={[0, 0.2, 0]}>
+              <RoundedBox args={[2.6, 2.0, 1.2]} radius={0.08} position={[0, 0, -0.3]}>
+                <meshStandardMaterial color="#2a2a2a" roughness={0.8} metalness={0.1} />
+              </RoundedBox>
+              <RoundedBox args={[2.5, 1.9, 0.15]} radius={0.05} position={[0, 0, 0.38]}>
+                <meshStandardMaterial color="#3a3a3a" roughness={0.6} metalness={0.2} />
+              </RoundedBox>
+              <mesh position={[0, 0.05, 0.46]}>
+                <planeGeometry args={[1.9, 1.45]} />
+                <ScanlineMaterial />
+              </mesh>
+              <mesh position={[0, 0.05, 0.465]}>
+                <planeGeometry args={[1.9, 1.45]} />
+                <meshPhysicalMaterial color="#000000" transparent opacity={0.08} roughness={0.05} metalness={0.5} clearcoat={1} clearcoatRoughness={0.1} />
+              </mesh>
+              <group position={[0, 0.05, 0.47]}>
+                <EndScreenContent question={inputText} response={displayText} isLoading={isLoadingAI} error={aiError} />
+              </group>
+              <mesh position={[0.95, -0.75, 0.46]}>
+                <circleGeometry args={[0.03, 16]} />
+                <meshBasicMaterial color="#0aff0a" />
+              </mesh>
+              <RoundedBox args={[0.4, 0.3, 0.4]} radius={0.03} position={[0, -1.15, 0]}>
+                <meshStandardMaterial color="#2a2a2a" roughness={0.7} metalness={0.15} />
+              </RoundedBox>
+              <RoundedBox args={[1.2, 0.08, 0.7]} radius={0.03} position={[0, -1.34, 0.1]}>
+                <meshStandardMaterial color="#333333" roughness={0.6} metalness={0.2} />
+              </RoundedBox>
+              <Text position={[0, -0.78, 0.46]} fontSize={0.06} color="#666666" anchorX="center">
+                AIGuidebook CRT-2024
+              </Text>
+            </group>
+
+            <FloatingParticles />
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.6, 0]}>
+              <planeGeometry args={[20, 20]} />
+              <meshStandardMaterial color="#050a05" roughness={0.3} metalness={0.8} />
+            </mesh>
+          </Canvas>
+
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+            <p className="font-mono text-xs text-[#0aff0a]/50 text-center">
+              Trykk på AI-logoen for å starte på nytt
+            </p>
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#050a05_100%)]" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full" style={{ height: journeyStarted ? "500vh" : "85vh" }}>
       <div className="sticky top-0 h-screen w-full">
@@ -932,7 +970,7 @@ const CRTMonitorScene = () => {
           dpr={[1, 2]}
         >
           <ScrollControls pages={journeyStarted ? 5 : 0} damping={0.25}>
-            <FullScene inputText={inputText} journeyStarted={journeyStarted} aiResponse={aiResponse} isLoadingAI={isLoadingAI} aiError={aiError} />
+            <FullScene inputText={inputText} journeyStarted={journeyStarted} onJourneyComplete={handleJourneyComplete} />
           </ScrollControls>
         </Canvas>
 
