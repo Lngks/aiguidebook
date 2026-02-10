@@ -1,148 +1,173 @@
-import { Shield, Eye, AlertTriangle, Brain, Lock, Fingerprint } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Shield, Eye, AlertTriangle, Brain, Lock, Fingerprint, ArrowRight, Image as ImageIcon } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const risks = [
   {
-    title: "Data Privacy",
+    title: "Dataprivatliv",
     icon: Eye,
-    description: "When you use AI tools, your inputs may be stored, used for training, or shared with third parties.",
-    examples: [
-      "Pasting personal essays into ChatGPT could mean your text is used to train future models.",
-      "Uploading assignment files may expose your work to the AI provider.",
-    ],
+    description: "Når du bruker AI-verktøy, kan dine inndata bli lagret, brukt til trening, eller delt med tredjeparter.",
     tips: [
-      "Avoid sharing personal or sensitive information in AI prompts.",
-      "Check the tool's privacy policy before use.",
-      "Use anonymised data when possible.",
+      "Unngå å dele personlig eller sensitiv informasjon i AI-spørsmål.",
+      "Sjekk verktøyets personvernpolicy før bruk.",
+      "Bruk anonymiserte data når mulig.",
     ],
   },
   {
-    title: "Bias in AI",
+    title: "Bias i AI",
     icon: Brain,
-    description: "AI models can reflect and amplify biases present in their training data, leading to unfair or skewed outputs.",
-    examples: [
-      "AI research assistants may favour Western-centric sources.",
-      "Language models can produce stereotyped responses about cultures, genders, or groups.",
-    ],
+    description: "AI-modeller kan reflektere og forsterke fordommer i treningsdataene, noe som fører til urettferdige eller skjeve resultater.",
     tips: [
-      "Cross-reference AI outputs with diverse, reputable sources.",
-      "Be critical of AI-generated summaries and perspectives.",
-      "Report biased outputs when you encounter them.",
+      "Kryssreferanse AI-output med mangfoldige, pålitelige kilder.",
+      "Vær kritisk til AI-genererte sammendrag og perspektiver.",
+      "Rapporter partiske resultater når du møter dem.",
     ],
   },
   {
-    title: "Hallucinations",
+    title: "Hallusinasjoner",
     icon: AlertTriangle,
-    description: "AI can generate confident-sounding but completely false information, including fake citations and fabricated facts.",
-    examples: [
-      "ChatGPT has been known to invent academic papers that don't exist.",
-      "AI may produce plausible-looking statistics with no real source.",
-    ],
+    description: "AI kan generere selvsikker, men helt feilaktig informasjon, inkludert falske sitater og oppdiktede fakta.",
     tips: [
-      "Always verify AI-generated facts and citations in original sources.",
-      "Never trust an AI-provided reference without checking it exists.",
-      "Use AI for ideas, not as a primary source of truth.",
+      "Alltid verifiser AI-genererte fakta og sitater i originale kilder.",
+      "Aldri stol på en AI-generert referanse uten å sjekke at den eksisterer.",
+      "Bruk AI for ideer, ikke som primær kilde til sannhet.",
     ],
   },
   {
-    title: "Academic Integrity",
+    title: "Akademisk integritet",
     icon: Shield,
-    description: "Submitting AI-generated work as your own can constitute academic misconduct and carry serious consequences.",
-    examples: [
-      "Copying and pasting AI outputs into an essay without disclosure is plagiarism.",
-      "Using AI to write code for a programming exam is typically not allowed.",
-    ],
+    description: "Å levere AI-generert arbeid som ditt eget kan utgjøre akademisk uredelighet og ha alvorlige konsekvenser.",
     tips: [
-      "Always check your course's specific AI use policy.",
-      "Disclose AI use transparently.",
-      "Use our Guidelines checklist before submitting.",
+      "Sjekk alltid kursets spesifikke retningslinjer for AI-bruk.",
+      "Oppgi AI-bruk åpent og ærlig.",
+      "Bruk vår sjekkliste i Retningslinjer før innlevering.",
     ],
   },
 ];
 
 const protectionTips = [
-  { icon: Lock, title: "Use Strong Privacy Settings", text: "Opt out of data sharing and training where available." },
-  { icon: Fingerprint, title: "Avoid PII in Prompts", text: "Never enter passwords, student IDs, or personal details." },
-  { icon: Shield, title: "Use Institutional Tools", text: "Prefer AI tools provided by your university — they often have better data agreements." },
+  { icon: Lock, title: "Sterke personverninnstillinger", text: "Velg bort datadeling og trening der det er mulig." },
+  { icon: Fingerprint, title: "Unngå PII i spørsmål", text: "Aldri skriv inn passord, student-ID, eller personlige detaljer." },
+  { icon: Shield, title: "Bruk institusjonelle verktøy", text: "Foretrekk AI-verktøy fra universitetet — de har ofte bedre dataavtaler." },
+];
+
+const faqs = [
+  { q: "Hvordan beskytter jeg personvernet mitt?", a: "Les privatlivsvilkårene for alle AI-verktøy du bruker. Ikke del personlige data. Unngå sensitiv informasjon i spørsmål." },
+  { q: "Hva er hallusinasjoner i AI?", a: "AI kan generere informasjon som høres riktig ut, men som ikke stemmer. Sjekk alltid mot pålitelige kilder." },
+  { q: "Når er det uakseptabelt å bruke KI?", a: "Det er ikke tillatt å bruke KI for å generere svar uten å oppgi det. Sjekk alltid retningslinjene for din oppgave." },
+  { q: "Er det plagiat å bruke KI?", a: "Hvis du avslører og siterer ditt AI-bruk, er det vanligvis akseptabelt. Men sjekk retningslinjene for din institusjon." },
+  { q: "Hvilken KI-verktøy er billigst?", a: "GitHub Copilot, Microsoft Copilot er gratis for studenter. Andre verktøy varierer i pris." },
+  { q: "Er personvernet mitt sikker?", a: "Det avhenger av verktøyet. Bruk bare tjenester du stoler på. Sjekk personvernerklæring for å se hva som lagres." },
 ];
 
 const Privacy = () => {
   return (
     <>
-      <section className="bg-primary py-14 text-primary-foreground">
+      {/* Hero */}
+      <section className="bg-primary py-16 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="section-fade-in text-4xl font-bold">Privacy & Risks</h1>
-          <p className="section-fade-in-delay-1 mx-auto mt-4 max-w-2xl text-lg opacity-85">
-            Understand the risks of AI tools — from data privacy to hallucinations — and learn how to protect yourself.
+          <p className="section-fade-in mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/60">Personvern</p>
+          <h1 className="section-fade-in text-4xl font-bold md:text-5xl">Personvern & Risikoer</h1>
+          <p className="section-fade-in-delay-1 mx-auto mt-4 max-w-xl text-lg text-primary-foreground/70">
+            Forstå risikoene ved AI-verktøy — fra dataprivatliv til hallusinasjoner — og lær hvordan du beskytter deg.
           </p>
         </div>
       </section>
 
       {/* Risk Sections */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4 py-20">
         <div className="space-y-8">
           {risks.map((risk, i) => (
             <article
               key={risk.title}
-              className={`section-fade-in-delay-${(i % 3) + 1} rounded-xl border border-border bg-card p-6 shadow-sm md:p-8`}
+              className={`section-fade-in-delay-${(i % 3) + 1} grid items-start gap-6 rounded-xl border border-border bg-card p-6 shadow-sm md:grid-cols-[auto_1fr] md:p-8`}
             >
-              <div className="mb-4 flex items-center gap-3">
-                <div className="rounded-lg bg-destructive/10 p-2.5 text-destructive">
-                  <risk.icon className="h-6 w-6" />
-                </div>
-                <h2 className="text-2xl font-bold text-card-foreground">{risk.title}</h2>
+              <div className="rounded-lg bg-destructive/10 p-3 text-destructive">
+                <risk.icon className="h-6 w-6" />
               </div>
-              <p className="mb-5 text-muted-foreground">{risk.description}</p>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-lg bg-destructive/5 p-4">
-                  <h4 className="mb-2 text-sm font-semibold uppercase tracking-wider text-destructive">
-                    Real-World Examples
-                  </h4>
-                  <ul className="space-y-2">
-                    {risk.examples.map((ex) => (
-                      <li key={ex} className="flex items-start gap-2 text-sm text-card-foreground">
-                        <AlertTriangle className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-destructive" />
-                        {ex}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="rounded-lg bg-sky-light p-4">
-                  <h4 className="mb-2 text-sm font-semibold uppercase tracking-wider text-accent">
-                    How to Protect Yourself
-                  </h4>
-                  <ul className="space-y-2">
-                    {risk.tips.map((tip) => (
-                      <li key={tip} className="flex items-start gap-2 text-sm text-card-foreground">
-                        <Shield className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-accent" />
-                        {tip}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div>
+                <h2 className="mb-2 text-2xl font-bold text-card-foreground">{risk.title}</h2>
+                <p className="mb-4 text-muted-foreground">{risk.description}</p>
+                <ul className="space-y-2">
+                  {risk.tips.map((tip) => (
+                    <li key={tip} className="flex items-start gap-2 text-sm text-card-foreground">
+                      <Shield className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-accent" />
+                      {tip}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      {/* Quick Tips */}
-      <section className="border-t border-border bg-muted/50 py-16">
+      {/* Protecting Data */}
+      <section className="border-y border-border bg-muted/50 py-20">
         <div className="container mx-auto px-4">
-          <h2 className="section-fade-in mb-8 text-center text-3xl font-bold">Protecting Your Data</h2>
+          <h2 className="section-fade-in mb-10 text-center text-3xl font-bold text-foreground">Beskyttelse av data</h2>
           <div className="grid gap-6 md:grid-cols-3">
             {protectionTips.map((tip, i) => (
               <div
                 key={tip.title}
                 className={`section-fade-in-delay-${i + 1} rounded-xl border border-border bg-card p-6 text-center shadow-sm`}
               >
-                <div className="mx-auto mb-4 inline-flex rounded-lg bg-sky-light p-3 text-accent">
+                <div className="mx-auto mb-4 inline-flex rounded-lg bg-accent/10 p-3 text-accent">
                   <tip.icon className="h-6 w-6" />
                 </div>
                 <h3 className="mb-2 font-bold text-card-foreground">{tip.title}</h3>
                 <p className="text-sm text-muted-foreground">{tip.text}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="container mx-auto px-4 py-20">
+        <div className="section-fade-in mb-10 text-center">
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
+          <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
+            Svar på vanlige spørsmål om personvern og AI-risikoer.
+          </p>
+        </div>
+        <div className="mx-auto max-w-4xl">
+          <div className="grid gap-x-8 md:grid-cols-2">
+            {faqs.map((faq, i) => (
+              <Accordion key={i} type="single" collapsible>
+                <AccordionItem value={`faq-${i}`} className="border-b border-border">
+                  <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
+                    {faq.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-muted-foreground">
+                    {faq.a}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Banner */}
+      <section className="bg-primary py-16 text-primary-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Bruk KI med omtanke</h2>
+          <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
+            Ansvarlig bruk starter med kunnskap. Les retningslinjene våre.
+          </p>
+          <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
+            <Link to="/guidelines" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground">
+              Retningslinjer
+            </Link>
+            <Link to="/tools" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground">
+              Verktøy
+            </Link>
           </div>
         </div>
       </section>
