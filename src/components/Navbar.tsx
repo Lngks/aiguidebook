@@ -17,8 +17,8 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-primary-foreground/10 bg-primary">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2">
-          <Logo variant="light" className="h-7" />
+        <Link to="/" className="flex items-center">
+          <Logo variant="light" className="h-5" />
         </Link>
 
         {/* Desktop nav */}
