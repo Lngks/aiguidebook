@@ -1,42 +1,121 @@
-import { BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 
+const footerColumns = [
+  {
+    title: "Ressurser",
+    links: [
+      { label: "Retningslinjer", to: "/guidelines" },
+      { label: "AI-pipeline", to: "/interactive" },
+      { label: "Spørsmål", to: "/tools" },
+      { label: "Kontakt", to: "#" },
+      { label: "Hjelp", to: "#" },
+    ],
+  },
+  {
+    title: "Lær mer",
+    links: [
+      { label: "Akademisk integritet", to: "/guidelines" },
+      { label: "Personvern", to: "/privacy" },
+      { label: "Hallusinasjoner", to: "/privacy" },
+      { label: "Bias", to: "/privacy" },
+      { label: "Eksempler", to: "/guidelines" },
+    ],
+  },
+  {
+    title: "Veiledning",
+    links: [
+      { label: "Beste praksis", to: "/guidelines" },
+      { label: "Sjekkliste", to: "/guidelines" },
+      { label: "Verktøyvalg", to: "/tools" },
+      { label: "Ressurser", to: "#" },
+      { label: "Lenker", to: "#" },
+    ],
+  },
+  {
+    title: "Om",
+    links: [
+      { label: "Om AIGuidebook", to: "#" },
+      { label: "Vår oppdrag", to: "#" },
+      { label: "Teamet", to: "#" },
+      { label: "Tilbakemelding", to: "#" },
+    ],
+  },
+  {
+    title: "Juridisk",
+    links: [
+      { label: "Personvernerklæring", to: "#" },
+      { label: "Vilkår for bruk", to: "#" },
+      { label: "Tilgjengelighetserklæring", to: "#" },
+      { label: "Innstillinger", to: "#" },
+    ],
+  },
+];
+
 const Footer = () => (
-  <footer className="border-t border-border bg-primary text-primary-foreground">
-    <div className="container mx-auto px-4 py-10">
-      <div className="grid gap-8 md:grid-cols-3">
+  <footer className="border-t border-border bg-muted">
+    {/* Newsletter */}
+    <div className="border-b border-border bg-primary">
+      <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-6 md:flex-row">
         <div>
-          <div className="mb-3 flex items-center gap-2 font-bold">
-            <BookOpen className="h-5 w-5" />
-            <span style={{ fontFamily: "'Merriweather', serif" }}>AIGuidebook</span>
-          </div>
-          <p className="text-sm opacity-80">
-            Helping university students navigate AI tools responsibly, ethically, and with confidence.
+          <p className="font-bold text-primary-foreground" style={{ fontFamily: "'Merriweather', serif" }}>
+            Få oppdateringer
           </p>
+          <p className="text-sm text-primary-foreground/70">Motta tips og veiledning direkte</p>
         </div>
-
-        <div>
-          <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider opacity-70">Pages</h4>
-          <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="opacity-80 transition-opacity hover:opacity-100">Home</Link></li>
-            <li><Link to="/tools" className="opacity-80 transition-opacity hover:opacity-100">Tools</Link></li>
-            <li><Link to="/guidelines" className="opacity-80 transition-opacity hover:opacity-100">Guidelines</Link></li>
-            <li><Link to="/privacy" className="opacity-80 transition-opacity hover:opacity-100">Privacy & Risks</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider opacity-70">References</h4>
-          <ul className="space-y-2 text-sm opacity-80">
-            <li>UNESCO AI in Education Guidelines (2023)</li>
-            <li>EU AI Act — Education Provisions</li>
-            <li>JISC AI in Tertiary Education (2024)</li>
-          </ul>
+        <div className="flex w-full max-w-md gap-2">
+          <input
+            type="email"
+            placeholder="Din e-post"
+            className="flex-1 rounded-md border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-2 text-sm text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent"
+          />
+          <button className="rounded-md bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105">
+            Abonner
+          </button>
         </div>
       </div>
+    </div>
 
-      <div className="mt-8 border-t border-primary-foreground/20 pt-6 text-center text-xs opacity-60">
-        © {new Date().getFullYear()} AIGuidebook. Created for educational purposes. All content is for guidance only.
+    {/* Logo + Columns */}
+    <div className="container mx-auto px-4 py-10">
+      <div className="grid gap-8 md:grid-cols-6">
+        <div className="md:col-span-1">
+          <Link to="/" className="text-lg font-bold text-foreground" style={{ fontFamily: "'Merriweather', serif" }}>
+            Logo
+          </Link>
+        </div>
+        {footerColumns.map((col) => (
+          <div key={col.title}>
+            <h4 className="mb-3 text-sm font-semibold text-foreground">{col.title}</h4>
+            <ul className="space-y-2 text-sm">
+              {col.links.map((link) => (
+                <li key={link.label}>
+                  <Link to={link.to} className="text-muted-foreground transition-colors hover:text-foreground">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Bottom bar */}
+    <div className="border-t border-border">
+      <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-4 text-xs text-muted-foreground md:flex-row">
+        <p>© {new Date().getFullYear()} AIGuidebook. Alle rettigheter forbeholdt.</p>
+        <div className="flex gap-4">
+          <Link to="#" className="hover:text-foreground">Personvern</Link>
+          <Link to="#" className="hover:text-foreground">Vilkår for bruk</Link>
+          <Link to="#" className="hover:text-foreground">Cookies</Link>
+        </div>
+        <div className="flex gap-3">
+          {["f", "in", "X", "▶", "○"].map((icon, i) => (
+            <a key={i} href="#" className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:text-foreground">
+              <span className="text-xs">{icon}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   </footer>

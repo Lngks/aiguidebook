@@ -1,34 +1,64 @@
 import { Link } from "react-router-dom";
-import { BookOpen, Shield, Wrench, AlertTriangle, ArrowRight } from "lucide-react";
+import { ArrowRight, FileText, Lightbulb, Wrench, ChevronDown, Image as ImageIcon } from "lucide-react";
+import { useState } from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const overviewCards = [
   {
-    title: "AI Tools",
-    description: "Explore popular AI tools, what they do, and how to use them in your studies.",
+    title: "Klare retningslinjer",
+    description: "Vite hva som er lov og hva som ikke er det. Klar info om dine rettigheter og plikter.",
+    icon: FileText,
+  },
+  {
+    title: "Praktiske eksempler",
+    description: "Se hvordan ansvarlig AI-bruk ser ut i virkeligheten, dag etter dag.",
+    icon: Lightbulb,
+  },
+  {
+    title: "Verktøy som virker",
+    description: "Teknologi og tips som du kan bruke med en gang i studiene dine.",
     icon: Wrench,
-    path: "/tools",
-    color: "bg-sky-light text-accent",
-  },
-  {
-    title: "Guidelines",
-    description: "Learn the rules for responsible AI use and check your work with our interactive checklist.",
-    icon: BookOpen,
-    path: "/guidelines",
-    color: "bg-muted text-primary",
-  },
-  {
-    title: "Privacy & Risks",
-    description: "Understand AI risks including data privacy, bias, hallucinations, and academic integrity.",
-    icon: Shield,
-    path: "/privacy",
-    color: "bg-secondary text-navy-light",
   },
 ];
 
-const stats = [
-  { value: "86%", label: "of students have used AI tools in coursework" },
-  { value: "67%", label: "feel unsure about what's allowed" },
-  { value: "1 in 3", label: "universities lack clear AI use policies" },
+const trustCards = [
+  {
+    label: "Regler",
+    title: "Forstå reglene som gjelder",
+    description: "Få god oversikt av hva som er lov og hva som ikke er det innenfor dine studier.",
+    path: "/guidelines",
+  },
+  {
+    label: "Integritet",
+    title: "Holde akademisk ærlig arbeid",
+    description: "Lær på din egen måte uten å kompromittere din integritet.",
+    path: "/guidelines",
+  },
+  {
+    label: "Praktisk",
+    title: "Lær hvordan AI faktisk virker",
+    description: "Praktiske verktøy og forklaringer som ligger til grunn for AI-verktøy.",
+    path: "/tools",
+  },
+];
+
+const faqs = [
+  { q: "Kan jeg bruke AI til oppgaven?", a: "Det kommer an på hva oppgaven krever. Noen ganger er AI-bruk greit, andre ganger ikke. Snakk med faglærer og se retningslinjene dine og sjekk institusjonen sine regler." },
+  { q: "Kan AI «lære» partisk?", a: "Ja. AI trener på data som kan inneholde fordommer. Det kan gjøre svar ubalanserte eller stereotype. Vær kritisk og sjekk alltid informasjonen." },
+  { q: "Hva er hallusinasjoner i AI?", a: "AI kan skrive av og gi deg informasjon som låter riktig, men som ikke finnes. Alltid verifiser fakta og kilder mot pålitelige kilder." },
+  { q: "Hvor trygt er dataene mine?", a: "Det er viktig å forstå hva som skjer med dataene dine. Ikke del personlig informasjon med AI-verktøy." },
+  { q: "Hvor gjør dataene mine?", a: "Les privatlivspolitikken. Noen AI-verktøy lagrer dataene dine for trening. Sjekk innstillingene dine." },
+  { q: "Hva hvis jeg glemmer å oppgi AI?", a: "Det regnes som brudd på akademisk integritet. Oppgi alltid AI-bruk for å unngå konsekvenser." },
+  { q: "Er det plagiat å bruke AI?", a: "Ikke nødvendigvis. Men du skal si at du bruker AI i oppgaven og oppgi det, slik at det er lov å ha, det kan føre til konsekvenser." },
+  { q: "Hvordan sjekker jeg AI-svar?", a: "Bruk kilder du stoler på. Se etter sammenheng i informasjonen. Dobbeltsjekk fakta og sitat." },
+  { q: "Hvilken AI-verktøy er billigst?", a: "De er mange. Gi GitHub Copilot og Microsoft Copilot for studier, som har gratis studentkontoer. Andre verktøy varierer." },
+  { q: "Hvordan bruker jeg AI til læring?", a: "AI kan gi deg enklere forklaringer, stille prøvespørsmål, lage quizer. Men bruk det som et verktøy, ikke som en erstatning for å lære selv." },
+  { q: "Er personvernet mitt sikker?", a: "Det avhenger av verktøyet. Bruk bare tjenester du stoler på. Sjekk personvernerklæring for å se hva som lagres." },
 ];
 
 const Index = () => {
@@ -36,76 +66,164 @@ const Index = () => {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground md:py-28">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(199_89%_48%/0.15),transparent_60%)]" />
-        <div className="container relative mx-auto px-4 text-center">
-          <div className="section-fade-in">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-widest opacity-70">
-              Your Guide to Responsible AI Use
-            </p>
-            <h1 className="mx-auto mb-6 max-w-3xl text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
-              Navigate AI in Your Studies with Confidence
-            </h1>
-            <p className="mx-auto mb-8 max-w-2xl text-lg opacity-85 md:text-xl">
-              AIGuidebook gives university students simple, trustworthy guidance on using AI tools safely,
-              responsibly, and with academic integrity.
-            </p>
-            <Link
-              to="/guidelines"
-              className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 font-semibold text-accent-foreground transition-transform hover:scale-105"
-            >
-              Get Started <ArrowRight className="h-4 w-4" />
-            </Link>
+        <div className="container relative mx-auto px-4">
+          <div className="grid items-center gap-10 md:grid-cols-2">
+            <div className="section-fade-in">
+              <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
+                Lær å bruke AI ansvarlig
+              </h1>
+              <p className="mb-8 max-w-lg text-lg opacity-80">
+                AI er her. Vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som er tillatt, hvordan du beskytter dataene dine, og hvordan du holder akademisk integritet intakt.
+              </p>
+              <div className="flex gap-3">
+                <Link
+                  to="/guidelines"
+                  className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-semibold text-accent-foreground transition-transform hover:scale-105"
+                >
+                  Start
+                </Link>
+                <Link
+                  to="/tools"
+                  className="inline-flex items-center gap-2 rounded-md border border-primary-foreground/30 px-6 py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+                >
+                  Les
+                </Link>
+              </div>
+            </div>
+            <div className="section-fade-in-delay-1 grid grid-cols-2 gap-4">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="flex aspect-square items-center justify-center rounded-xl bg-primary-foreground/10">
+                  <ImageIcon className="h-10 w-10 text-primary-foreground/30" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Overview Cards */}
-      <section className="container mx-auto px-4 py-16 md:py-20">
-        <h2 className="section-fade-in mb-10 text-center text-3xl font-bold text-foreground">
-          What You'll Find Here
-        </h2>
-        <div className="grid gap-6 md:grid-cols-3">
+      {/* Tre ting du må vite */}
+      <section className="container mx-auto px-4 py-20">
+        <div className="section-fade-in mb-12 text-center">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+            Vi bryter ned kompliserte og gjør det enkelt. Ingen forvirrede fagord, bare svar du kan stole på.
+          </p>
+        </div>
+        <div className="grid gap-8 md:grid-cols-3">
           {overviewCards.map((card, i) => (
-            <Link
-              key={card.path}
-              to={card.path}
-              className={`section-fade-in-delay-${i + 1} group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md`}
+            <div
+              key={card.title}
+              className={`section-fade-in-delay-${i + 1} text-center`}
             >
-              <div className={`mb-4 inline-flex rounded-lg p-3 ${card.color}`}>
-                <card.icon className="h-6 w-6" />
+              <div className="mx-auto mb-4 inline-flex rounded-lg p-3 text-muted-foreground">
+                <card.icon className="h-8 w-8" />
               </div>
-              <h3 className="mb-2 text-xl font-bold text-card-foreground">{card.title}</h3>
+              <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
               <p className="text-sm text-muted-foreground">{card.description}</p>
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-primary">
-                Learn more <ArrowRight className="h-3 w-3" />
-              </span>
-            </Link>
+            </div>
           ))}
         </div>
+        <div className="mt-10 flex justify-center gap-3">
+          <Link to="/guidelines" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105">
+            Utforsk
+          </Link>
+          <Link to="/tools" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            Alt <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
       </section>
 
-      {/* Why This Matters */}
-      <section className="border-y border-border bg-muted/50 py-16 md:py-20">
+      {/* Bruk AI med tillit */}
+      <section className="border-y border-border bg-muted/50 py-20">
         <div className="container mx-auto px-4">
-          <div className="section-fade-in mb-10 text-center">
-            <AlertTriangle className="mx-auto mb-3 h-8 w-8 text-warning" />
-            <h2 className="text-3xl font-bold text-foreground">Why This Matters</h2>
+          <div className="section-fade-in mb-12 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Tryggheten</p>
+            <h2 className="text-3xl font-bold text-foreground md:text-4xl">Bruk AI med tillit</h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              AI is transforming education fast. Students, teachers, and institutions all need clear guidance.
+              Vite at du handler riktig når du bruker verktøy.
             </p>
           </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            {stats.map((stat, i) => (
-              <div
-                key={i}
-                className={`section-fade-in-delay-${i + 1} rounded-xl bg-card p-6 text-center shadow-sm`}
+          <div className="grid gap-6 md:grid-cols-3">
+            {trustCards.map((card, i) => (
+              <Link
+                key={card.title}
+                to={card.path}
+                className={`section-fade-in-delay-${i + 1} group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md`}
               >
-                <p className="text-4xl font-bold text-primary">{stat.value}</p>
-                <p className="mt-2 text-sm text-muted-foreground">{stat.label}</p>
-              </div>
+                <div className="flex aspect-video items-center justify-center rounded-lg bg-muted mb-4">
+                  <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
+                </div>
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{card.label}</p>
+                <h3 className="mb-2 text-lg font-bold text-card-foreground">{card.title}</h3>
+                <p className="text-sm text-muted-foreground">{card.description}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-primary">
+                  Les <ArrowRight className="h-3 w-3" />
+                </span>
+              </Link>
             ))}
           </div>
         </div>
+      </section>
+
+      {/* Se det i praksis — CTA banner */}
+      <section className="bg-primary py-16 text-primary-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Se det i praksis</h2>
+          <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
+            Utforsk retningslinjene våre eller test AI-pipeline selv.
+          </p>
+          <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
+            <Link to="/guidelines" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105">
+              Retningslinjer
+            </Link>
+            <Link to="/interactive" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10">
+              Pipeline
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Placeholder image */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="mx-auto flex max-w-md items-center justify-center rounded-2xl bg-muted py-20">
+          <ImageIcon className="h-16 w-16 text-muted-foreground/30" />
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="container mx-auto px-4 pb-20">
+        <div className="section-fade-in mb-10 text-center">
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
+          <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
+            Svar på det du lurer på om ansvarlig AI-bruk.
+          </p>
+        </div>
+        <div className="mx-auto max-w-4xl">
+          <div className="grid gap-x-8 md:grid-cols-2">
+            {faqs.map((faq, i) => (
+              <Accordion key={i} type="single" collapsible>
+                <AccordionItem value={`faq-${i}`} className="border-b border-border">
+                  <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
+                    {faq.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-muted-foreground">
+                    {faq.a}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trenger du mer hjelp */}
+      <section className="container mx-auto px-4 pb-20 text-center">
+        <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
+        <p className="mt-2 text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
+        <Link to="/guidelines" className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
+          Kontakt
+        </Link>
       </section>
     </>
   );

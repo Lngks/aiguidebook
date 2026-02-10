@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, BookOpen } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const navItems = [
-  { label: "Home", path: "/" },
-  { label: "Tools", path: "/tools" },
-  { label: "Guidelines", path: "/guidelines" },
-  { label: "Privacy & Risks", path: "/privacy" },
-  { label: "Interactive Tool", path: "/interactive" },
+  { label: "Verktøy", path: "/tools" },
+  { label: "Retningslinjer", path: "/guidelines" },
+  { label: "Personvern", path: "/privacy" },
+  { label: "Interaktiv", path: "/interactive" },
 ];
 
 const Navbar = () => {
@@ -15,12 +14,11 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
+    <header className="sticky top-0 z-50 border-b border-primary-foreground/10 bg-primary">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 font-bold text-primary">
-          <BookOpen className="h-6 w-6" />
+        <Link to="/" className="flex items-center gap-2 font-bold text-primary-foreground">
           <span className="text-xl" style={{ fontFamily: "'Merriweather', serif" }}>
-            AIGuidebook
+            AI Guidebook
           </span>
         </Link>
 
@@ -30,10 +28,10 @@ const Navbar = () => {
             <li key={item.path}>
               <Link
                 to={item.path}
-                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary ${
+                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary-foreground ${
                   location.pathname === item.path
-                    ? "bg-muted text-primary"
-                    : "text-muted-foreground"
+                    ? "text-primary-foreground"
+                    : "text-primary-foreground/70"
                 }`}
               >
                 {item.label}
@@ -42,9 +40,16 @@ const Navbar = () => {
           ))}
         </ul>
 
+        <Link
+          to="/guidelines"
+          className="hidden rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105 md:inline-flex"
+        >
+          Kom i gang
+        </Link>
+
         {/* Mobile toggle */}
         <button
-          className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-muted md:hidden"
+          className="inline-flex items-center justify-center rounded-md p-2 text-primary-foreground/80 hover:text-primary-foreground md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -54,23 +59,32 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-border bg-card md:hidden">
+        <div className="border-t border-primary-foreground/10 bg-primary md:hidden">
           <ul className="container mx-auto space-y-1 px-4 py-3">
             {navItems.map((item) => (
               <li key={item.path}>
                 <Link
                   to={item.path}
                   onClick={() => setMobileOpen(false)}
-                  className={`block rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted ${
+                  className={`block rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                     location.pathname === item.path
-                      ? "bg-muted text-primary"
-                      : "text-muted-foreground"
+                      ? "text-primary-foreground"
+                      : "text-primary-foreground/70"
                   }`}
                 >
                   {item.label}
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                to="/guidelines"
+                onClick={() => setMobileOpen(false)}
+                className="mt-2 block rounded-md bg-accent px-3 py-2 text-center text-sm font-semibold text-accent-foreground"
+              >
+                Kom i gang
+              </Link>
+            </li>
           </ul>
         </div>
       )}
