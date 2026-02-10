@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, FileText, Lightbulb, Wrench, ChevronDown, Image as ImageIcon } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, FileText, Lightbulb, Wrench, Image as ImageIcon } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -11,17 +10,17 @@ import {
 const overviewCards = [
   {
     title: "Klare retningslinjer",
-    description: "Vite hva som er lov og hva som ikke er det. Klar info om dine rettigheter og plikter.",
+    description: "Vit hva som er lov og hva som ikke er det. Tydelig informasjon om dine rettigheter og plikter.",
     icon: FileText,
   },
   {
     title: "Praktiske eksempler",
-    description: "Se hvordan ansvarlig AI-bruk ser ut i virkeligheten, dag etter dag.",
+    description: "Se hvordan ansvarlig AI-bruk ser ut i praksis, dag etter dag.",
     icon: Lightbulb,
   },
   {
     title: "Verktøy som virker",
-    description: "Teknologi og tips som du kan bruke med en gang i studiene dine.",
+    description: "Teknologi og tips du kan ta i bruk med én gang i studiene dine.",
     icon: Wrench,
   },
 ];
@@ -30,35 +29,35 @@ const trustCards = [
   {
     label: "Regler",
     title: "Forstå reglene som gjelder",
-    description: "Få god oversikt av hva som er lov og hva som ikke er det innenfor dine studier.",
+    description: "Få god oversikt over hva som er lov og hva som ikke er det i studiene dine.",
     path: "/guidelines",
   },
   {
     label: "Integritet",
-    title: "Holde akademisk ærlig arbeid",
-    description: "Lær på din egen måte uten å kompromittere din integritet.",
+    title: "Hold det akademiske arbeidet ærlig",
+    description: "Lær på din egen måte uten å gå på kompromiss med integriteten din.",
     path: "/guidelines",
   },
   {
     label: "Praktisk",
-    title: "Lær hvordan AI faktisk virker",
-    description: "Praktiske verktøy og forklaringer som ligger til grunn for AI-verktøy.",
+    title: "Lær hvordan AI faktisk fungerer",
+    description: "Praktiske verktøy og forklaringer om hvordan AI-verktøy egentlig virker.",
     path: "/tools",
   },
 ];
 
 const faqs = [
-  { q: "Kan jeg bruke AI til oppgaven?", a: "Det kommer an på hva oppgaven krever. Noen ganger er AI-bruk greit, andre ganger ikke. Snakk med faglærer og se retningslinjene dine og sjekk institusjonen sine regler." },
-  { q: "Kan AI «lære» partisk?", a: "Ja. AI trener på data som kan inneholde fordommer. Det kan gjøre svar ubalanserte eller stereotype. Vær kritisk og sjekk alltid informasjonen." },
-  { q: "Hva er hallusinasjoner i AI?", a: "AI kan skrive av og gi deg informasjon som låter riktig, men som ikke finnes. Alltid verifiser fakta og kilder mot pålitelige kilder." },
-  { q: "Hvor trygt er dataene mine?", a: "Det er viktig å forstå hva som skjer med dataene dine. Ikke del personlig informasjon med AI-verktøy." },
-  { q: "Hvor gjør dataene mine?", a: "Les privatlivspolitikken. Noen AI-verktøy lagrer dataene dine for trening. Sjekk innstillingene dine." },
-  { q: "Hva hvis jeg glemmer å oppgi AI?", a: "Det regnes som brudd på akademisk integritet. Oppgi alltid AI-bruk for å unngå konsekvenser." },
-  { q: "Er det plagiat å bruke AI?", a: "Ikke nødvendigvis. Men du skal si at du bruker AI i oppgaven og oppgi det, slik at det er lov å ha, det kan føre til konsekvenser." },
-  { q: "Hvordan sjekker jeg AI-svar?", a: "Bruk kilder du stoler på. Se etter sammenheng i informasjonen. Dobbeltsjekk fakta og sitat." },
-  { q: "Hvilken AI-verktøy er billigst?", a: "De er mange. Gi GitHub Copilot og Microsoft Copilot for studier, som har gratis studentkontoer. Andre verktøy varierer." },
-  { q: "Hvordan bruker jeg AI til læring?", a: "AI kan gi deg enklere forklaringer, stille prøvespørsmål, lage quizer. Men bruk det som et verktøy, ikke som en erstatning for å lære selv." },
-  { q: "Er personvernet mitt sikker?", a: "Det avhenger av verktøyet. Bruk bare tjenester du stoler på. Sjekk personvernerklæring for å se hva som lagres." },
+  { q: "Kan jeg bruke AI til oppgaven?", a: "Det kommer an på hva oppgaven krever. Noen ganger er AI-bruk greit, andre ganger ikke. Snakk med faglærer og sjekk institusjonens retningslinjer." },
+  { q: "Kan AI «lære» partisk?", a: "Ja. AI trener på data som kan inneholde fordommer. Det kan gjøre svarene ubalanserte eller stereotype. Vær kritisk og sjekk alltid informasjonen." },
+  { q: "Hva er hallusinasjoner i AI?", a: "AI kan generere informasjon som høres riktig ut, men som er feil eller oppdiktet. Verifiser alltid fakta og kilder mot pålitelige kilder." },
+  { q: "Hvor trygge er dataene mine?", a: "Det er viktig å forstå hva som skjer med dataene dine. Ikke del personlig informasjon med AI-verktøy, og les alltid personvernvilkårene." },
+  { q: "Hvor havner dataene mine?", a: "Les personvernerklæringen til verktøyet. Noen AI-verktøy lagrer dataene dine for trening. Sjekk innstillingene dine." },
+  { q: "Hva hvis jeg glemmer å oppgi AI-bruk?", a: "Det kan regnes som brudd på akademisk integritet. Oppgi alltid AI-bruk for å unngå konsekvenser." },
+  { q: "Er det plagiat å bruke AI?", a: "Ikke nødvendigvis. Men du må oppgi at du har brukt AI i oppgaven, ellers kan det få konsekvenser." },
+  { q: "Hvordan sjekker jeg AI-svar?", a: "Bruk kilder du stoler på. Se etter sammenheng i informasjonen. Dobbeltsjekk fakta og sitater." },
+  { q: "Hvilket AI-verktøy er billigst?", a: "Det finnes mange gratisalternativer. Prøv GitHub Copilot og Microsoft Copilot, som har gratis studentkontoer. Andre verktøy varierer i pris." },
+  { q: "Hvordan bruker jeg AI til læring?", a: "AI kan gi deg enklere forklaringer, stille prøvespørsmål og lage quizer. Men bruk det som et verktøy, ikke som en erstatning for å lære selv." },
+  { q: "Er personvernet mitt ivaretatt?", a: "Det avhenger av verktøyet. Bruk bare tjenester du stoler på, og sjekk personvernerklæringen for å se hva som lagres." },
 ];
 
 const Index = () => {
@@ -73,7 +72,7 @@ const Index = () => {
                 Lær å bruke AI ansvarlig
               </h1>
               <p className="mb-8 max-w-lg text-lg opacity-80">
-                AI er her. Vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som er tillatt, hvordan du beskytter dataene dine, og hvordan du holder akademisk integritet intakt.
+                AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
               </p>
               <div className="flex gap-3">
                 <Link
@@ -86,7 +85,7 @@ const Index = () => {
                   to="/tools"
                   className="inline-flex items-center gap-2 rounded-md border border-primary-foreground/30 px-6 py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
                 >
-                  Les
+                  Les mer
                 </Link>
               </div>
             </div>
@@ -107,7 +106,7 @@ const Index = () => {
           <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
           <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Vi bryter ned kompliserte og gjør det enkelt. Ingen forvirrede fagord, bare svar du kan stole på.
+            Vi bryter ned det kompliserte og gjør det enkelt. Ingen forvirrende fagord, bare svar du kan stole på.
           </p>
         </div>
         <div className="grid gap-8 md:grid-cols-3">
@@ -129,7 +128,7 @@ const Index = () => {
             Utforsk
           </Link>
           <Link to="/tools" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Alt <ArrowRight className="h-3 w-3" />
+            Alle verktøy <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
       </section>
@@ -138,10 +137,10 @@ const Index = () => {
       <section className="border-y border-border bg-muted/50 py-20">
         <div className="container mx-auto px-4">
           <div className="section-fade-in mb-12 text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Tryggheten</p>
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Trygghet</p>
             <h2 className="text-3xl font-bold text-foreground md:text-4xl">Bruk AI med tillit</h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              Vite at du handler riktig når du bruker verktøy.
+              Vit at du handler riktig når du bruker AI-verktøy.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -158,7 +157,7 @@ const Index = () => {
                 <h3 className="mb-2 text-lg font-bold text-card-foreground">{card.title}</h3>
                 <p className="text-sm text-muted-foreground">{card.description}</p>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-primary">
-                  Les <ArrowRight className="h-3 w-3" />
+                  Les mer <ArrowRight className="h-3 w-3" />
                 </span>
               </Link>
             ))}
@@ -171,7 +170,7 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Se det i praksis</h2>
           <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
-            Utforsk retningslinjene våre eller test AI-pipeline selv.
+            Utforsk retningslinjene våre eller test AI-pipelinen selv.
           </p>
           <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
             <Link to="/guidelines" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105">

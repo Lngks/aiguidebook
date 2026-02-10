@@ -31,12 +31,12 @@ const altTools = Array.from({ length: 8 }, (_, i) => ({
 }));
 
 const faqs = [
-  { q: "Koster disse verktøyene penger?", a: "Nei, mange. GitHub Copilot og Microsoft Copilot er tilgjengelige gratis for studenter. Andre verktøy varierer." },
-  { q: "Hvordan beskytter jeg personvernet mitt?", a: "Les privatlivsvilkårene. Ikke del personlige data med AI-verktøy. Unngå å sende sensitiv informasjon." },
-  { q: "Hva er hallusinasjoner i AI?", a: "AI kan generere informasjon som låter riktig men som ikke er korrekt. Verifiser alltid mot pålitelige kilder." },
-  { q: "Når er det akseptabelt å bruke KI?", a: "Det avhenger av hva du trenger. Still AI er best for kilder, GitHub Copilot for koding, og Microsoft Copilot for skriving. Eksperimenter med ulike verktøy og se hva som fungerer best for dine studier." },
-  { q: "Hvilken KI bør jeg velge?", a: "Det avhenger av hva du trenger. Still AI er best for kilder, GitHub Copilot for koding, og Microsoft Copilot for skriving." },
-  { q: "Hvordan bruker jeg AI til læring?", a: "AI kan gi deg enklere forklaringer. Stille prøvespørsmål, lage quizer. Men bruk det som et verktøy." },
+  { q: "Koster disse verktøyene penger?", a: "Ikke nødvendigvis. GitHub Copilot og Microsoft Copilot er tilgjengelige gratis for studenter. Andre verktøy varierer i pris." },
+  { q: "Hvordan beskytter jeg personvernet mitt?", a: "Les personvernvilkårene. Ikke del personlige data med AI-verktøy, og unngå å sende sensitiv informasjon." },
+  { q: "Hva er hallusinasjoner i AI?", a: "AI kan generere informasjon som høres riktig ut, men som ikke stemmer. Verifiser alltid mot pålitelige kilder." },
+  { q: "Når er det akseptabelt å bruke AI?", a: "Det avhenger av oppgaven og institusjonens retningslinjer. Sjekk alltid hva som er tillatt før du bruker AI-verktøy i akademisk arbeid." },
+  { q: "Hvilket AI-verktøy bør jeg velge?", a: "Det avhenger av behovet ditt. Sikt.no er bra for kilder, GitHub Copilot for koding, og Microsoft Copilot for skriving." },
+  { q: "Hvordan bruker jeg AI til læring?", a: "AI kan gi deg enklere forklaringer, stille prøvespørsmål og lage quizer. Men bruk det som et støtteverktøy, ikke som en erstatning for egen læring." },
 ];
 
 const Tools = () => {
@@ -122,7 +122,7 @@ const Tools = () => {
         <div className="section-fade-in mb-10 text-center">
           <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
           <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
-            Her finner du svar på det du lurer på om KI-verktøy og ansvarlig bruk.
+            Her finner du svar på det du lurer på om AI-verktøy og ansvarlig bruk.
           </p>
         </div>
         <div className="mx-auto max-w-4xl">
@@ -146,7 +146,7 @@ const Tools = () => {
       {/* Trenger du mer hjelp */}
       <section className="container mx-auto px-4 pb-10 text-center">
         <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
-        <p className="mt-2 text-muted-foreground">Les mer på våre retningslinjer eller kontakt ditt universitet.</p>
+        <p className="mt-2 text-muted-foreground">Les våre retningslinjer eller kontakt universitetet ditt.</p>
         <Link to="/guidelines" className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
           Kontakt
         </Link>
@@ -155,7 +155,7 @@ const Tools = () => {
       {/* CTA Banner */}
       <section className="bg-primary py-16 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Bruk KI med omtanke</h2>
+          <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Bruk AI med omtanke</h2>
           <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
             Ansvarlig bruk starter med kunnskap. Les retningslinjene våre før du begynner.
           </p>
@@ -164,7 +164,7 @@ const Tools = () => {
               Les
             </Link>
             <Link to="/privacy" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10">
-              Hjelp
+              Personvern
             </Link>
           </div>
         </div>
