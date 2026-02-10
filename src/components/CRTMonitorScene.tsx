@@ -147,10 +147,10 @@ const ScreenContent = ({ inputText }: { inputText: string }) => {
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
         }}>
           <img
-            src="/favicon.svg"
+            src="/crt-logo.svg"
             alt="AI Guidebook"
             style={{
-              width: '280px', height: 'auto',
+              width: '220px', height: 'auto',
               filter: 'invert(1) brightness(1.5) sepia(1) saturate(5) hue-rotate(85deg)',
               animation: 'crt-glitch 3s infinite',
             }}
