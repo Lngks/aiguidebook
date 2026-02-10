@@ -3,15 +3,30 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Text, RoundedBox, ScrollControls, useScroll } from "@react-three/drei";
 import * as THREE from "three";
 
-/* ─── AI Pipeline stages ─── */
+/* ─── AI Pipeline stages with distinct colors ─── */
 const STAGES = [
-  { z: -20, title: "1. Input", desc: "Spørsmålet ditt mottas" },
-  { z: -50, title: "2. Tokenisering", desc: "Teksten brytes ned til tokens" },
-  { z: -80, title: "3. Embedding", desc: "Tokens konverteres til vektorer" },
-  { z: -110, title: "4. Attention", desc: "Modellen finner relevante mønstre" },
-  { z: -140, title: "5. Generering", desc: "Svaret bygges token for token" },
-  { z: -170, title: "6. Output", desc: "Du mottar det ferdige svaret" },
+  { z: -20, title: "1. Input", desc: "Spørsmålet ditt mottas", color: "#00ffff" },
+  { z: -50, title: "2. Tokenisering", desc: "Teksten brytes ned til tokens", color: "#0aff0a" },
+  { z: -80, title: "3. Embedding", desc: "Tokens konverteres til vektorer", color: "#a855f7" },
+  { z: -110, title: "4. Attention", desc: "Modellen finner relevante mønstre", color: "#f97316" },
+  { z: -140, title: "5. Generering", desc: "Svaret bygges token for token", color: "#ec4899" },
+  { z: -170, title: "6. Output", desc: "Du mottar det ferdige svaret", color: "#facc15" },
 ];
+
+/* ─── Helper: get interpolated color based on Z position ─── */
+function getStageColor(z: number): THREE.Color {
+  // Find which two stages we're between
+  for (let i = 0; i < STAGES.length - 1; i++) {
+    if (z >= STAGES[i + 1].z) {
+      const t = (z - STAGES[i].z) / (STAGES[i + 1].z - STAGES[i].z);
+      const c1 = new THREE.Color(STAGES[i].color);
+      const c2 = new THREE.Color(STAGES[i + 1].color);
+      return c1.lerp(c2, Math.max(0, Math.min(1, t)));
+    }
+  }
+  if (z > STAGES[0].z) return new THREE.Color(STAGES[0].color);
+  return new THREE.Color(STAGES[STAGES.length - 1].color);
+}
 
 /* ─── Scanline shader for CRT screen ─── */
 const ScanlineMaterial = () => {
@@ -166,38 +181,105 @@ const CRTMonitor = ({ inputText, visible }: { inputText: string; visible: boolea
   );
 };
 
-/* ─── Wireframe terrain grid (Hut8 style) ─── */
+/* ─── Wireframe terrain with dramatic heights ─── */
 const WireframeTerrain = () => {
   const meshRef = useRef<THREE.Mesh>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
   const geo = useMemo(() => {
-    const g = new THREE.PlaneGeometry(60, 250, 80, 350);
+    const g = new THREE.PlaneGeometry(80, 280, 120, 400);
     const pos = g.attributes.position;
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i);
-      const z = pos.getY(i); // Y in plane = Z in world after rotation
-      // Procedural terrain with multiple octaves
+      const z = pos.getY(i);
+      // More dramatic multi-octave terrain
+      const ridge = Math.abs(Math.sin(x * 0.2 + z * 0.05)) * 3.0;
       const h =
-        Math.sin(x * 0.3 + z * 0.1) * 1.2 +
-        Math.sin(x * 0.7 - z * 0.15) * 0.6 +
-        Math.cos(x * 0.15 + z * 0.25) * 1.5 +
-        Math.sin(x * 1.2 + z * 0.4) * 0.3;
-      pos.setZ(i, h);
+        ridge +
+        Math.sin(x * 0.15 + z * 0.08) * 2.5 +
+        Math.sin(x * 0.5 - z * 0.12) * 1.2 +
+        Math.cos(x * 0.08 + z * 0.2) * 2.0 +
+        Math.sin(x * 1.5 + z * 0.6) * 0.4 +
+        Math.sin(x * 0.05) * Math.cos(z * 0.03) * 4.0;
+      // Create valleys near the center path
+      const centerFalloff = Math.exp(-x * x * 0.01);
+      pos.setZ(i, h * (1 - centerFalloff * 0.6));
     }
     g.computeVertexNormals();
     return g;
   }, []);
 
+  // Shader for color-shifting terrain
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uCameraZ: { value: 0 },
+    uStageColors: {
+      value: STAGES.map(s => new THREE.Color(s.color))
+    },
+    uStagePositions: {
+      value: STAGES.map(s => s.z)
+    },
+  }), []);
+
   useFrame((state) => {
-    if (meshRef.current) {
-      // Subtle terrain shimmer
-      (meshRef.current.material as THREE.MeshBasicMaterial).opacity =
-        0.25 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
+    if (materialRef.current) {
+      materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+      materialRef.current.uniforms.uCameraZ.value = state.camera.position.z;
     }
   });
 
   return (
-    <mesh ref={meshRef} geometry={geo} rotation={[-Math.PI / 2, 0, 0]} position={[0, -3, -100]}>
-      <meshBasicMaterial color="#0aff0a" wireframe transparent opacity={0.25} />
+    <mesh ref={meshRef} geometry={geo} rotation={[-Math.PI / 2, 0, 0]} position={[0, -3, -110]}>
+      <shaderMaterial
+        ref={materialRef}
+        wireframe
+        transparent
+        uniforms={uniforms}
+        vertexShader={`
+          varying vec3 vWorldPos;
+          varying float vHeight;
+          void main() {
+            vec4 worldPos = modelMatrix * vec4(position, 1.0);
+            vWorldPos = worldPos.xyz;
+            vHeight = position.z; // height before rotation
+            gl_Position = projectionMatrix * viewMatrix * worldPos;
+          }
+        `}
+        fragmentShader={`
+          uniform float uTime;
+          uniform float uCameraZ;
+          uniform vec3 uStageColors[6];
+          uniform float uStagePositions[6];
+          varying vec3 vWorldPos;
+          varying float vHeight;
+          
+          void main() {
+            // Find closest stage for color
+            float worldZ = vWorldPos.z;
+            vec3 col = uStageColors[0];
+            for (int i = 0; i < 5; i++) {
+              if (worldZ < uStagePositions[i] && worldZ >= uStagePositions[i + 1]) {
+                float t = (worldZ - uStagePositions[i]) / (uStagePositions[i + 1] - uStagePositions[i]);
+                col = mix(uStageColors[i], uStageColors[i + 1], t);
+              }
+            }
+            if (worldZ < uStagePositions[5]) col = uStageColors[5];
+            
+            // Height-based brightness
+            float heightGlow = smoothstep(0.0, 4.0, vHeight) * 0.6;
+            
+            // Distance fade
+            float dist = abs(worldZ - uCameraZ);
+            float fade = smoothstep(50.0, 5.0, dist);
+            
+            // Pulse effect
+            float pulse = 0.7 + 0.3 * sin(uTime * 1.5 + worldZ * 0.05);
+            
+            float alpha = (0.15 + heightGlow) * fade * pulse;
+            gl_FragColor = vec4(col, alpha);
+          }
+        `}
+      />
     </mesh>
   );
 };
@@ -206,95 +288,299 @@ const WireframeTerrain = () => {
 const GridFloor = () => {
   return (
     <group position={[0, -3.01, -100]}>
-      <gridHelper args={[250, 120, "#0a4a0a", "#062006"]} />
+      <gridHelper args={[280, 140, "#0a4a0a", "#062006"]} />
     </group>
   );
 };
 
-/* ─── Stage marker ─── */
+/* ─── Glowing progress line connecting all stations ─── */
+const ProgressLine = () => {
+  const lineRef = useRef<THREE.Line>(null);
+  const glowRef = useRef<THREE.Mesh>(null);
+  const progressRef = useRef(0);
+
+  // Build the path curve through all stages
+  const { curve, tubeGeo } = useMemo(() => {
+    const points: THREE.Vector3[] = [];
+    // Start from origin
+    points.push(new THREE.Vector3(0, -0.5, -5));
+    STAGES.forEach((stage, i) => {
+      const side = i % 2 === 0 ? -6 : 6;
+      points.push(new THREE.Vector3(side * 0.3, -0.5, stage.z + 5));
+      points.push(new THREE.Vector3(side, -1, stage.z));
+      points.push(new THREE.Vector3(side * 0.3, -0.5, stage.z - 5));
+    });
+    points.push(new THREE.Vector3(0, 0, -185));
+
+    const c = new THREE.CatmullRomCurve3(points);
+    const tg = new THREE.TubeGeometry(c, 300, 0.06, 8, false);
+    return { curve: c, tubeGeo: tg };
+  }, []);
+
+  // Progress indicator sphere
+  useFrame((state) => {
+    const camZ = state.camera.position.z;
+    // Map camera Z to progress (0 at z=0, 1 at z=-185)
+    const t = Math.max(0, Math.min(1, camZ / -185));
+    progressRef.current = t;
+
+    if (glowRef.current) {
+      const point = curve.getPoint(t);
+      glowRef.current.position.copy(point);
+      const s = 1 + Math.sin(state.clock.elapsedTime * 3) * 0.3;
+      glowRef.current.scale.set(s, s, s);
+    }
+  });
+
+  return (
+    <group>
+      {/* Full path line (dim) */}
+      <mesh geometry={tubeGeo}>
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.08} />
+      </mesh>
+
+      {/* Glowing active path — rendered with shader for progress effect */}
+      <mesh geometry={tubeGeo}>
+        <shaderMaterial
+          transparent
+          uniforms={{
+            uTime: { value: 0 },
+            uProgress: { value: 0 },
+            uColor1: { value: new THREE.Color(STAGES[0].color) },
+            uColor2: { value: new THREE.Color(STAGES[STAGES.length - 1].color) },
+          }}
+          vertexShader={`
+            varying vec2 vUv;
+            varying vec3 vWorldPos;
+            void main() {
+              vUv = uv;
+              vec4 wp = modelMatrix * vec4(position, 1.0);
+              vWorldPos = wp.xyz;
+              gl_Position = projectionMatrix * viewMatrix * wp;
+            }
+          `}
+          fragmentShader={`
+            uniform float uTime;
+            uniform float uProgress;
+            uniform vec3 uColor1;
+            uniform vec3 uColor2;
+            varying vec2 vUv;
+            varying vec3 vWorldPos;
+            void main() {
+              float t = vUv.x;
+              // Only show up to current progress
+              float show = smoothstep(uProgress + 0.02, uProgress - 0.01, t);
+              // Color gradient
+              vec3 col = mix(uColor1, uColor2, t);
+              // Energy pulse along the line
+              float pulse = 0.6 + 0.4 * sin(t * 40.0 - uTime * 5.0);
+              float glow = show * pulse;
+              gl_FragColor = vec4(col, glow * 0.7);
+            }
+          `}
+          ref={(mat: THREE.ShaderMaterial | null) => {
+            if (!mat) return;
+            // Update uniforms each frame via the parent's useFrame
+            const update = () => {
+              mat.uniforms.uProgress.value = progressRef.current;
+              mat.uniforms.uTime.value = performance.now() * 0.001;
+              requestAnimationFrame(update);
+            };
+            update();
+          }}
+        />
+      </mesh>
+
+      {/* Progress indicator sphere */}
+      <mesh ref={glowRef}>
+        <sphereGeometry args={[0.25, 16, 16]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.9} />
+      </mesh>
+      {/* Outer glow */}
+      <mesh ref={(m) => {
+        if (m && glowRef.current) {
+          // Sync with glow ref via parent
+        }
+      }}>
+        <sphereGeometry args={[0.5, 16, 16]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.15} />
+      </mesh>
+    </group>
+  );
+};
+
+/* ─── Stage marker with unique color ─── */
 const StageMarker = ({ stage, index }: { stage: typeof STAGES[0]; index: number }) => {
   const groupRef = useRef<THREE.Group>(null);
   const glowRef = useRef<THREE.Mesh>(null);
+  const ringRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
     if (groupRef.current) {
       groupRef.current.position.y = -1 + Math.sin(state.clock.elapsedTime * 0.7 + index) * 0.3;
     }
     if (glowRef.current) {
-      const s = 1 + Math.sin(state.clock.elapsedTime * 2 + index * 0.5) * 0.15;
+      const s = 1 + Math.sin(state.clock.elapsedTime * 2 + index * 0.5) * 0.2;
       glowRef.current.scale.set(s, s, s);
+    }
+    if (ringRef.current) {
+      ringRef.current.rotation.z = state.clock.elapsedTime * 0.5 + index;
+      ringRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.3;
     }
   });
 
   const side = index % 2 === 0 ? -6 : 6;
+  const color = stage.color;
 
   return (
     <group ref={groupRef} position={[side, -1, stage.z]}>
-      {/* Glowing orb */}
+      {/* Inner glowing orb */}
       <mesh ref={glowRef}>
         <sphereGeometry args={[0.4, 16, 16]} />
-        <meshBasicMaterial color="#0aff0a" transparent opacity={0.6} />
+        <meshBasicMaterial color={color} transparent opacity={0.8} />
       </mesh>
+      {/* Outer glow */}
       <mesh>
-        <sphereGeometry args={[0.6, 16, 16]} />
-        <meshBasicMaterial color="#0aff0a" transparent opacity={0.1} />
+        <sphereGeometry args={[0.7, 16, 16]} />
+        <meshBasicMaterial color={color} transparent opacity={0.12} />
+      </mesh>
+      {/* Orbiting ring */}
+      <mesh ref={ringRef}>
+        <torusGeometry args={[0.9, 0.02, 8, 32]} />
+        <meshBasicMaterial color={color} transparent opacity={0.4} />
       </mesh>
 
       {/* Vertical beam */}
       <mesh position={[0, -1.5, 0]}>
-        <cylinderGeometry args={[0.02, 0.02, 3, 8]} />
-        <meshBasicMaterial color="#0aff0a" transparent opacity={0.2} />
+        <cylinderGeometry args={[0.03, 0.03, 3, 8]} />
+        <meshBasicMaterial color={color} transparent opacity={0.25} />
       </mesh>
 
+      {/* Point light for stage glow */}
+      <pointLight color={color} intensity={2} distance={12} />
+
       {/* Title */}
-      <Text position={[0, 1.4, 0]} fontSize={0.5} color="#0aff0a" anchorX="center" anchorY="middle">
+      <Text position={[0, 1.6, 0]} fontSize={0.55} color={color} anchorX="center" anchorY="middle" fontWeight="bold">
         {stage.title}
       </Text>
 
       {/* Description */}
-      <Text position={[0, 0.8, 0]} fontSize={0.25} color="#078a07" anchorX="center" anchorY="middle" maxWidth={6}>
+      <Text position={[0, 0.9, 0]} fontSize={0.25} color={color} anchorX="center" anchorY="middle" maxWidth={6} fillOpacity={0.7}>
         {stage.desc}
       </Text>
     </group>
   );
 };
 
-/* ─── Data stream particles flowing through tunnel ─── */
+/* ─── Dramatic data stream particles ─── */
 const DataStream = () => {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 500;
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const count = 1200;
 
-  const { positions, velocities } = useMemo(() => {
+  const { positions, velocities, sizes, randoms } = useMemo(() => {
     const pos = new Float32Array(count * 3);
     const vel = new Float32Array(count);
+    const sz = new Float32Array(count);
+    const rnd = new Float32Array(count);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 12;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 6 - 1;
+      // Distribute along path with clustering near stages
+      const spread = Math.random() > 0.7 ? 3 : 8;
+      pos[i * 3] = (Math.random() - 0.5) * spread * 2;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 8 - 1;
       pos[i * 3 + 2] = Math.random() * -200;
-      vel[i] = 0.3 + Math.random() * 0.7;
+      vel[i] = 0.2 + Math.random() * 1.2;
+      sz[i] = 0.03 + Math.random() * 0.12;
+      rnd[i] = Math.random();
     }
-    return { positions: pos, velocities: vel };
+    return { positions: pos, velocities: vel, sizes: sz, randoms: rnd };
   }, []);
 
-  useFrame(() => {
+  useFrame((state) => {
     if (pointsRef.current) {
       const pos = pointsRef.current.geometry.attributes.position as THREE.BufferAttribute;
       for (let i = 0; i < count; i++) {
         let z = pos.getZ(i);
-        z += velocities[i] * 0.15;
-        if (z > 5) z = -200 + Math.random() * 10;
+        z += velocities[i] * 0.2;
+        if (z > 5) {
+          z = -200 + Math.random() * 10;
+          pos.setX(i, (Math.random() - 0.5) * 16);
+          pos.setY(i, (Math.random() - 0.5) * 8 - 1);
+        }
+        // Swirl effect
+        const x = pos.getX(i);
+        pos.setX(i, x + Math.sin(state.clock.elapsedTime * 2 + z * 0.1 + randoms[i] * 10) * 0.005);
         pos.setZ(i, z);
       }
       pos.needsUpdate = true;
     }
+    if (materialRef.current) {
+      materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+      materialRef.current.uniforms.uCameraZ.value = state.camera.position.z;
+    }
   });
+
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uCameraZ: { value: 0 },
+  }), []);
 
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-aSize" args={[sizes, 1]} />
       </bufferGeometry>
-      <pointsMaterial color="#0aff0a" size={0.06} transparent opacity={0.5} sizeAttenuation />
+      <shaderMaterial
+        ref={materialRef}
+        transparent
+        depthWrite={false}
+        uniforms={uniforms}
+        vertexShader={`
+          attribute float aSize;
+          varying float vDist;
+          varying vec3 vPos;
+          uniform float uCameraZ;
+          void main() {
+            vPos = position;
+            vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+            vDist = abs(position.z - uCameraZ);
+            gl_PointSize = aSize * 80.0 * (1.0 / -mvPos.z);
+            gl_Position = projectionMatrix * mvPos;
+          }
+        `}
+        fragmentShader={`
+          uniform float uTime;
+          varying float vDist;
+          varying vec3 vPos;
+          void main() {
+            float d = length(gl_PointCoord - 0.5);
+            if (d > 0.5) discard;
+            float glow = 1.0 - d * 2.0;
+            glow = pow(glow, 2.0);
+            
+            // Color based on Z position (matching stage colors)
+            float t = clamp(vPos.z / -170.0, 0.0, 1.0);
+            vec3 col = mix(
+              vec3(0.0, 1.0, 1.0),
+              mix(
+                vec3(0.04, 1.0, 0.04),
+                mix(
+                  vec3(0.66, 0.33, 0.97),
+                  mix(vec3(0.92, 0.3, 0.6), vec3(0.98, 0.8, 0.08), smoothstep(0.6, 1.0, t)),
+                  smoothstep(0.3, 0.6, t)
+                ),
+                smoothstep(0.15, 0.3, t)
+              ),
+              smoothstep(0.0, 0.15, t)
+            );
+            
+            float fade = smoothstep(45.0, 3.0, vDist);
+            float flicker = 0.7 + 0.3 * sin(uTime * 3.0 + vPos.z * 0.3 + vPos.x * 2.0);
+            gl_FragColor = vec4(col, glow * fade * flicker * 0.8);
+          }
+        `}
+      />
     </points>
   );
 };
@@ -336,18 +622,16 @@ const CameraController = ({ journeyStarted }: { journeyStarted: boolean }) => {
 
   useFrame(() => {
     if (!journeyStarted) {
-      // Idle camera position for CRT view
       camera.position.set(0, 0.3, 4.5);
       camera.lookAt(0, 0, 0);
       return;
     }
 
-    const t = scroll.offset; // 0 to 1
+    const t = scroll.offset;
 
     if (t < 0.08) {
-      // Zoom into screen
       const p = t / 0.08;
-      const ease = p * p * (3 - 2 * p); // smoothstep
+      const ease = p * p * (3 - 2 * p);
       camera.position.set(
         0,
         THREE.MathUtils.lerp(0.3, 0.25, ease),
@@ -355,7 +639,6 @@ const CameraController = ({ journeyStarted }: { journeyStarted: boolean }) => {
       );
       camera.lookAt(0, 0, -5);
     } else {
-      // Fly through landscape
       const landscapeT = (t - 0.08) / 0.92;
       const z = THREE.MathUtils.lerp(0, -185, landscapeT);
       const y = -0.5 + Math.sin(landscapeT * Math.PI * 2) * 0.8;
@@ -388,19 +671,17 @@ const FullScene = ({ inputText, journeyStarted }: { inputText: string; journeySt
   return (
     <>
       <color attach="background" args={["#050a05"]} />
-      <fog attach="fog" args={["#050a05", 8, 40]} />
+      <fog attach="fog" args={["#050a05", 10, 50]} />
 
-      <ambientLight intensity={0.2} />
-      <directionalLight position={[3, 4, 5]} intensity={0.4} color="#ffffff" />
+      <ambientLight intensity={0.15} />
+      <directionalLight position={[3, 4, 5]} intensity={0.3} color="#ffffff" />
       <pointLight position={[0, 0, 3]} intensity={0.5} color="#0aff0a" distance={8} />
 
       <CameraController journeyStarted={journeyStarted} />
 
-      {/* CRT monitor — visible before journey */}
       <CRTMonitor inputText={inputText} visible={!journeyStarted} />
       {!journeyStarted && <FloatingParticles />}
 
-      {/* Floor for CRT */}
       {!journeyStarted && (
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.6, 0]}>
           <planeGeometry args={[20, 20]} />
@@ -408,36 +689,35 @@ const FullScene = ({ inputText, journeyStarted }: { inputText: string; journeySt
         </mesh>
       )}
 
-      {/* Landscape — visible during journey */}
       {journeyStarted && (
         <>
           <TunnelRings />
           <WireframeTerrain />
           <GridFloor />
           <DataStream />
+          <ProgressLine />
 
-          {/* Stage markers */}
           {STAGES.map((stage, i) => (
             <StageMarker key={i} stage={stage} index={i} />
           ))}
 
           {/* Distant glow pillars */}
           {Array.from({ length: 15 }).map((_, i) => (
-            <group key={`pillar-${i}`} position={[(i % 2 === 0 ? -1 : 1) * (12 + Math.random() * 5), -3, -i * 14 - 10]}>
+            <group key={`pillar-${i}`} position={[(i % 2 === 0 ? -1 : 1) * (14 + Math.random() * 5), -3, -i * 14 - 10]}>
               <mesh>
-                <cylinderGeometry args={[0.05, 0.05, 8 + Math.random() * 4, 8]} />
-                <meshBasicMaterial color="#0aff0a" transparent opacity={0.08} />
+                <cylinderGeometry args={[0.05, 0.05, 10 + Math.random() * 5, 8]} />
+                <meshBasicMaterial color={STAGES[i % STAGES.length].color} transparent opacity={0.1} />
               </mesh>
-              <pointLight position={[0, 4, 0]} intensity={0.3} color="#0aff0a" distance={6} />
+              <pointLight position={[0, 4, 0]} intensity={0.4} color={STAGES[i % STAGES.length].color} distance={8} />
             </group>
           ))}
 
           {/* End screen */}
           <group position={[0, 0, -185]}>
-            <Text position={[0, 1, 0]} fontSize={0.8} color="#0aff0a" anchorX="center" anchorY="middle">
+            <Text position={[0, 1, 0]} fontSize={0.8} color="#facc15" anchorX="center" anchorY="middle">
               Svaret ditt er klart
             </Text>
-            <Text position={[0, -0.2, 0]} fontSize={0.3} color="#078a07" anchorX="center" anchorY="middle" maxWidth={10}>
+            <Text position={[0, -0.2, 0]} fontSize={0.3} color="#facc15" anchorX="center" anchorY="middle" maxWidth={10} fillOpacity={0.7}>
               Du har reist gjennom hele AI-pipelinen — fra spørsmål til svar.
             </Text>
           </group>
@@ -474,7 +754,6 @@ const CRTMonitorScene = () => {
           </ScrollControls>
         </Canvas>
 
-        {/* Input overlay — only before journey */}
         {!journeyStarted && (
           <div className="absolute bottom-8 left-1/2 w-full max-w-md -translate-x-1/2 px-4">
             <div className="rounded-lg border border-[#0aff0a]/30 bg-[#0a1a0a]/90 px-4 py-3 backdrop-blur-sm">
@@ -494,7 +773,6 @@ const CRTMonitorScene = () => {
           </div>
         )}
 
-        {/* Scroll indicator during journey */}
         {journeyStarted && (
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce">
             <div className="flex flex-col items-center gap-1">
@@ -506,7 +784,6 @@ const CRTMonitorScene = () => {
           </div>
         )}
 
-        {/* CRT glow overlay */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#050a05_100%)]" />
       </div>
     </div>
