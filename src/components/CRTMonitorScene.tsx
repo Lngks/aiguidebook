@@ -140,7 +140,7 @@ const ScreenContent = ({ inputText }: { inputText: string }) => {
   return (
     <group ref={groupRef} position={[0, 0, 0.01]}>
       {/* Logo rendered via Html overlay with CRT glitch effects */}
-      <Html position={[0, 0.5, 0]} center transform distanceFactor={2.2}
+      <Html position={[0, 0.45, 0]} center transform distanceFactor={2.2}
         style={{ pointerEvents: 'none' }}
       >
         <div className="crt-logo-wrap" style={{
@@ -150,8 +150,8 @@ const ScreenContent = ({ inputText }: { inputText: string }) => {
             src="/crt-logo.svg"
             alt="AI Guidebook"
             style={{
-              width: '220px', height: 'auto',
-              filter: 'invert(1) brightness(1.5) sepia(1) saturate(5) hue-rotate(85deg)',
+              width: '200px', height: 'auto',
+              filter: 'invert(1) brightness(2) sepia(1) saturate(20) hue-rotate(85deg) drop-shadow(0 0 6px #0aff0a)',
               animation: 'crt-glitch 3s infinite',
             }}
           />
