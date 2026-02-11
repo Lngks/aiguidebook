@@ -3,12 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Lightbulb, Wrench, Image as ImageIcon } from "lucide-react";
 import LiquidEther from "@/components/LiquidEther/LiquidEther";
 import ParallaxSection from "@/components/ParallaxSection";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const overviewCards = [
   {
@@ -50,17 +45,50 @@ const trustCards = [
 ];
 
 const faqs = [
-  { q: "Kan jeg bruke AI til oppgaven?", a: "Det kommer an på hva oppgaven krever. Noen ganger er AI-bruk greit, andre ganger ikke. Snakk med faglærer og sjekk institusjonens retningslinjer." },
-  { q: "Kan AI «lære» partisk?", a: "Ja. AI trener på data som kan inneholde fordommer. Det kan gjøre svarene ubalanserte eller stereotype. Vær kritisk og sjekk alltid informasjonen." },
-  { q: "Hva er hallusinasjoner i AI?", a: "AI kan generere informasjon som høres riktig ut, men som er feil eller oppdiktet. Verifiser alltid fakta og kilder mot pålitelige kilder." },
-  { q: "Hvor trygge er dataene mine?", a: "Det er viktig å forstå hva som skjer med dataene dine. Ikke del personlig informasjon med AI-verktøy, og les alltid personvernvilkårene." },
-  { q: "Hvor havner dataene mine?", a: "Les personvernerklæringen til verktøyet. Noen AI-verktøy lagrer dataene dine for trening. Sjekk innstillingene dine." },
-  { q: "Hva hvis jeg glemmer å oppgi AI-bruk?", a: "Det kan regnes som brudd på akademisk integritet. Oppgi alltid AI-bruk for å unngå konsekvenser." },
-  { q: "Er det plagiat å bruke AI?", a: "Ikke nødvendigvis. Men du må oppgi at du har brukt AI i oppgaven, ellers kan det få konsekvenser." },
-  { q: "Hvordan sjekker jeg AI-svar?", a: "Bruk kilder du stoler på. Se etter sammenheng i informasjonen. Dobbeltsjekk fakta og sitater." },
-  { q: "Hvilket AI-verktøy er billigst?", a: "Det finnes mange gratisalternativer. Prøv GitHub Copilot og Microsoft Copilot, som har gratis studentkontoer. Andre verktøy varierer i pris." },
-  { q: "Hvordan bruker jeg AI til læring?", a: "AI kan gi deg enklere forklaringer, stille prøvespørsmål og lage quizer. Men bruk det som et verktøy, ikke som en erstatning for å lære selv." },
-  { q: "Er personvernet mitt ivaretatt?", a: "Det avhenger av verktøyet. Bruk bare tjenester du stoler på, og sjekk personvernerklæringen for å se hva som lagres." },
+  {
+    q: "Kan jeg bruke AI til oppgaven?",
+    a: "Det kommer an på hva oppgaven krever. Noen ganger er AI-bruk greit, andre ganger ikke. Snakk med faglærer og sjekk institusjonens retningslinjer.",
+  },
+  {
+    q: "Kan AI «lære» partisk?",
+    a: "Ja. AI trener på data som kan inneholde fordommer. Det kan gjøre svarene ubalanserte eller stereotype. Vær kritisk og sjekk alltid informasjonen.",
+  },
+  {
+    q: "Hva er hallusinasjoner i AI?",
+    a: "AI kan generere informasjon som høres riktig ut, men som er feil eller oppdiktet. Verifiser alltid fakta og kilder mot pålitelige kilder.",
+  },
+  {
+    q: "Hvor trygge er dataene mine?",
+    a: "Det er viktig å forstå hva som skjer med dataene dine. Ikke del personlig informasjon med AI-verktøy, og les alltid personvernvilkårene.",
+  },
+  {
+    q: "Hvor havner dataene mine?",
+    a: "Les personvernerklæringen til verktøyet. Noen AI-verktøy lagrer dataene dine for trening. Sjekk innstillingene dine.",
+  },
+  {
+    q: "Hva hvis jeg glemmer å oppgi AI-bruk?",
+    a: "Det kan regnes som brudd på akademisk integritet. Oppgi alltid AI-bruk for å unngå konsekvenser.",
+  },
+  {
+    q: "Er det plagiat å bruke AI?",
+    a: "Ikke nødvendigvis. Men du må oppgi at du har brukt AI i oppgaven, ellers kan det få konsekvenser.",
+  },
+  {
+    q: "Hvordan sjekker jeg AI-svar?",
+    a: "Bruk kilder du stoler på. Se etter sammenheng i informasjonen. Dobbeltsjekk fakta og sitater.",
+  },
+  {
+    q: "Hvilket AI-verktøy er billigst?",
+    a: "Det finnes mange gratisalternativer. Prøv GitHub Copilot og Microsoft Copilot, som har gratis studentkontoer. Andre verktøy varierer i pris.",
+  },
+  {
+    q: "Hvordan bruker jeg AI til læring?",
+    a: "AI kan gi deg enklere forklaringer, stille prøvespørsmål og lage quizer. Men bruk det som et verktøy, ikke som en erstatning for å lære selv.",
+  },
+  {
+    q: "Er personvernet mitt ivaretatt?",
+    a: "Det avhenger av verktøyet. Bruk bare tjenester du stoler på, og sjekk personvernerklæringen for å se hva som lagres.",
+  },
 ];
 
 const Index = () => {
@@ -99,18 +127,21 @@ const Index = () => {
               resolution={0.5}
             />
           </div>
-          <div className="absolute inset-0 z-[1] border-white/20 bg-white/10 backdrop-blur-xl" />
           <div
             className="container relative z-10 mx-auto px-4 transition-opacity duration-100"
             style={{ opacity: heroContentOpacity }}
           >
             <div className="grid items-center gap-10 md:grid-cols-2">
               <div>
-                <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
+                <h1
+                  className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl"
+                  style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
+                >
                   Lær å bruke AI ansvarlig
                 </h1>
-                <p className="mb-8 max-w-lg text-lg" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
-                  AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
+                <p className="mb-8 max-w-lg text-lg" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>
+                  AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som
+                  er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
                 </p>
                 <div className="flex gap-3">
                   <Link
@@ -129,7 +160,10 @@ const Index = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="flex aspect-square items-center justify-center rounded-xl bg-primary-foreground/10">
+                  <div
+                    key={i}
+                    className="flex aspect-square items-center justify-center rounded-xl bg-primary-foreground/10"
+                  >
                     <ImageIcon className="h-10 w-10 text-primary-foreground/30" />
                   </div>
                 ))}
@@ -144,7 +178,9 @@ const Index = () => {
         <section className="bg-background px-4 py-20 rounded-b-none">
           <div className="container mx-auto">
             <div className="mb-12 text-center">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                Hovedpoengene
+              </p>
               <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
               <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
                 Vi bryter ned det kompliserte og gjør det enkelt. Ingen forvirrende fagord, bare svar du kan stole på.
@@ -162,10 +198,16 @@ const Index = () => {
               ))}
             </div>
             <div className="mt-10 flex justify-center gap-3">
-              <Link to="/guidelines" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105">
+              <Link
+                to="/guidelines"
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
+              >
                 Utforsk
               </Link>
-              <Link to="/tools" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+              <Link
+                to="/tools"
+                className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
                 Alle verktøy <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
@@ -180,9 +222,19 @@ const Index = () => {
           <div className="absolute inset-0 -top-64 -bottom-64 md:-top-48 md:-bottom-48 lg:-top-40 lg:-bottom-40 bg-white/60 backdrop-blur-xl" />
           <div className="container relative z-10 mx-auto px-4">
             <div className="mb-12 text-center">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/70">Trygghet</p>
-              <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>Bruk AI med tillit</h2>
-              <p className="mx-auto mt-3 max-w-xl text-primary-foreground/70" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.2)' }}>
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/70">
+                Trygghet
+              </p>
+              <h2
+                className="text-3xl font-bold text-primary-foreground md:text-4xl"
+                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.3)" }}
+              >
+                Bruk AI med tillit
+              </h2>
+              <p
+                className="mx-auto mt-3 max-w-xl text-primary-foreground/70"
+                style={{ textShadow: "0 1px 6px rgba(0,0,0,0.2)" }}
+              >
                 Vit at du handler riktig når du bruker AI-verktøy.
               </p>
             </div>
@@ -196,7 +248,9 @@ const Index = () => {
                   <div className="flex aspect-video items-center justify-center rounded-lg bg-white/10 mb-4">
                     <ImageIcon className="h-10 w-10 text-primary-foreground/40" />
                   </div>
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{card.label}</p>
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    {card.label}
+                  </p>
                   <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
                   <p className="text-sm text-muted-foreground">{card.description}</p>
                   <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors group-hover:text-primary/80">
@@ -217,10 +271,16 @@ const Index = () => {
             Utforsk retningslinjene våre eller test AI-pipelinen selv.
           </p>
           <div className="mt-6 flex justify-center gap-3">
-            <Link to="/guidelines" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105">
+            <Link
+              to="/guidelines"
+              className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105"
+            >
               Retningslinjer
             </Link>
-            <Link to="/interactive" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10">
+            <Link
+              to="/interactive"
+              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+            >
               Pipeline
             </Link>
           </div>
@@ -241,9 +301,7 @@ const Index = () => {
         <div className="container mx-auto px-4 pb-20">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
-            <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
-              Svar på det du lurer på om ansvarlig AI-bruk.
-            </p>
+            <p className="mx-auto mt-3 max-w-lg text-muted-foreground">Svar på det du lurer på om ansvarlig AI-bruk.</p>
           </div>
           <div className="mx-auto max-w-4xl">
             <div className="grid gap-x-8 md:grid-cols-2">
@@ -253,9 +311,7 @@ const Index = () => {
                     <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
                       {faq.q}
                     </AccordionTrigger>
-                    <AccordionContent className="text-sm text-muted-foreground">
-                      {faq.a}
-                    </AccordionContent>
+                    <AccordionContent className="text-sm text-muted-foreground">{faq.a}</AccordionContent>
                   </AccordionItem>
                 </Accordion>
               ))}
@@ -269,7 +325,10 @@ const Index = () => {
         <div className="container mx-auto px-4 pb-20 text-center">
           <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
           <p className="mt-2 text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
-          <Link to="/guidelines" className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
+          <Link
+            to="/guidelines"
+            className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+          >
             Kontakt
           </Link>
         </div>
