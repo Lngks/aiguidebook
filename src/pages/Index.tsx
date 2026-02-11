@@ -142,7 +142,7 @@ const Index = () => {
 
       {/* Tre ting du må vite — scrolls OVER hero, no gap */}
       <ParallaxSection speed={0.05} className="relative z-10 -mt-0">
-        <section className="bg-background px-4 py-20">
+        <section className="bg-background px-4 py-20 rounded-b-none">
           <div className="container mx-auto">
             <div className="mb-12 text-center">
               <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
@@ -190,15 +190,15 @@ const Index = () => {
                 <Link
                   key={card.title}
                   to={card.path}
-                  className="group rounded-xl border border-white/20 bg-white/15 p-6 shadow-sm backdrop-blur-md transition-all hover:-translate-y-1 hover:shadow-md"
+                  className="group rounded-xl border border-white/20 bg-white/70 p-6 shadow-sm backdrop-blur-md transition-all hover:-translate-y-1 hover:shadow-md"
                 >
                   <div className="flex aspect-video items-center justify-center rounded-lg bg-white/10 mb-4">
                     <ImageIcon className="h-10 w-10 text-primary-foreground/40" />
                   </div>
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground/60">{card.label}</p>
-                  <h3 className="mb-2 text-lg font-bold text-primary-foreground">{card.title}</h3>
-                  <p className="text-sm text-primary-foreground/70">{card.description}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-primary-foreground">
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{card.label}</p>
+                  <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
+                  <p className="text-sm text-muted-foreground">{card.description}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors group-hover:text-primary/80">
                     Les mer <ArrowRight className="h-3 w-3" />
                   </span>
                 </Link>
