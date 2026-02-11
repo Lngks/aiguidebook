@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap");
 
 @layer base {
   :root {
-    --background: 210 33% 98%;
+    --background: 175 80% 98%;
     --foreground: 220 40% 13%;
 
     --card: 0 0% 100%;
@@ -101,11 +101,16 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Source Sans 3', system-ui, sans-serif;
+    font-family: "Source Sans 3", system-ui, sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Merriweather', Georgia, serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Merriweather", Georgia, serif;
   }
 }
 
@@ -140,7 +145,9 @@
 
 /* CRT glitch animation for logo */
 @keyframes crt-glitch {
-  0%, 90%, 100% {
+  0%,
+  90%,
+  100% {
     transform: translate(0);
     filter: brightness(1.2) contrast(1.1);
   }
