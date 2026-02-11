@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Lightbulb, Wrench, Image as ImageIcon } from "lucide-react";
 import ColorBends from "@/components/ColorBends/ColorBends";
+import ParallaxSection from "@/components/ParallaxSection";
 import {
   Accordion,
   AccordionContent,
@@ -65,182 +66,193 @@ const Index = () => {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground md:py-28">
-        <div className="absolute inset-0">
-          <ColorBends
-            rotation={45}
-            speed={0.2}
-            colors={["#5227FF", "#FF9FFC", "#7cff67"]}
-            transparent={false}
-            autoRotate={0.2}
-            scale={1}
-            frequency={1}
-            warpStrength={1}
-            mouseInfluence={1}
-            parallax={0.5}
-            noise={0.1}
-          />
-        </div>
-        <div className="absolute inset-0 z-[1] border-white/20 bg-white/10 backdrop-blur-xl" />
-        <div className="container relative z-10 mx-auto px-4">
-          <div className="grid items-center gap-10 md:grid-cols-2">
-            <div className="section-fade-in">
-              <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
-                Lær å bruke AI ansvarlig
-              </h1>
-              <p className="mb-8 max-w-lg text-lg" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
-                AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
-              </p>
-              <div className="flex gap-3">
-                <Link
-                  to="/guidelines"
-                  className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-semibold text-accent-foreground transition-transform hover:scale-105"
-                >
-                  Start
-                </Link>
-                <Link
-                  to="/tools"
-                  className="inline-flex items-center gap-2 rounded-md border border-primary-foreground/30 px-6 py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
-                >
-                  Les mer
-                </Link>
+      <ParallaxSection speed={0.1}>
+        <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground md:py-28">
+          <div className="absolute inset-0">
+            <ColorBends
+              rotation={45}
+              speed={0.2}
+              colors={["#5227FF", "#FF9FFC", "#7cff67"]}
+              transparent={false}
+              autoRotate={0.2}
+              scale={1}
+              frequency={1}
+              warpStrength={1}
+              mouseInfluence={1}
+              parallax={0.5}
+              noise={0.1}
+            />
+          </div>
+          <div className="absolute inset-0 z-[1] border-white/20 bg-white/10 backdrop-blur-xl" />
+          <div className="container relative z-10 mx-auto px-4">
+            <div className="grid items-center gap-10 md:grid-cols-2">
+              <div>
+                <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
+                  Lær å bruke AI ansvarlig
+                </h1>
+                <p className="mb-8 max-w-lg text-lg" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
+                  AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
+                </p>
+                <div className="flex gap-3">
+                  <Link
+                    to="/guidelines"
+                    className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-semibold text-accent-foreground transition-transform hover:scale-105"
+                  >
+                    Start
+                  </Link>
+                  <Link
+                    to="/tools"
+                    className="inline-flex items-center gap-2 rounded-md border border-primary-foreground/30 px-6 py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+                  >
+                    Les mer
+                  </Link>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="flex aspect-square items-center justify-center rounded-xl bg-primary-foreground/10">
+                    <ImageIcon className="h-10 w-10 text-primary-foreground/30" />
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="section-fade-in-delay-1 grid grid-cols-2 gap-4">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="flex aspect-square items-center justify-center rounded-xl bg-primary-foreground/10">
-                  <ImageIcon className="h-10 w-10 text-primary-foreground/30" />
+          </div>
+        </section>
+      </ParallaxSection>
+
+      {/* Tre ting du må vite */}
+      <ParallaxSection speed={0.15}>
+        <section className="container mx-auto px-4 py-20">
+          <div className="mb-12 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
+            <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
+            <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+              Vi bryter ned det kompliserte og gjør det enkelt. Ingen forvirrende fagord, bare svar du kan stole på.
+            </p>
+          </div>
+          <div className="grid gap-8 md:grid-cols-3">
+            {overviewCards.map((card) => (
+              <div key={card.title} className="text-center">
+                <div className="mx-auto mb-4 inline-flex rounded-lg p-3 text-muted-foreground">
+                  <card.icon className="h-8 w-8" />
                 </div>
+                <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
+                <p className="text-sm text-muted-foreground">{card.description}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 flex justify-center gap-3">
+            <Link to="/guidelines" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105">
+              Utforsk
+            </Link>
+            <Link to="/tools" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+              Alle verktøy <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        </section>
+      </ParallaxSection>
+
+      {/* Bruk AI med tillit */}
+      <ParallaxSection speed={0.2}>
+        <section className="border-y border-border bg-muted/50 py-20">
+          <div className="container mx-auto px-4">
+            <div className="mb-12 text-center">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Trygghet</p>
+              <h2 className="text-3xl font-bold text-foreground md:text-4xl">Bruk AI med tillit</h2>
+              <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+                Vit at du handler riktig når du bruker AI-verktøy.
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {trustCards.map((card) => (
+                <Link
+                  key={card.title}
+                  to={card.path}
+                  className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
+                >
+                  <div className="flex aspect-video items-center justify-center rounded-lg bg-muted mb-4">
+                    <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
+                  </div>
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{card.label}</p>
+                  <h3 className="mb-2 text-lg font-bold text-card-foreground">{card.title}</h3>
+                  <p className="text-sm text-muted-foreground">{card.description}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-primary">
+                    Les mer <ArrowRight className="h-3 w-3" />
+                  </span>
+                </Link>
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Tre ting du må vite */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="section-fade-in mb-12 text-center">
-          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Vi bryter ned det kompliserte og gjør det enkelt. Ingen forvirrende fagord, bare svar du kan stole på.
-          </p>
-        </div>
-        <div className="grid gap-8 md:grid-cols-3">
-          {overviewCards.map((card, i) => (
-            <div
-              key={card.title}
-              className={`section-fade-in-delay-${i + 1} text-center`}
-            >
-              <div className="mx-auto mb-4 inline-flex rounded-lg p-3 text-muted-foreground">
-                <card.icon className="h-8 w-8" />
-              </div>
-              <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
-              <p className="text-sm text-muted-foreground">{card.description}</p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-10 flex justify-center gap-3">
-          <Link to="/guidelines" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105">
-            Utforsk
-          </Link>
-          <Link to="/tools" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Alle verktøy <ArrowRight className="h-3 w-3" />
-          </Link>
-        </div>
-      </section>
-
-      {/* Bruk AI med tillit */}
-      <section className="border-y border-border bg-muted/50 py-20">
-        <div className="container mx-auto px-4">
-          <div className="section-fade-in mb-12 text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Trygghet</p>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">Bruk AI med tillit</h2>
-            <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              Vit at du handler riktig når du bruker AI-verktøy.
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {trustCards.map((card, i) => (
-              <Link
-                key={card.title}
-                to={card.path}
-                className={`section-fade-in-delay-${i + 1} group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md`}
-              >
-                <div className="flex aspect-video items-center justify-center rounded-lg bg-muted mb-4">
-                  <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
-                </div>
-                <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{card.label}</p>
-                <h3 className="mb-2 text-lg font-bold text-card-foreground">{card.title}</h3>
-                <p className="text-sm text-muted-foreground">{card.description}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-primary">
-                  Les mer <ArrowRight className="h-3 w-3" />
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </ParallaxSection>
 
       {/* Se det i praksis — CTA banner */}
-      <section className="bg-primary py-16 text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Se det i praksis</h2>
-          <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
-            Utforsk retningslinjene våre eller test AI-pipelinen selv.
-          </p>
-          <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-            <Link to="/guidelines" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105">
-              Retningslinjer
-            </Link>
-            <Link to="/interactive" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10">
-              Pipeline
-            </Link>
+      <ParallaxSection speed={0.1}>
+        <section className="bg-primary py-16 text-primary-foreground">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
+            <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
+              Utforsk retningslinjene våre eller test AI-pipelinen selv.
+            </p>
+            <div className="mt-6 flex justify-center gap-3">
+              <Link to="/guidelines" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105">
+                Retningslinjer
+              </Link>
+              <Link to="/interactive" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10">
+                Pipeline
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ParallaxSection>
 
       {/* Placeholder image */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="mx-auto flex max-w-md items-center justify-center rounded-2xl bg-muted py-20">
-          <ImageIcon className="h-16 w-16 text-muted-foreground/30" />
-        </div>
-      </section>
+      <ParallaxSection speed={0.25}>
+        <section className="container mx-auto px-4 py-16">
+          <div className="mx-auto flex max-w-md items-center justify-center rounded-2xl bg-muted py-20">
+            <ImageIcon className="h-16 w-16 text-muted-foreground/30" />
+          </div>
+        </section>
+      </ParallaxSection>
 
       {/* FAQ */}
-      <section className="container mx-auto px-4 pb-20">
-        <div className="section-fade-in mb-10 text-center">
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
-          <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
-            Svar på det du lurer på om ansvarlig AI-bruk.
-          </p>
-        </div>
-        <div className="mx-auto max-w-4xl">
-          <div className="grid gap-x-8 md:grid-cols-2">
-            {faqs.map((faq, i) => (
-              <Accordion key={i} type="single" collapsible>
-                <AccordionItem value={`faq-${i}`} className="border-b border-border">
-                  <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
-                    {faq.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            ))}
+      <ParallaxSection speed={0.15}>
+        <section className="container mx-auto px-4 pb-20">
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
+            <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
+              Svar på det du lurer på om ansvarlig AI-bruk.
+            </p>
           </div>
-        </div>
-      </section>
+          <div className="mx-auto max-w-4xl">
+            <div className="grid gap-x-8 md:grid-cols-2">
+              {faqs.map((faq, i) => (
+                <Accordion key={i} type="single" collapsible>
+                  <AccordionItem value={`faq-${i}`} className="border-b border-border">
+                    <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
+                      {faq.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm text-muted-foreground">
+                      {faq.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              ))}
+            </div>
+          </div>
+        </section>
+      </ParallaxSection>
 
       {/* Trenger du mer hjelp */}
-      <section className="container mx-auto px-4 pb-20 text-center">
-        <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
-        <p className="mt-2 text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
-        <Link to="/guidelines" className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
-          Kontakt
-        </Link>
-      </section>
+      <ParallaxSection speed={0.1}>
+        <section className="container mx-auto px-4 pb-20 text-center">
+          <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
+          <p className="mt-2 text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
+          <Link to="/guidelines" className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
+            Kontakt
+          </Link>
+        </section>
+      </ParallaxSection>
     </>
   );
 };
