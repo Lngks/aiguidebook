@@ -1,30 +1,44 @@
 
 
-## Glassmorphism Overlay for Hero Section
+## Parallax Scroll System Between Sections
+
+### Overview
+Add a parallax scrolling effect throughout the Index page where sections animate and move at different speeds as the user scrolls, creating depth and visual interest between each section.
+
+### Approach
+Create a reusable `useParallax` hook and a `ParallaxSection` wrapper component. Each section on the page will be wrapped in this component, which uses `IntersectionObserver` for triggering entrance animations and a scroll event listener for the parallax translate effect.
 
 ### What will change
-Instead of a plain dark overlay over the ColorBends background, a frosted-glass (glassmorphism) panel will be placed behind the text content. This gives a modern, translucent look while ensuring text remains readable.
 
-### Visual Effect
-- A frosted glass card behind the hero text with blur, semi-transparent white/dark background, and a subtle border
-- Text shadows for extra legibility
-- The animated gradient remains visible through the glass
+**1. New file: `src/hooks/use-parallax.ts`**
+- A custom React hook that tracks the scroll position relative to a given element ref
+- Returns a `y` offset value that can be applied as a CSS transform
+- Uses `requestAnimationFrame` for smooth performance
+- Accepts a `speed` parameter (e.g. 0.1 = subtle, 0.5 = strong parallax)
 
-### Technical Details
+**2. New file: `src/components/ParallaxSection.tsx`**
+- A wrapper component that combines:
+  - **Scroll-triggered fade-in**: Uses `IntersectionObserver` to detect when the section enters the viewport and applies a fade+slide-up animation
+  - **Parallax offset**: Uses the `useParallax` hook to translate the section content at a different rate than the scroll, creating the depth illusion
+- Props: `speed` (parallax intensity), `className`, `children`, `as` (HTML tag)
 
-**File: `src/pages/Index.tsx`**
+**3. Updated file: `src/pages/Index.tsx`**
+- Import and wrap each section with `ParallaxSection`, assigning different speeds to create layered depth:
+  - Hero: speed 0.1 (slow, background feel)
+  - "Tre ting du ma vite": speed 0.15
+  - "Bruk AI med tillit": speed 0.2
+  - CTA banner: speed 0.1
+  - Placeholder image: speed 0.25
+  - FAQ: speed 0.15
+  - "Trenger du mer hjelp": speed 0.1
+- Replace existing `section-fade-in` CSS classes with the component's built-in scroll-triggered animation (so animations fire when sections scroll into view, not on page load)
 
-1. **Add a glassmorphism container** around the text content (wrapping the `h1`, `p`, and buttons) with these Tailwind classes:
-   - `bg-white/10` -- semi-transparent white background
-   - `backdrop-blur-xl` -- strong blur for the frosted effect
-   - `border border-white/20` -- subtle glass edge
-   - `rounded-2xl` -- rounded corners
-   - `p-8 md:p-10` -- comfortable padding
-   - `shadow-lg` -- depth
+**4. Updated file: `src/index.css`**
+- Add a utility class for the parallax entrance animation (opacity + translateY transition driven by a CSS custom property or class toggle)
 
-2. **Add text shadows** to the `h1` and `p` for extra contrast reinforcement via inline `textShadow` styles.
-
-3. **Remove `opacity-80`** from the paragraph to keep text at full opacity.
-
-No new files or dependencies needed -- just Tailwind's built-in `backdrop-blur` utilities.
+### Technical Notes
+- No external dependencies needed -- pure React hooks + IntersectionObserver + transform
+- `will-change: transform` applied for GPU acceleration
+- Parallax is disabled on mobile (`prefers-reduced-motion` media query respected) for accessibility and performance
+- The existing `section-fade-in` keyframe animations are preserved but the parallax sections will use the new scroll-triggered approach instead
 
