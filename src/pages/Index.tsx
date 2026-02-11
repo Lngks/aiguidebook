@@ -70,10 +70,9 @@ const Index = () => {
   useEffect(() => {
     const onScroll = () => {
       if (!heroRef.current) return;
-      const rect = heroRef.current.getBoundingClientRect();
-      const sectionHeight = rect.height;
-      // Fade out content as hero scrolls away — fully hidden by 60% scrolled
-      const scrolled = -rect.top;
+      const sectionHeight = heroRef.current.offsetHeight;
+      // Use scrollY since sticky element's rect.top is always 0
+      const scrolled = window.scrollY;
       const opacity = Math.max(0, 1 - scrolled / (sectionHeight * 0.6));
       setHeroContentOpacity(opacity);
     };
@@ -175,28 +174,10 @@ const Index = () => {
         </section>
       </ParallaxSection>
 
-      {/* Bruk AI med tillit — glassmorphism over ColorBends background */}
+      {/* Bruk AI med tillit — transparent, hero background shows through */}
       <ParallaxSection speed={0.15} className="relative z-[5]">
-        <section className="relative overflow-hidden py-20">
-          {/* ColorBends background */}
-          <div className="absolute inset-0">
-            <ColorBends
-              rotation={45}
-              speed={0.2}
-              colors={["#5227FF", "#FF9FFC", "#7cff67"]}
-              transparent={false}
-              autoRotate={0.2}
-              scale={1}
-              frequency={1}
-              warpStrength={1}
-              mouseInfluence={1}
-              parallax={0.5}
-              noise={0.1}
-            />
-          </div>
-          {/* Glassmorphism overlay */}
-          <div className="absolute inset-0 z-[1] bg-white/10 backdrop-blur-xl" />
-          <div className="container relative z-10 mx-auto px-4">
+        <section className="relative py-20">
+          <div className="container relative mx-auto px-4">
             <div className="mb-12 text-center">
               <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/70">Trygghet</p>
               <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>Bruk AI med tillit</h2>
