@@ -81,9 +81,10 @@ const Index = () => {
             noise={0.1}
           />
         </div>
+        <div className="absolute inset-0 z-[1] border-white/20 bg-white/10 backdrop-blur-xl" />
         <div className="container relative z-10 mx-auto px-4">
           <div className="grid items-center gap-10 md:grid-cols-2">
-            <div className="section-fade-in rounded-2xl border border-white/20 bg-white/10 p-8 shadow-lg backdrop-blur-xl md:p-10">
+            <div className="section-fade-in">
               <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
                 Lær å bruke AI ansvarlig
               </h1>
