@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Lightbulb, Wrench, Image as ImageIcon } from "lucide-react";
 import ColorBends from "@/components/ColorBends/ColorBends";
@@ -63,10 +64,27 @@ const faqs = [
 ];
 
 const Index = () => {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const [heroContentOpacity, setHeroContentOpacity] = useState(1);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (!heroRef.current) return;
+      const rect = heroRef.current.getBoundingClientRect();
+      const sectionHeight = rect.height;
+      // Fade out content as hero scrolls away — fully hidden by 60% scrolled
+      const scrolled = -rect.top;
+      const opacity = Math.max(0, 1 - scrolled / (sectionHeight * 0.6));
+      setHeroContentOpacity(opacity);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
       {/* Hero — sticky, stays behind */}
-      <div className="sticky top-0 z-0">
+      <div ref={heroRef} className="sticky top-0 z-0">
         <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground md:py-28">
           <div className="absolute inset-0">
             <ColorBends
@@ -84,7 +102,10 @@ const Index = () => {
             />
           </div>
           <div className="absolute inset-0 z-[1] border-white/20 bg-white/10 backdrop-blur-xl" />
-          <div className="container relative z-10 mx-auto px-4">
+          <div
+            className="container relative z-10 mx-auto px-4 transition-opacity duration-100"
+            style={{ opacity: heroContentOpacity }}
+          >
             <div className="grid items-center gap-10 md:grid-cols-2">
               <div>
                 <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
@@ -120,46 +141,66 @@ const Index = () => {
         </section>
       </div>
 
-      {/* Tre ting du må vite — scrolls OVER hero */}
-      <ParallaxSection speed={0.05} className="relative z-10">
-        <section className="bg-background container mx-auto px-4 py-20">
-          <div className="mb-12 text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
-            <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              Vi bryter ned det kompliserte og gjør det enkelt. Ingen forvirrende fagord, bare svar du kan stole på.
-            </p>
-          </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            {overviewCards.map((card) => (
-              <div key={card.title} className="text-center">
-                <div className="mx-auto mb-4 inline-flex rounded-lg p-3 text-muted-foreground">
-                  <card.icon className="h-8 w-8" />
+      {/* Tre ting du må vite — scrolls OVER hero, no gap */}
+      <ParallaxSection speed={0.05} className="relative z-10 -mt-0">
+        <section className="bg-background px-4 py-20">
+          <div className="container mx-auto">
+            <div className="mb-12 text-center">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
+              <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
+              <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+                Vi bryter ned det kompliserte og gjør det enkelt. Ingen forvirrende fagord, bare svar du kan stole på.
+              </p>
+            </div>
+            <div className="grid gap-8 md:grid-cols-3">
+              {overviewCards.map((card) => (
+                <div key={card.title} className="text-center">
+                  <div className="mx-auto mb-4 inline-flex rounded-lg p-3 text-muted-foreground">
+                    <card.icon className="h-8 w-8" />
+                  </div>
+                  <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
+                  <p className="text-sm text-muted-foreground">{card.description}</p>
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
-                <p className="text-sm text-muted-foreground">{card.description}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-10 flex justify-center gap-3">
-            <Link to="/guidelines" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105">
-              Utforsk
-            </Link>
-            <Link to="/tools" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-              Alle verktøy <ArrowRight className="h-3 w-3" />
-            </Link>
+              ))}
+            </div>
+            <div className="mt-10 flex justify-center gap-3">
+              <Link to="/guidelines" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105">
+                Utforsk
+              </Link>
+              <Link to="/tools" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+                Alle verktøy <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
           </div>
         </section>
       </ParallaxSection>
 
-      {/* Bruk AI med tillit — scrolls underneath Hovedpoengene */}
+      {/* Bruk AI med tillit — glassmorphism over ColorBends background */}
       <ParallaxSection speed={0.15} className="relative z-[5]">
-        <section className="border-y border-border bg-muted/50 py-20">
-          <div className="container mx-auto px-4">
+        <section className="relative overflow-hidden py-20">
+          {/* ColorBends background */}
+          <div className="absolute inset-0">
+            <ColorBends
+              rotation={45}
+              speed={0.2}
+              colors={["#5227FF", "#FF9FFC", "#7cff67"]}
+              transparent={false}
+              autoRotate={0.2}
+              scale={1}
+              frequency={1}
+              warpStrength={1}
+              mouseInfluence={1}
+              parallax={0.5}
+              noise={0.1}
+            />
+          </div>
+          {/* Glassmorphism overlay */}
+          <div className="absolute inset-0 z-[1] bg-white/10 backdrop-blur-xl" />
+          <div className="container relative z-10 mx-auto px-4">
             <div className="mb-12 text-center">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Trygghet</p>
-              <h2 className="text-3xl font-bold text-foreground md:text-4xl">Bruk AI med tillit</h2>
-              <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/70">Trygghet</p>
+              <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>Bruk AI med tillit</h2>
+              <p className="mx-auto mt-3 max-w-xl text-primary-foreground/70" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.2)' }}>
                 Vit at du handler riktig når du bruker AI-verktøy.
               </p>
             </div>
@@ -168,15 +209,15 @@ const Index = () => {
                 <Link
                   key={card.title}
                   to={card.path}
-                  className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
+                  className="group rounded-xl border border-white/20 bg-white/15 p-6 shadow-sm backdrop-blur-md transition-all hover:-translate-y-1 hover:shadow-md"
                 >
-                  <div className="flex aspect-video items-center justify-center rounded-lg bg-muted mb-4">
-                    <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
+                  <div className="flex aspect-video items-center justify-center rounded-lg bg-white/10 mb-4">
+                    <ImageIcon className="h-10 w-10 text-primary-foreground/40" />
                   </div>
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{card.label}</p>
-                  <h3 className="mb-2 text-lg font-bold text-card-foreground">{card.title}</h3>
-                  <p className="text-sm text-muted-foreground">{card.description}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-primary">
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground/60">{card.label}</p>
+                  <h3 className="mb-2 text-lg font-bold text-primary-foreground">{card.title}</h3>
+                  <p className="text-sm text-primary-foreground/70">{card.description}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-primary-foreground">
                     Les mer <ArrowRight className="h-3 w-3" />
                   </span>
                 </Link>
@@ -186,7 +227,7 @@ const Index = () => {
         </section>
       </ParallaxSection>
 
-      {/* Se det i praksis — static */}
+      {/* Se det i praksis — static, no gap */}
       <section className="relative z-10 bg-primary py-16 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
