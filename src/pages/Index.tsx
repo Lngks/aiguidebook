@@ -176,7 +176,7 @@ const Index = () => {
 
       {/* Bruk AI med tillit — transparent, hero background shows through */}
       <ParallaxSection speed={0.15} className="relative z-[5]">
-        <section className="relative py-20 -my-20 pt-40 pb-40 bg-white/60 backdrop-blur-xl">
+        <section className="relative -my-32 pt-52 pb-52 bg-white/60 backdrop-blur-xl">
           <div className="container relative mx-auto px-4">
             <div className="mb-12 text-center">
               <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/70">Trygghet</p>
