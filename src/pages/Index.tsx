@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Lightbulb, Wrench, Image as ImageIcon } from "lucide-react";
+import ColorBends from "@/components/ColorBends/ColorBends";
 import {
   Accordion,
   AccordionContent,
@@ -65,7 +66,22 @@ const Index = () => {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground md:py-28">
-        <div className="container relative mx-auto px-4">
+        <div className="absolute inset-0">
+          <ColorBends
+            rotation={45}
+            speed={0.2}
+            colors={["#5227FF", "#FF9FFC", "#7cff67"]}
+            transparent={false}
+            autoRotate={0.2}
+            scale={1}
+            frequency={1}
+            warpStrength={1}
+            mouseInfluence={1}
+            parallax={0.5}
+            noise={0.1}
+          />
+        </div>
+        <div className="container relative z-10 mx-auto px-4">
           <div className="grid items-center gap-10 md:grid-cols-2">
             <div className="section-fade-in">
               <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
