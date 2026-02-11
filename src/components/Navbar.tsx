@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
-import ColorBends from "./ColorBends/ColorBends";
 
 const navItems = [
   { label: "Verktøy", path: "/tools" },
@@ -16,25 +15,8 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-primary-foreground/10 relative overflow-hidden">
-      {/* ColorBends background */}
-      <div className="absolute inset-0 z-0">
-        <ColorBends
-          rotation={45}
-          speed={0.2}
-          colors={["#5227FF", "#FF9FFC", "#7cff67"]}
-          transparent={false}
-          autoRotate={0.2}
-          scale={1}
-          frequency={1}
-          warpStrength={1}
-          mouseInfluence={1}
-          parallax={0.5}
-          noise={0.1}
-        />
-      </div>
-
-      <nav className="container mx-auto flex h-16 items-center justify-between px-4 relative z-10">
+    <header className="sticky top-0 z-50 border-b border-primary-foreground/10 bg-primary">
+      <nav className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link to="/" className="flex items-center">
           <Logo variant="light" className="h-5" />
         </Link>
@@ -76,7 +58,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-primary-foreground/10 md:hidden relative z-10">
+        <div className="border-t border-primary-foreground/10 bg-primary md:hidden">
           <ul className="container mx-auto space-y-1 px-4 py-3">
             {navItems.map((item) => (
               <li key={item.path}>
