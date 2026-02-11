@@ -1,54 +1,52 @@
 
 
-## Vis AI-svar pa CRT-monitor ved slutten av reisen
+## Replace Navbar Blue Background with ReactBits ColorBends
 
-### Oversikt
-Nar brukeren scroller til slutten av landskapet, vises en ny CRT-monitor (samme design som start-monitoren) som viser et AI-generert svar pa sporsmalet brukeren skrev inn i starten. Svaret streames via Lovable AI (gratis inkludert).
+### Overview
+Replace the solid blue (`bg-primary`) background in the Navbar with the animated ColorBends gradient component from ReactBits.
 
-### Brukeropplevelse
-1. Brukeren skriver et sporsmal pa CRT-monitoren og trykker Enter
-2. Brukeren reiser gjennom AI-pipelinen (6 steg)
-3. Ved enden av reisen (z = -185) dukker en ny CRT-monitor opp med svaret
-4. Svaret streames inn token for token med CRT-estetikk (gron tekst, scanlines)
+### Steps
 
-### Tekniske endringer
+1. **Install the ColorBends component via CLI**
+   Run: `npx shadcn@latest add https://reactbits.dev/r/ColorBends-JS-CSS`
+   This will add the component files to the project (likely under `src/components/ui/` or a similar path).
 
-**1. Opprett edge function: `supabase/functions/chat/index.ts`**
-- Mottar brukerens sporsmal
-- Kaller Lovable AI Gateway med `google/gemini-3-flash-preview`
-- Streamer svaret tilbake via SSE
-- Hanterer 429/402 feilkoder
+2. **Update `Navbar.tsx`**
+   - Import `ColorBends` from the installed location
+   - Remove `bg-primary` from the header element
+   - Add `position: relative` and `overflow: hidden` to the header
+   - Place `ColorBends` as an absolute-positioned background layer behind the nav content
+   - Ensure nav content stays above with `position: relative` and `z-index`
 
-**2. Oppdater `src/components/CRTMonitorScene.tsx`**
+   Structure will look like:
+   ```text
+   <header class="sticky top-0 z-50 border-b ... relative overflow-hidden">
+     <!-- Background layer -->
+     <div class="absolute inset-0">
+       <ColorBends
+         rotation={45}
+         speed={0.2}
+         colors={["#5227FF","#FF9FFC","#7cff67"]}
+         transparent
+         autoRotate={0.2}
+         scale={1}
+         frequency={1}
+         warpStrength={1}
+         mouseInfluence={1}
+         parallax={0.5}
+         noise={0.1}
+       />
+     </div>
+     <!-- Existing nav content with relative z-10 -->
+     <nav class="relative z-10 ...">...</nav>
+   </header>
+   ```
 
-Nye komponenter og endringer:
-- **EndCRTMonitor**: En ny CRT-monitor ved z=-185 som viser AI-svaret med samme retro-stil (gron tekst, scanlines, CRT-ramme)
-- **ScreenContent for svar**: Viser "Svar:" header og streamet tekst med blinkende cursor
-- **AI-kall trigger**: Nar brukeren starter reisen, sendes sporsmalet til edge function. Svaret lagres i state og vises pa slutt-monitoren
-- Erstatter det eksisterende "Svaret ditt er klart"-tekst-elementet (linje 716-723) med EndCRTMonitor
-- `inputText` sendes videre slik at sporsmalet ogsa kan vises pa slutt-monitoren
+3. **Update mobile menu** - Apply the same pattern to the mobile dropdown section so it also uses the gradient background instead of `bg-primary`.
 
-State-endringer i hovedkomponenten:
-- `aiResponse: string` - akkumulert svar fra AI
-- `isLoadingAI: boolean` - viser loading-indikator pa monitoren
-- `aiError: string | null` - viser feilmelding om noe gar galt
+4. **Verify** - Check that text remains readable against the animated gradient, adjusting text colors if needed.
 
-Flyten:
-```text
-[Enter trykket] --> setJourneyStarted(true)
-                --> fetch() til /functions/v1/chat (SSE stream)
-                --> onDelta oppdaterer aiResponse state
-                --> EndCRTMonitor viser aiResponse ved z=-185
-```
-
-**3. Oppdater `supabase/config.toml`**
-- Legg til chat-funksjonen med `verify_jwt = false` (offentlig tilgjengelig)
-
-### Detaljer om EndCRTMonitor
-- Samme visuelle design som start-CRTMonitor (RoundedBox, ScanlineMaterial, gron tekst)
-- Plassert ved `[0, 0.2, -185]` (der slutt-teksten er na)
-- Viser brukerens sporsmal oppe og AI-svaret under
-- Scrollbar tekst hvis svaret er langt (begrenset maxWidth)
-- Blinkende cursor mens svaret streames
-- "Laster svar..." tekst mens AI jobber
-
+### Technical Notes
+- ColorBends is a shader-based component; since the project already has `three`, `@react-three/fiber`, and `@react-three/drei` installed, dependencies should be covered.
+- The component will be contained within the header's bounds via `overflow-hidden`.
+- The `transparent` prop ensures it blends naturally.
