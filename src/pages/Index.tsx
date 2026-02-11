@@ -112,14 +112,14 @@ const Index = () => {
     <>
       {/* Hero — sticky, stays behind */}
       <div ref={heroRef} className="sticky top-0 z-0">
-        <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground md:py-28">
+        <section className="relative overflow-hidden bg-white py-20 text-foreground md:py-28">
           <div className="absolute inset-0">
             <LiquidEther
               mouseForce={20}
               cursorSize={100}
               isViscous={false}
               viscous={30}
-              colors={["#5227FF", "#a58aff"]}
+              colors={["#FFFFFF", "#F8F9FF", "#F0F2FF"]}
               autoDemo
               autoSpeed={0.5}
               autoIntensity={2.2}
@@ -127,16 +127,14 @@ const Index = () => {
               resolution={0.5}
             />
           </div>
-          
+
+          <div className="container relative z-10 mx-auto px-4">
             <div className="grid items-center gap-10 md:grid-cols-2">
               <div>
-                <h1
-                  className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl"
-                  style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}
-                >
+                <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
                   Lær å bruke AI ansvarlig
                 </h1>
-                <p className="mb-8 max-w-lg text-lg" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>
+                <p className="mb-8 max-w-lg text-lg text-muted-foreground">
                   AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som
                   er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
                 </p>
@@ -149,7 +147,7 @@ const Index = () => {
                   </Link>
                   <Link
                     to="/tools"
-                    className="inline-flex items-center gap-2 rounded-md border border-primary-foreground/30 px-6 py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+                    className="inline-flex items-center gap-2 rounded-md border border-border px-6 py-3 font-semibold text-foreground transition-colors hover:bg-muted"
                   >
                     Les mer
                   </Link>
@@ -159,9 +157,9 @@ const Index = () => {
                 {[1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className="flex aspect-square items-center justify-center rounded-xl bg-primary-foreground/10"
+                    className="flex aspect-square items-center justify-center rounded-xl bg-muted"
                   >
-                    <ImageIcon className="h-10 w-10 text-primary-foreground/30" />
+                    <ImageIcon className="h-10 w-10 text-muted-foreground/30" />
                   </div>
                 ))}
               </div>
@@ -215,23 +213,16 @@ const Index = () => {
       {/* Bruk AI med tillit — transparent, hero background shows through */}
       <ParallaxSection speed={0.15} className="relative z-[5]">
         <section className="relative py-20">
-          {/* Extended glassmorphism background via pseudo-element */}
-          <div className="absolute inset-0 -top-64 -bottom-64 md:-top-48 md:-bottom-48 lg:-top-40 lg:-bottom-40 bg-white/60 backdrop-blur-xl" />
+          <div className="absolute inset-0 -top-64 -bottom-64 md:-top-48 md:-bottom-48 lg:-top-40 lg:-bottom-40 bg-gray-50" />
           <div className="container relative z-10 mx-auto px-4">
             <div className="mb-12 text-center">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/70">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
                 Trygghet
               </p>
-              <h2
-                className="text-3xl font-bold text-primary-foreground md:text-4xl"
-                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.3)" }}
-              >
+              <h2 className="text-3xl font-bold text-foreground md:text-4xl">
                 Bruk AI med tillit
               </h2>
-              <p
-                className="mx-auto mt-3 max-w-xl text-primary-foreground/70"
-                style={{ textShadow: "0 1px 6px rgba(0,0,0,0.2)" }}
-              >
+              <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
                 Vit at du handler riktig når du bruker AI-verktøy.
               </p>
             </div>
@@ -240,10 +231,10 @@ const Index = () => {
                 <Link
                   key={card.title}
                   to={card.path}
-                  className="group rounded-xl border border-white/30 bg-white/40 p-6 shadow-sm backdrop-blur-md transition-all hover:-translate-y-1 hover:shadow-md"
+                  className="group rounded-xl border border-border bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 >
-                  <div className="flex aspect-video items-center justify-center rounded-lg bg-white/10 mb-4">
-                    <ImageIcon className="h-10 w-10 text-primary-foreground/40" />
+                  <div className="flex aspect-video items-center justify-center rounded-lg bg-muted/30 mb-4">
+                    <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
                   </div>
                   <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     {card.label}
