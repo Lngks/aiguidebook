@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Lightbulb, Wrench, Image as ImageIcon } from "lucide-react";
-import ColorBends from "@/components/ColorBends/ColorBends";
+import LiquidEther from "@/components/LiquidEther/LiquidEther";
 import ParallaxSection from "@/components/ParallaxSection";
 import {
   Accordion,
@@ -86,18 +86,17 @@ const Index = () => {
       <div ref={heroRef} className="sticky top-0 z-0">
         <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground md:py-28">
           <div className="absolute inset-0">
-            <ColorBends
-              rotation={45}
-              speed={0.2}
-              colors={["#5227FF", "#FF9FFC", "#7cff67"]}
-              transparent={false}
-              autoRotate={0.2}
-              scale={1}
-              frequency={1}
-              warpStrength={1}
-              mouseInfluence={1}
-              parallax={0.5}
-              noise={0.1}
+            <LiquidEther
+              mouseForce={20}
+              cursorSize={100}
+              isViscous={false}
+              viscous={30}
+              colors={["#5227FF", "#a58aff"]}
+              autoDemo
+              autoSpeed={0.5}
+              autoIntensity={2.2}
+              isBounce={false}
+              resolution={0.5}
             />
           </div>
           <div className="absolute inset-0 z-[1] border-white/20 bg-white/10 backdrop-blur-xl" />
