@@ -65,8 +65,8 @@ const faqs = [
 const Index = () => {
   return (
     <>
-      {/* Hero */}
-      <ParallaxSection speed={0.1}>
+      {/* Hero — sticky, stays behind */}
+      <div className="sticky top-0 z-0">
         <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground md:py-28">
           <div className="absolute inset-0">
             <ColorBends
@@ -118,11 +118,11 @@ const Index = () => {
             </div>
           </div>
         </section>
-      </ParallaxSection>
+      </div>
 
-      {/* Tre ting du må vite */}
-      <ParallaxSection speed={0.15}>
-        <section className="container mx-auto px-4 py-20">
+      {/* Tre ting du må vite — scrolls OVER hero */}
+      <ParallaxSection speed={0.05} className="relative z-10">
+        <section className="bg-background container mx-auto px-4 py-20">
           <div className="mb-12 text-center">
             <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
             <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
@@ -152,8 +152,8 @@ const Index = () => {
         </section>
       </ParallaxSection>
 
-      {/* Bruk AI med tillit */}
-      <ParallaxSection speed={0.2}>
+      {/* Bruk AI med tillit — scrolls underneath Hovedpoengene */}
+      <ParallaxSection speed={0.15} className="relative z-[5]">
         <section className="border-y border-border bg-muted/50 py-20">
           <div className="container mx-auto px-4">
             <div className="mb-12 text-center">
@@ -186,38 +186,36 @@ const Index = () => {
         </section>
       </ParallaxSection>
 
-      {/* Se det i praksis — CTA banner */}
-      <ParallaxSection speed={0.1}>
-        <section className="bg-primary py-16 text-primary-foreground">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
-            <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
-              Utforsk retningslinjene våre eller test AI-pipelinen selv.
-            </p>
-            <div className="mt-6 flex justify-center gap-3">
-              <Link to="/guidelines" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105">
-                Retningslinjer
-              </Link>
-              <Link to="/interactive" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10">
-                Pipeline
-              </Link>
-            </div>
+      {/* Se det i praksis — static */}
+      <section className="relative z-10 bg-primary py-16 text-primary-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
+          <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
+            Utforsk retningslinjene våre eller test AI-pipelinen selv.
+          </p>
+          <div className="mt-6 flex justify-center gap-3">
+            <Link to="/guidelines" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105">
+              Retningslinjer
+            </Link>
+            <Link to="/interactive" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10">
+              Pipeline
+            </Link>
           </div>
-        </section>
-      </ParallaxSection>
+        </div>
+      </section>
 
-      {/* Placeholder image */}
-      <ParallaxSection speed={0.25}>
-        <section className="container mx-auto px-4 py-16">
+      {/* Placeholder image — static */}
+      <section className="relative z-10 bg-background">
+        <div className="container mx-auto px-4 py-16">
           <div className="mx-auto flex max-w-md items-center justify-center rounded-2xl bg-muted py-20">
             <ImageIcon className="h-16 w-16 text-muted-foreground/30" />
           </div>
-        </section>
-      </ParallaxSection>
+        </div>
+      </section>
 
-      {/* FAQ */}
-      <ParallaxSection speed={0.15}>
-        <section className="container mx-auto px-4 pb-20">
+      {/* FAQ — static */}
+      <section className="relative z-10 bg-background">
+        <div className="container mx-auto px-4 pb-20">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
             <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
@@ -240,19 +238,19 @@ const Index = () => {
               ))}
             </div>
           </div>
-        </section>
-      </ParallaxSection>
+        </div>
+      </section>
 
-      {/* Trenger du mer hjelp */}
-      <ParallaxSection speed={0.1}>
-        <section className="container mx-auto px-4 pb-20 text-center">
+      {/* Trenger du mer hjelp — static */}
+      <section className="relative z-10 bg-background">
+        <div className="container mx-auto px-4 pb-20 text-center">
           <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
           <p className="mt-2 text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
           <Link to="/guidelines" className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
             Kontakt
           </Link>
-        </section>
-      </ParallaxSection>
+        </div>
+      </section>
     </>
   );
 };
