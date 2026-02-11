@@ -176,7 +176,7 @@ const Index = () => {
 
       {/* Bruk AI med tillit — transparent, hero background shows through */}
       <ParallaxSection speed={0.15} className="relative z-[5]">
-        <section className="relative py-20">
+        <section className="relative py-20 bg-white/60 backdrop-blur-xl">
           <div className="container relative mx-auto px-4">
             <div className="mb-12 text-center">
               <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/70">Trygghet</p>
@@ -190,7 +190,7 @@ const Index = () => {
                 <Link
                   key={card.title}
                   to={card.path}
-                  className="group rounded-xl border border-white/20 bg-white/70 p-6 shadow-sm backdrop-blur-md transition-all hover:-translate-y-1 hover:shadow-md"
+                  className="group rounded-xl border border-white/30 bg-white/40 p-6 shadow-sm backdrop-blur-md transition-all hover:-translate-y-1 hover:shadow-md"
                 >
                   <div className="flex aspect-video items-center justify-center rounded-lg bg-white/10 mb-4">
                     <ImageIcon className="h-10 w-10 text-primary-foreground/40" />
