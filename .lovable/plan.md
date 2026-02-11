@@ -1,52 +1,30 @@
 
 
-## Replace Navbar Blue Background with ReactBits ColorBends
+## Glassmorphism Overlay for Hero Section
 
-### Overview
-Replace the solid blue (`bg-primary`) background in the Navbar with the animated ColorBends gradient component from ReactBits.
+### What will change
+Instead of a plain dark overlay over the ColorBends background, a frosted-glass (glassmorphism) panel will be placed behind the text content. This gives a modern, translucent look while ensuring text remains readable.
 
-### Steps
+### Visual Effect
+- A frosted glass card behind the hero text with blur, semi-transparent white/dark background, and a subtle border
+- Text shadows for extra legibility
+- The animated gradient remains visible through the glass
 
-1. **Install the ColorBends component via CLI**
-   Run: `npx shadcn@latest add https://reactbits.dev/r/ColorBends-JS-CSS`
-   This will add the component files to the project (likely under `src/components/ui/` or a similar path).
+### Technical Details
 
-2. **Update `Navbar.tsx`**
-   - Import `ColorBends` from the installed location
-   - Remove `bg-primary` from the header element
-   - Add `position: relative` and `overflow: hidden` to the header
-   - Place `ColorBends` as an absolute-positioned background layer behind the nav content
-   - Ensure nav content stays above with `position: relative` and `z-index`
+**File: `src/pages/Index.tsx`**
 
-   Structure will look like:
-   ```text
-   <header class="sticky top-0 z-50 border-b ... relative overflow-hidden">
-     <!-- Background layer -->
-     <div class="absolute inset-0">
-       <ColorBends
-         rotation={45}
-         speed={0.2}
-         colors={["#5227FF","#FF9FFC","#7cff67"]}
-         transparent
-         autoRotate={0.2}
-         scale={1}
-         frequency={1}
-         warpStrength={1}
-         mouseInfluence={1}
-         parallax={0.5}
-         noise={0.1}
-       />
-     </div>
-     <!-- Existing nav content with relative z-10 -->
-     <nav class="relative z-10 ...">...</nav>
-   </header>
-   ```
+1. **Add a glassmorphism container** around the text content (wrapping the `h1`, `p`, and buttons) with these Tailwind classes:
+   - `bg-white/10` -- semi-transparent white background
+   - `backdrop-blur-xl` -- strong blur for the frosted effect
+   - `border border-white/20` -- subtle glass edge
+   - `rounded-2xl` -- rounded corners
+   - `p-8 md:p-10` -- comfortable padding
+   - `shadow-lg` -- depth
 
-3. **Update mobile menu** - Apply the same pattern to the mobile dropdown section so it also uses the gradient background instead of `bg-primary`.
+2. **Add text shadows** to the `h1` and `p` for extra contrast reinforcement via inline `textShadow` styles.
 
-4. **Verify** - Check that text remains readable against the animated gradient, adjusting text colors if needed.
+3. **Remove `opacity-80`** from the paragraph to keep text at full opacity.
 
-### Technical Notes
-- ColorBends is a shader-based component; since the project already has `three`, `@react-three/fiber`, and `@react-three/drei` installed, dependencies should be covered.
-- The component will be contained within the header's bounds via `overflow-hidden`.
-- The `transparent` prop ensures it blends naturally.
+No new files or dependencies needed -- just Tailwind's built-in `backdrop-blur` utilities.
+
