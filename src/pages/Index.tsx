@@ -176,8 +176,10 @@ const Index = () => {
 
       {/* Bruk AI med tillit — transparent, hero background shows through */}
       <ParallaxSection speed={0.15} className="relative z-[5]">
-        <section className="relative -my-56 pt-84 pb-84 md:-my-44 md:pt-72 md:pb-72 lg:-my-36 lg:pt-60 lg:pb-60 bg-white/60 backdrop-blur-xl">
-          <div className="container relative mx-auto px-4">
+        <section className="relative py-20">
+          {/* Extended glassmorphism background via pseudo-element */}
+          <div className="absolute inset-0 -top-64 -bottom-64 md:-top-48 md:-bottom-48 lg:-top-40 lg:-bottom-40 bg-white/60 backdrop-blur-xl" />
+          <div className="container relative z-10 mx-auto px-4">
             <div className="mb-12 text-center">
               <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/70">Trygghet</p>
               <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>Bruk AI med tillit</h2>
