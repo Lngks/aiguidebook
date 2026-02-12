@@ -127,7 +127,10 @@ const Index = () => {
               resolution={0.5}
             />
           </div>
-          
+          <div
+            className="container relative z-10 mx-auto px-4 transition-opacity duration-100"
+            style={{ opacity: heroContentOpacity }}
+          >
             <div className="grid items-center gap-10 md:grid-cols-2">
               <div>
                 <h1
