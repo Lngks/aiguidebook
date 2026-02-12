@@ -119,7 +119,7 @@ const Index = () => {
               cursorSize={100}
               isViscous={false}
               viscous={30}
-              colors={["#5227FF", "#a58aff"]}
+              colors={["#7800f0", "#ffffff"]}
               autoDemo
               autoSpeed={0.5}
               autoIntensity={2.2}
