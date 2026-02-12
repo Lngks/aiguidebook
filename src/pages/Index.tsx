@@ -112,7 +112,7 @@ const Index = () => {
     <>
       {/* Hero — sticky, stays behind */}
       <div ref={heroRef} className="sticky top-0 z-0">
-        <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground md:py-28">
+        <section className="relative overflow-hidden bg-secondary py-20 text-primary-foreground md:py-28">
           <div className="absolute inset-0">
             <LiquidEther
               mouseForce={20}
