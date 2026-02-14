@@ -15,10 +15,10 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-primary-foreground/10 bg-primary">
+    <header className="sticky top-0 z-50 border-b border-primary-foreground/10 bg-secondary">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link to="/" className="flex items-center">
-          <Logo variant="light" className="h-5" />
+          <Logo variant="dark" className="h-5" />
         </Link>
 
         {/* Desktop nav */}
@@ -28,9 +28,7 @@ const Navbar = () => {
               <Link
                 to={item.path}
                 className={`rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary-foreground ${
-                  location.pathname === item.path
-                    ? "text-primary-foreground"
-                    : "text-primary-foreground/70"
+                  location.pathname === item.path ? "text-primary-foreground" : "text-primary-foreground/70"
                 }`}
               >
                 {item.label}
@@ -66,9 +64,7 @@ const Navbar = () => {
                   to={item.path}
                   onClick={() => setMobileOpen(false)}
                   className={`block rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    location.pathname === item.path
-                      ? "text-primary-foreground"
-                      : "text-primary-foreground/70"
+                    location.pathname === item.path ? "text-primary-foreground" : "text-primary-foreground/70"
                   }`}
                 >
                   {item.label}
