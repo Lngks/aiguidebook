@@ -15,10 +15,10 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-primary-foreground/10 bg-primary">
+    <header className="sticky top-0 z-50 border-b border-secondary-foreground/10 bg-secondary">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link to="/" className="flex items-center">
-          <Logo variant="light" className="h-5" />
+          <Logo variant="dark" className="h-5" />
         </Link>
 
         {/* Desktop nav */}
@@ -27,10 +27,8 @@ const Navbar = () => {
             <li key={item.path}>
               <Link
                 to={item.path}
-                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary-foreground ${
-                  location.pathname === item.path
-                    ? "text-primary-foreground"
-                    : "text-primary-foreground/70"
+                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-secondary-foreground ${
+                  location.pathname === item.path ? "text-secondary-foreground" : "text-secondary-foreground/70"
                 }`}
               >
                 {item.label}
@@ -48,7 +46,7 @@ const Navbar = () => {
 
         {/* Mobile toggle */}
         <button
-          className="inline-flex items-center justify-center rounded-md p-2 text-primary-foreground/80 hover:text-primary-foreground md:hidden"
+          className="inline-flex items-center justify-center rounded-md p-2 text-secondary-foreground/80 hover:text-secondary-foreground md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -58,7 +56,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-primary-foreground/10 bg-primary md:hidden">
+        <div className="border-t border-secondary-foreground/10 bg-secondary md:hidden">
           <ul className="container mx-auto space-y-1 px-4 py-3">
             {navItems.map((item) => (
               <li key={item.path}>
@@ -66,9 +64,7 @@ const Navbar = () => {
                   to={item.path}
                   onClick={() => setMobileOpen(false)}
                   className={`block rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    location.pathname === item.path
-                      ? "text-primary-foreground"
-                      : "text-primary-foreground/70"
+                    location.pathname === item.path ? "text-secondary-foreground" : "text-secondary-foreground/70"
                   }`}
                 >
                   {item.label}

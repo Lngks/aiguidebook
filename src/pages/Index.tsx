@@ -112,14 +112,14 @@ const Index = () => {
     <>
       {/* Hero — sticky, stays behind */}
       <div ref={heroRef} className="sticky top-0 z-0">
-        <section className="relative overflow-hidden bg-white py-20 text-foreground md:py-28">
+        <section className="relative overflow-hidden bg-secondary py-20 text-primary-foreground md:py-28">
           <div className="absolute inset-0">
             <LiquidEther
               mouseForce={20}
               cursorSize={100}
               isViscous={false}
               viscous={30}
-              colors={["#FFFFFF", "#F8F9FF", "#F0F2FF"]}
+              colors={["#7800f0", "#2f0b63"]}
               autoDemo
               autoSpeed={0.5}
               autoIntensity={2.2}
@@ -127,8 +127,10 @@ const Index = () => {
               resolution={0.5}
             />
           </div>
-
-          <div className="container relative z-10 mx-auto px-4">
+          <div
+            className="container relative z-10 mx-auto px-4 transition-opacity duration-100"
+            style={{ opacity: heroContentOpacity }}
+          >
             <div className="grid items-center gap-10 md:grid-cols-2">
               <div>
                 <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
@@ -216,13 +218,19 @@ const Index = () => {
           <div className="absolute inset-0 -top-64 -bottom-64 md:-top-48 md:-bottom-48 lg:-top-40 lg:-bottom-40 bg-gray-50" />
           <div className="container relative z-10 mx-auto px-4">
             <div className="mb-12 text-center">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-secondary-foreground/70">
                 Trygghet
               </p>
-              <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+              <h2
+                className="text-3xl font-bold text-secondary-foreground md:text-4xl"
+                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.3)" }}
+              >
                 Bruk AI med tillit
               </h2>
-              <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+              <p
+                className="mx-auto mt-3 max-w-xl text-secondary-foreground/70"
+                style={{ textShadow: "0 1px 6px rgba(0,0,0,0.2)" }}
+              >
                 Vit at du handler riktig når du bruker AI-verktøy.
               </p>
             </div>
