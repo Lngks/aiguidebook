@@ -58,7 +58,7 @@ const Footer = () => (
     <div className="border-b border-border bg-primary">
       <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-6 md:flex-row">
         <div>
-          <p className="font-bold text-primary-foreground" style={{ fontFamily: "'Merriweather', serif" }}>
+          <p className="font-medium text-primary-foreground" style={{ fontFamily: "'Poppins', sans-serif" }}>
             Få oppdateringer
           </p>
           <p className="text-sm text-primary-foreground/70">Motta tips og veiledning direkte</p>
