@@ -1,18 +1,18 @@
 import logoSvg from "@/assets/logo.svg";
 
 interface LogoProps {
-  variant?: "dark" | "light";
+  variant?: "dark" | "light" | "auto";
   className?: string;
 }
 
-const Logo = ({ variant = "dark", className = "h-8" }: LogoProps) => {
+const Logo = ({ variant = "auto", className = "h-8" }: LogoProps) => {
   return (
     <img
       src={logoSvg}
       alt="AI Guidebook"
-      className={`${className} w-auto`}
+      className={`${className} w-auto ${variant === "auto" ? "dark:invert" : ""}`}
       style={{
-        filter: variant === "light" ? "invert(1)" : "none",
+        filter: variant === "light" ? "invert(1)" : variant === "dark" ? "none" : undefined,
       }}
     />
   );

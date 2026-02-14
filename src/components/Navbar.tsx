@@ -18,7 +18,7 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 border-b border-secondary-foreground/10 bg-secondary">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link to="/" className="flex items-center">
-          <Logo variant="dark" className="h-5" />
+          <Logo variant="auto" className="h-5" />
         </Link>
 
         {/* Desktop nav */}
