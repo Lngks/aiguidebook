@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useParallax(speed: number = 0.1) {
+export function useParallax(speed: number = 0.1, base: "center" | "top" = "center") {
   const ref = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
 
@@ -14,11 +14,17 @@ export function useParallax(speed: number = 0.1) {
         if (!ref.current) return;
         const rect = ref.current.getBoundingClientRect();
         const windowHeight = window.innerHeight;
-        // When element center is at viewport center, offset = 0
-        const elementCenter = rect.top + rect.height / 2;
-        const viewportCenter = windowHeight / 2;
-        const delta = elementCenter - viewportCenter;
-        setOffset(delta * speed);
+
+        if (base === "top") {
+          // Offset is 0 when the top of the element hits the top of the viewport
+          setOffset(rect.top * speed);
+        } else {
+          // When element center is at viewport center, offset = 0
+          const elementCenter = rect.top + rect.height / 2;
+          const viewportCenter = windowHeight / 2;
+          const delta = elementCenter - viewportCenter;
+          setOffset(delta * speed);
+        }
       });
     };
 

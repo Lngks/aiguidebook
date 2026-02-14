@@ -43,7 +43,7 @@ const Navbar = () => {
             : "opacity-0 duration-0 pointer-events-none"
         )}>
           <div className={cn(
-            "absolute inset-0 bg-background/80 backdrop-blur-md shadow-sm border border-border/40 rounded-2xl",
+            "absolute inset-0 bg-background/50 backdrop-blur-md shadow-sm border border-border/40 rounded-2xl",
             mobileOpen && "bg-background/95 backdrop-blur-xl shadow-lg border-border/10"
           )} />
         </div>

@@ -1,8 +1,10 @@
+
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Lightbulb, Wrench, Image as ImageIcon } from "lucide-react";
 import DarkVeil from "@/components/DarkVeil/DarkVeil";
 import ParallaxSection from "@/components/ParallaxSection";
+import AsciiHero from "@/components/AsciiHero";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const overviewCards = [
@@ -112,7 +114,7 @@ const Index = () => {
     <>
       {/* Hero — sticky, stays behind */}
       <div ref={heroRef} className="sticky top-0 z-0">
-        <section className="relative overflow-hidden bg-secondary py-20 text-primary-foreground md:py-28">
+        <section className="relative flex min-h-[90vh] flex-col justify-center overflow-hidden bg-secondary pb-32 pt-20 text-primary-foreground md:pb-48 md:pt-28">
           <div className="absolute inset-0">
             <DarkVeil
               hueShift={0}
@@ -151,62 +153,70 @@ const Index = () => {
                   </Link>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="flex aspect-square items-center justify-center rounded-xl bg-muted"
-                  >
-                    <ImageIcon className="h-10 w-10 text-muted-foreground/30" />
-                  </div>
-                ))}
+              <div className="relative h-full min-h-[500px] w-full overflow-hidden md:min-h-[600px]">
+                <AsciiHero />
               </div>
             </div>
           </div>
         </section>
       </div>
 
-      {/* Tre ting du må vite — scrolls OVER hero, no gap */}
-      <ParallaxSection speed={0.05} className="relative z-10 -mt-0">
-        <section className="bg-background px-4 py-20 rounded-b-none">
-          <div className="container mx-auto">
-            <div className="mb-12 text-center">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-                Hovedpoengene
-              </p>
-              <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
-              <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-                Vi bryter ned det kompliserte og gjør det enkelt. Ingen forvirrende fagord, bare svar du kan stole på.
-              </p>
-            </div>
-            <div className="grid gap-8 md:grid-cols-3">
-              {overviewCards.map((card) => (
-                <div key={card.title} className="text-center">
-                  <div className="mx-auto mb-4 inline-flex rounded-lg p-3 text-muted-foreground">
-                    <card.icon className="h-8 w-8" />
-                  </div>
-                  <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
-                  <p className="text-sm text-muted-foreground">{card.description}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-10 flex justify-center gap-3">
-              <Link
-                to="/guidelines"
-                className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
-              >
-                Utforsk
-              </Link>
-              <Link
-                to="/tools"
-                className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Alle verktøy <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
+      {/* Separator line + decorative tab — static, NOT inside any animated container */}
+      <div className="relative z-20">
+        <div className="absolute top-0 left-0 w-full h-px bg-border/20" />
+        <div className="absolute top-[-31px] left-1/2 -translate-x-1/2 w-[1040px] h-[32px] pointer-events-none">
+          <svg
+            viewBox="0 0 640 48"
+            preserveAspectRatio="none"
+            className="w-full h-full text-background fill-current"
+          >
+            <path d="M0 48 L 180 48 C 220 48 240 0 280 0 L 360 0 C 400 0 420 48 460 48 L 640 48 Z" />
+          </svg>
+          {/* Accent Line */}
+          <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-12 h-0 bg-primary/30 rounded-full blur-[0.5px]" />
+        </div>
+      </div>
+
+      {/* Tre ting du må vite — scrolls OVER hero */}
+      <section className="relative z-10 bg-background px-4 pt-10 pb-20">
+
+        <div className="container mx-auto">
+          <div className="mb-12 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              Hovedpoengene
+            </p>
+            <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
+            <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+              Vi bryter ned det kompliserte og gjør det enkelt. Ingen forvirrende fagord, bare svar du kan stole på.
+            </p>
           </div>
-        </section>
-      </ParallaxSection>
+          <div className="grid gap-8 md:grid-cols-3">
+            {overviewCards.map((card) => (
+              <div key={card.title} className="text-center">
+                <div className="mx-auto mb-4 inline-flex rounded-lg p-3 text-muted-foreground">
+                  <card.icon className="h-8 w-8" />
+                </div>
+                <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
+                <p className="text-sm text-muted-foreground">{card.description}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 flex justify-center gap-3">
+            <Link
+              to="/guidelines"
+              className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
+            >
+              Utforsk
+            </Link>
+            <Link
+              to="/tools"
+              className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Alle verktøy <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Bruk AI med tillit — transparent, hero background shows through */}
       <ParallaxSection speed={0.15} className="relative z-[5]">
@@ -253,10 +263,10 @@ const Index = () => {
             </div>
           </div>
         </section>
-      </ParallaxSection>
+      </ParallaxSection >
 
       {/* Se det i praksis — static, no gap */}
-      <section className="relative z-10 bg-primary py-16 text-primary-foreground">
+      < section className="relative z-10 bg-primary py-16 text-primary-foreground" >
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
           <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
@@ -277,19 +287,19 @@ const Index = () => {
             </Link>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* Placeholder image — static */}
-      <section className="relative z-10 bg-background">
+      < section className="relative z-10 bg-background" >
         <div className="container mx-auto px-4 py-16">
           <div className="mx-auto flex max-w-md items-center justify-center rounded-2xl bg-muted py-20">
             <ImageIcon className="h-16 w-16 text-muted-foreground/30" />
           </div>
         </div>
-      </section>
+      </section >
 
       {/* FAQ — static */}
-      <section className="relative z-10 bg-background">
+      < section className="relative z-10 bg-background" >
         <div className="container mx-auto px-4 pb-20">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
@@ -299,7 +309,7 @@ const Index = () => {
             <div className="grid gap-x-8 md:grid-cols-2">
               {faqs.map((faq, i) => (
                 <Accordion key={i} type="single" collapsible>
-                  <AccordionItem value={`faq-${i}`} className="border-b border-border">
+                  <AccordionItem value={`faq - ${i} `} className="border-b border-border">
                     <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
                       {faq.q}
                     </AccordionTrigger>
@@ -310,10 +320,10 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* Trenger du mer hjelp — static */}
-      <section className="relative z-10 bg-background">
+      < section className="relative z-10 bg-background" >
         <div className="container mx-auto px-4 pb-20 text-center">
           <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
           <p className="mt-2 text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
@@ -324,7 +334,7 @@ const Index = () => {
             Kontakt
           </Link>
         </div>
-      </section>
+      </section >
     </>
   );
 };
