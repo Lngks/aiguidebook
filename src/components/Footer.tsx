@@ -53,7 +53,7 @@ const footerColumns = [
 ];
 
 const Footer = () => (
-  <footer className="border-t border-border bg-muted">
+  <footer className="border-t border-border bg-background">
     {/* Newsletter */}
     <div className="border-b border-border bg-primary">
       <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-6 md:flex-row">
