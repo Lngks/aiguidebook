@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Lightbulb, Wrench, Image as ImageIcon } from "lucide-react";
-import LiquidEther from "@/components/LiquidEther/LiquidEther";
+import DarkVeil from "@/components/DarkVeil/DarkVeil";
 import ParallaxSection from "@/components/ParallaxSection";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
@@ -114,17 +114,13 @@ const Index = () => {
       <div ref={heroRef} className="sticky top-0 z-0">
         <section className="relative overflow-hidden bg-secondary py-20 text-primary-foreground md:py-28">
           <div className="absolute inset-0">
-            <LiquidEther
-              mouseForce={20}
-              cursorSize={100}
-              isViscous={false}
-              viscous={30}
-              colors={["#7800f0", "#2f0b63"]}
-              autoDemo
-              autoSpeed={0.5}
-              autoIntensity={2.2}
-              isBounce={false}
-              resolution={0.5}
+            <DarkVeil
+              hueShift={0}
+              noiseIntensity={0}
+              scanlineIntensity={0}
+              speed={0.5}
+              scanlineFrequency={0}
+              warpAmount={0}
             />
           </div>
           <div
