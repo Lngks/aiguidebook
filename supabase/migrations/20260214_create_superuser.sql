@@ -10,8 +10,10 @@
 -- =====================================================
 
 -- Function to grant superuser privileges (INITIAL SETUP ONLY)
--- This function should ONLY be called via the SQL Editor with service role access
--- For ongoing superuser grants, use superuser_grant_access() instead
+-- ⚠️ SECURITY WARNING: This function should be DROPPED after initial setup!
+-- After creating your first superuser, run: DROP FUNCTION IF EXISTS public.grant_superuser(TEXT);
+-- For ongoing superuser grants, use superuser_grant_access() instead which requires
+-- the caller to already be a superuser.
 CREATE OR REPLACE FUNCTION public.grant_superuser(target_email TEXT)
 RETURNS VOID AS $$
 DECLARE
@@ -36,6 +38,7 @@ BEGIN
     ON CONFLICT (user_id) DO NOTHING;
     
     RAISE NOTICE 'Superuser privileges granted to %', target_email;
+    RAISE NOTICE 'SECURITY: Remember to drop this function after setup: DROP FUNCTION public.grant_superuser(TEXT);';
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 

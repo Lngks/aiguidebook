@@ -13,27 +13,64 @@ serve(async (req) => {
   }
 
   try {
-    // SECURITY: Verify user authentication
+    // SECURITY: Authenticate OR Rate Limit
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(
-        JSON.stringify({ error: "Mangler autentisering" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-      { global: { headers: { Authorization: authHeader } } }
+      { global: { headers: { Authorization: authHeader ?? "" } } }
     );
 
+    let profileId = "anonymous";
+    let isAnonymous = true;
+
+    // 1. Try to get authenticated user
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-    if (authError || !user) {
-      return new Response(
-        JSON.stringify({ error: "Uautorisert" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+
+    if (user && !authError) {
+      profileId = user.id;
+      isAnonymous = false;
+    } else {
+      // 2. If not authenticated, check anonymous rate limit
+      const fingerprint = req.headers.get("x-client-fingerprint");
+      const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
+
+      if (!fingerprint) {
+        return new Response(
+          JSON.stringify({ error: "Manglende identifikasjon for anonym tilgang" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      // Check rate limit via RPC
+      // Create admin client to bypass RLS for rate limit check
+      const adminClient = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
       );
+
+      const { data: limitCheck, error: limitError } = await adminClient.rpc(
+        'check_anonymous_rate_limit',
+        { p_fingerprint: fingerprint, p_ip_address: ip }
+      );
+
+      if (limitError) {
+        console.error("Rate limit check error:", limitError);
+        return new Response(
+          JSON.stringify({ error: "Feil ved sjekk av begrensninger" }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      if (!limitCheck || !limitCheck.allowed) {
+        return new Response(
+          JSON.stringify({
+            error: "Daglig grense nådd. Logg inn for ubegrenset tilgang.",
+            limit_reached: true
+          }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
     }
 
     const { question } = await req.json();

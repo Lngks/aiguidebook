@@ -35,9 +35,15 @@ This guide explains how to apply the database migrations to your Supabase projec
      - `audit_log`
      - `superusers`
 
-5. **Verify RLS Enabled**
+4. **Verify RLS Enabled**
    - Go to: Dashboard → Database → Policies
    - Each table should have multiple policies listed
+
+5. **Run Migration 3: Anonymous Chat Usage**
+   - Copy the contents of `supabase/migrations/20260214_anonymous_chat_usage.sql`
+   - Paste into the SQL Editor
+   - Click "Run"
+   - ✅ You should see: "Success. No rows returned"
 
 ## Option 2: Using Supabase CLI
 
@@ -165,3 +171,8 @@ Or manually from the Supabase Dashboard:
   - Superuser functions
   - RLS bypass policies for admins
   - Setup instructions
+
+- **20260214_anonymous_chat_usage.sql**
+  - Anonymous usage tracking table
+  - Rate limiting logic (3 questions/day)
+  - Automatic cleanup function

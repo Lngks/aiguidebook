@@ -731,8 +731,8 @@ const EndScreenContent = ({ question, response, isLoading, error }: { question: 
   const displayText = error
     ? `Feil: ${error}`
     : isLoading && !response
-    ? "Laster svar..."
-    : response || "";
+      ? "Laster svar..."
+      : response || "";
 
   // Truncate for display in 3D text
   const truncated = displayText.length > 300 ? displayText.slice(0, 300) + "..." : displayText;
@@ -829,18 +829,48 @@ const CRTMonitorScene = () => {
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
 
+  // Helper to generate a simple browser fingerprint
+  const getFingerprint = useCallback(() => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.textBaseline = 'top';
+      ctx.font = '14px Arial';
+      ctx.fillStyle = '#f60';
+      ctx.fillRect(125, 1, 62, 20);
+      ctx.fillStyle = '#069';
+      ctx.fillText('fingerprint', 2, 15);
+      ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
+      ctx.fillText('fingerprint', 4, 17);
+    }
+    return (canvas.toDataURL().slice(-50) + navigator.userAgent.slice(0, 50)).replace(/[^a-zA-Z0-9]/g, '');
+  }, []);
+
   const startAIStream = useCallback(async (question: string) => {
     setIsLoadingAI(true);
     setAiResponse("");
     setAiError(null);
 
     try {
+      // Get session OR use anonymous fingerprint
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data: { session } } = await supabase.auth.getSession();
+
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+
+      if (session) {
+        headers["Authorization"] = `Bearer ${session.access_token}`;
+      } else {
+        // Anonymous access
+        headers["Authorization"] = `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`;
+        headers["x-client-fingerprint"] = getFingerprint();
+      }
+
       const resp = await fetch(CHAT_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
+        headers,
         body: JSON.stringify({ question }),
       });
 
@@ -940,8 +970,8 @@ const CRTMonitorScene = () => {
     const displayText = aiError
       ? `Feil: ${aiError}`
       : isLoadingAI && !aiResponse
-      ? ""
-      : aiResponse || "";
+        ? ""
+        : aiResponse || "";
 
     return (
       <div className="relative w-full" style={{ height: "85vh" }}>
