@@ -211,7 +211,7 @@ const Index = () => {
       {/* Bruk AI med tillit — transparent, hero background shows through */}
       <ParallaxSection speed={0.15} className="relative z-[5]">
         <section className="relative py-20">
-          <div className="absolute inset-0 -top-64 -bottom-64 md:-top-48 md:-bottom-48 lg:-top-40 lg:-bottom-40 bg-gray-50" />
+          <div className="absolute inset-0 -top-64 -bottom-64 md:-top-48 md:-bottom-48 lg:-top-40 lg:-bottom-40 bg-muted" />
           <div className="container relative z-10 mx-auto px-4">
             <div className="mb-12 text-center">
               <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-secondary-foreground/70">
@@ -235,7 +235,7 @@ const Index = () => {
                 <Link
                   key={card.title}
                   to={card.path}
-                  className="group rounded-xl border border-border bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
+                  className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 >
                   <div className="flex aspect-video items-center justify-center rounded-lg bg-muted/30 mb-4">
                     <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
