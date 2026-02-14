@@ -9,19 +9,25 @@
 -- 2. Run the function below to grant superuser privileges
 -- =====================================================
 
--- Function to grant superuser privileges
+-- Function to grant superuser privileges (INITIAL SETUP ONLY)
+-- This function should ONLY be called via the SQL Editor with service role access
+-- For ongoing superuser grants, use superuser_grant_access() instead
 CREATE OR REPLACE FUNCTION public.grant_superuser(target_email TEXT)
 RETURNS VOID AS $$
 DECLARE
     target_user_id UUID;
 BEGIN
+    -- SECURITY: This function is intended for initial setup only
+    -- It should be called directly in the SQL Editor (which uses service role)
+    -- NOT via the API or client applications
+    
     -- Find the user by email
     SELECT id INTO target_user_id
     FROM auth.users
     WHERE email = target_email;
     
     IF target_user_id IS NULL THEN
-        RAISE EXCEPTION 'User with email % not found', target_email;
+        RAISE EXCEPTION 'User with email % not found. Make sure the user has signed up first.', target_email;
     END IF;
     
     -- Insert into superusers table
