@@ -193,7 +193,7 @@ const Index = () => {
             <div className="mt-10 flex justify-center gap-3">
               <Link
                 to="/guidelines"
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
+                className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
               >
                 Utforsk
               </Link>
