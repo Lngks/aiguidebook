@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Lightbulb, Wrench, Image as ImageIcon } from "lucide-react";
 import DarkVeil from "@/components/DarkVeil/DarkVeil";
@@ -94,6 +95,7 @@ const faqs = [
 ];
 
 const Index = () => {
+  const isMobile = useIsMobile();
   const heroRef = useRef<HTMLDivElement>(null);
   const [heroContentOpacity, setHeroContentOpacity] = useState(1);
 
@@ -129,8 +131,13 @@ const Index = () => {
             className="container relative z-10 mx-auto px-4 transition-opacity duration-100"
             style={{ opacity: heroContentOpacity }}
           >
-            <div className="grid items-center gap-10 md:grid-cols-2">
-              <div className="text-center md:text-left">
+            <div className="relative grid items-center gap-10 md:grid-cols-2">
+              {/* ASCII — background on mobile, right column on desktop */}
+              <div className="absolute inset-0 opacity-25 pointer-events-none md:relative md:order-2 md:opacity-100 md:pointer-events-auto md:h-full md:min-h-[600px]">
+                <AsciiHero isMobile={isMobile} />
+              </div>
+
+              <div className="relative z-10 text-center md:text-left md:order-1">
                 <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
                   Lær å bruke AI ansvarlig
                 </h1>
@@ -152,9 +159,6 @@ const Index = () => {
                     Les mer
                   </Link>
                 </div>
-              </div>
-              <div className="relative h-full min-h-[500px] w-full overflow-hidden md:min-h-[600px]">
-                <AsciiHero />
               </div>
             </div>
           </div>
