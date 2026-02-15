@@ -134,7 +134,7 @@ const Index = () => {
             <div className="relative grid items-center gap-10 md:grid-cols-[1fr_minmax(0,480px)]">
               {/* ASCII — hidden on mobile, right column on desktop */}
               {!isMobile && (
-                <div className="order-2 h-full min-h-[600px]">
+                <div className="relative order-2 h-full min-h-[600px]">
                   <AsciiHero />
                 </div>
               )}
