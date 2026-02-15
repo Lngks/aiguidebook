@@ -130,15 +130,15 @@ const Index = () => {
             style={{ opacity: heroContentOpacity }}
           >
             <div className="grid items-center gap-10 md:grid-cols-2">
-              <div>
+              <div className="text-center md:text-left">
                 <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
                   Lær å bruke AI ansvarlig
                 </h1>
-                <p className="mb-8 max-w-lg text-lg text-muted-foreground">
+                <p className="mb-8 mx-auto max-w-lg text-lg text-muted-foreground md:mx-0">
                   AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som
                   er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
                 </p>
-                <div className="flex gap-3">
+                <div className="flex justify-center gap-3 md:justify-start">
                   <Link
                     to="/guidelines"
                     className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-semibold text-accent-foreground transition-transform hover:scale-105"
