@@ -132,10 +132,12 @@ const Index = () => {
             style={{ opacity: heroContentOpacity }}
           >
             <div className="relative grid items-center gap-10 md:grid-cols-2">
-              {/* ASCII — background on mobile, right column on desktop */}
-              <div className="absolute inset-0 opacity-50 pointer-events-none md:relative md:order-2 md:opacity-100 md:pointer-events-auto md:h-full md:min-h-[600px]">
-                <AsciiHero isMobile={isMobile} />
-              </div>
+              {/* ASCII — hidden on mobile, right column on desktop */}
+              {!isMobile && (
+                <div className="order-2 h-full min-h-[600px]">
+                  <AsciiHero />
+                </div>
+              )}
 
               <div className="relative z-10 text-center md:text-left md:order-1">
                 <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
