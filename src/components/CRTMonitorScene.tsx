@@ -682,19 +682,22 @@ const CameraController = ({ journeyStarted, onJourneyComplete }: { journeyStarte
       const p = t / 0.08;
       const ease = p * p * (3 - 2 * p);
       camera.position.set(
-        0,
-        THREE.MathUtils.lerp(0.3, 0.25, ease),
-        THREE.MathUtils.lerp(4.5, 0.5, ease)
+        THREE.MathUtils.lerp(0, 12, ease),
+        THREE.MathUtils.lerp(0.3, 14, ease),
+        THREE.MathUtils.lerp(4.5, 12, ease)
       );
-      camera.lookAt(0, 0, -5);
+      const lookZ = THREE.MathUtils.lerp(0, -10, ease);
+      camera.lookAt(0, 0, lookZ);
     } else {
       const landscapeT = (t - 0.08) / 0.92;
       const z = THREE.MathUtils.lerp(0, -185, landscapeT);
-      const y = -0.5 + Math.sin(landscapeT * Math.PI * 2) * 0.8;
-      const x = Math.sin(landscapeT * Math.PI * 3) * 2;
 
-      camera.position.set(x, y, z);
-      camera.lookAt(x * 0.3, y - 0.5, z - 15);
+      // Isometric-style elevated offset view
+      const isoX = 12 + Math.sin(landscapeT * Math.PI * 2) * 3;
+      const isoY = 14 + Math.sin(landscapeT * Math.PI * 1.5) * 2;
+
+      camera.position.set(isoX, isoY, z + 12);
+      camera.lookAt(0, -2, z - 10);
 
       // Trigger journey complete when near the end (deferred to avoid unmounting during useFrame)
       if (landscapeT > 0.95 && !completedRef.current) {
