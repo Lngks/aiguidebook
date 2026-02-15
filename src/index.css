@@ -33,6 +33,10 @@
     --accent-secondary: 270 100% 25%;
     --accent-foreground: 0 0% 100%;
 
+    --tertiary: 38 92% 50%;
+    --tertiary-foreground: 0 0% 100%;
+    --tertiary-secondary: 25 95% 40%;
+
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
 
