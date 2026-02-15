@@ -212,51 +212,42 @@ const Index = () => {
       </section>
 
       {/* Bruk AI med tillit — transparent, hero background shows through */}
-      <ParallaxSection speed={0.15} className="relative z-[5]">
-        <section className="relative py-20">
-          <div className="absolute inset-0 -top-64 -bottom-64 md:-top-48 md:-bottom-48 lg:-top-40 lg:-bottom-40 bg-muted" />
-          <div className="container relative z-10 mx-auto px-4">
-            <div className="mb-12 text-center">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-secondary-foreground/70">
-                Trygghet
-              </p>
-              <h2
-                className="text-3xl font-bold text-secondary-foreground md:text-4xl"
-                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.3)" }}
-              >
-                Bruk AI med tillit
-              </h2>
-              <p
-                className="mx-auto mt-3 max-w-xl text-secondary-foreground/70"
-                style={{ textShadow: "0 1px 6px rgba(0,0,0,0.2)" }}
-              >
-                Vit at du handler riktig når du bruker AI-verktøy.
-              </p>
-            </div>
-            <div className="grid gap-6 md:grid-cols-3">
-              {trustCards.map((card) => (
-                <Link
-                  key={card.title}
-                  to={card.path}
-                  className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
-                >
-                  <div className="flex aspect-video items-center justify-center rounded-lg bg-muted/30 mb-4">
-                    <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
-                  </div>
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    {card.label}
-                  </p>
-                  <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
-                  <p className="text-sm text-muted-foreground">{card.description}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors group-hover:text-primary/80">
-                    Les mer <ArrowRight className="h-3 w-3" />
-                  </span>
-                </Link>
-              ))}
-            </div>
+      <section className="relative z-10 bg-background py-20">
+        <div className="container mx-auto px-4">
+          <div className="mb-12 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              Trygghet
+            </p>
+            <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+              Bruk AI med tillit
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+              Vit at du handler riktig når du bruker AI-verktøy.
+            </p>
           </div>
-        </section>
-      </ParallaxSection>
+          <div className="grid gap-6 md:grid-cols-3">
+            {trustCards.map((card) => (
+              <Link
+                key={card.title}
+                to={card.path}
+                className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
+              >
+                <div className="flex aspect-video items-center justify-center rounded-lg bg-muted/30 mb-4">
+                  <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
+                </div>
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  {card.label}
+                </p>
+                <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
+                <p className="text-sm text-muted-foreground">{card.description}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors group-hover:text-primary/80">
+                  Les mer <ArrowRight className="h-3 w-3" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Se det i praksis — static, no gap */}
       <section className="relative z-10 bg-primary py-16 text-primary-foreground">
