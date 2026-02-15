@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "react-router-dom";
@@ -131,7 +130,7 @@ const Index = () => {
             className="container relative z-10 mx-auto px-4 transition-opacity duration-100"
             style={{ opacity: heroContentOpacity }}
           >
-            <div className="relative grid items-center gap-10 md:grid-cols-[1fr_minmax(0,480px)]">
+            <div className="relative grid items-center gap-10 md:grid-cols-[1fr_minmax(0,680px)]">
               {/* ASCII — hidden on mobile, right column on desktop */}
               {!isMobile && (
                 <div className="relative order-2 h-full min-h-[600px]">
@@ -171,11 +170,7 @@ const Index = () => {
       <div className="relative z-20">
         <div className="absolute top-0 left-0 w-full h-px bg-border/20" />
         <div className="absolute top-[-31px] left-1/2 -translate-x-1/2 w-[1040px] h-[32px] pointer-events-none">
-          <svg
-            viewBox="0 0 640 48"
-            preserveAspectRatio="none"
-            className="w-full h-full text-background fill-current"
-          >
+          <svg viewBox="0 0 640 48" preserveAspectRatio="none" className="w-full h-full text-background fill-current">
             <path d="M0 48 L 180 48 C 220 48 240 0 280 0 L 360 0 C 400 0 420 48 460 48 L 640 48 Z" />
           </svg>
           {/* Accent Line */}
@@ -185,12 +180,9 @@ const Index = () => {
 
       {/* Tre ting du må vite — scrolls OVER hero */}
       <section className="relative z-10 bg-background px-4 pt-10 pb-20">
-
         <div className="container mx-auto">
           <div className="mb-12 text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-              Hovedpoengene
-            </p>
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
             <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
               Vi bryter ned det kompliserte og gjør det enkelt. Ingen forvirrende fagord, bare svar du kan stole på.
@@ -269,10 +261,10 @@ const Index = () => {
             </div>
           </div>
         </section>
-      </ParallaxSection >
+      </ParallaxSection>
 
       {/* Se det i praksis — static, no gap */}
-      < section className="relative z-10 bg-primary py-16 text-primary-foreground" >
+      <section className="relative z-10 bg-primary py-16 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
           <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
@@ -293,19 +285,19 @@ const Index = () => {
             </Link>
           </div>
         </div>
-      </section >
+      </section>
 
       {/* Placeholder image — static */}
-      < section className="relative z-10 bg-background" >
+      <section className="relative z-10 bg-background">
         <div className="container mx-auto px-4 py-16">
           <div className="mx-auto flex max-w-md items-center justify-center rounded-2xl bg-muted py-20">
             <ImageIcon className="h-16 w-16 text-muted-foreground/30" />
           </div>
         </div>
-      </section >
+      </section>
 
       {/* FAQ — static */}
-      < section className="relative z-10 bg-background" >
+      <section className="relative z-10 bg-background">
         <div className="container mx-auto px-4 pb-20">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
@@ -326,10 +318,10 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </section >
+      </section>
 
       {/* Trenger du mer hjelp — static */}
-      < section className="relative z-10 bg-background" >
+      <section className="relative z-10 bg-background">
         <div className="container mx-auto px-4 pb-20 text-center">
           <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
           <p className="mt-2 text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
@@ -340,7 +332,7 @@ const Index = () => {
             Kontakt
           </Link>
         </div>
-      </section >
+      </section>
     </>
   );
 };
