@@ -10,14 +10,14 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "p-0.5 overflow-hidden rounded-md bg-gradient-to-br from-accent to-sky text-foreground hover:text-accent-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius)-2px)] [&>span]:bg-background/80 [&>span]:backdrop-blur-md [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+          "p-[2px] overflow-hidden rounded-lg bg-gradient-to-r from-[hsl(var(--accent))] to-[hsl(var(--accent-secondary))] text-foreground hover:text-accent-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-card/90 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
         destructive:
-          "p-0.5 overflow-hidden rounded-md bg-gradient-to-br from-destructive to-destructive/60 text-foreground hover:text-destructive-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius)-2px)] [&>span]:bg-background/80 [&>span]:backdrop-blur-md [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+          "p-[2px] overflow-hidden rounded-lg bg-gradient-to-r from-destructive to-destructive/60 text-foreground hover:text-destructive-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-card/90 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
         outline:
-          "border border-input bg-background/60 backdrop-blur-md rounded-md hover:bg-accent hover:text-accent-foreground transition-colors",
+          "border border-input bg-card/60 backdrop-blur-xl rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors",
         secondary:
-          "p-0.5 overflow-hidden rounded-md bg-gradient-to-br from-muted-foreground to-muted text-foreground hover:text-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius)-2px)] [&>span]:bg-background/80 [&>span]:backdrop-blur-md [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
-        ghost: "hover:bg-accent hover:text-accent-foreground rounded-md transition-colors",
+          "p-[2px] overflow-hidden rounded-lg bg-gradient-to-r from-muted-foreground to-muted text-foreground hover:text-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-card/90 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+        ghost: "hover:bg-accent hover:text-accent-foreground rounded-lg transition-colors",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
