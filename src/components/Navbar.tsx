@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const navItems = [
   { label: "Verktøy", path: "/tools" },
@@ -87,12 +88,9 @@ const Navbar = () => {
               </ul>
 
               <div className="hidden items-center gap-4 md:flex shrink-0">
-                <Link
-                  to="/guidelines"
-                  className="rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-primary-foreground shadow-sm transition-all duration-300 hover:bg-primary/90 hover:shadow-md hover:-translate-y-0.5"
-                >
-                  Kom i gang
-                </Link>
+                <Button asChild size="sm">
+                  <Link to="/guidelines">Kom i gang</Link>
+                </Button>
               </div>
             </>
           )}
@@ -128,13 +126,11 @@ const Navbar = () => {
                 </li>
               ))}
               <li className="pt-4">
-                <Link
-                  to="/guidelines"
-                  onClick={() => setMobileOpen(false)}
-                  className="block w-full rounded-full bg-accent px-4 py-3.5 text-center text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-95 transition-all"
-                >
-                  Kom i gang
-                </Link>
+                <Button asChild className="w-full">
+                  <Link to="/guidelines" onClick={() => setMobileOpen(false)}>
+                    Kom i gang
+                  </Link>
+                </Button>
               </li>
             </ul>
           </div>

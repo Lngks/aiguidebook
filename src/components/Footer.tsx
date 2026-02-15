@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
+import { Button } from "@/components/ui/button";
 
 const footerColumns = [
   {
@@ -69,9 +70,9 @@ const Footer = () => (
             placeholder="Din e-post"
             className="flex-1 rounded-md border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-2 text-sm text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent"
           />
-          <button className="rounded-md bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105">
-            Abonner
-          </button>
+           <Button size="sm">
+             Abonner
+           </Button>
         </div>
       </div>
     </div>

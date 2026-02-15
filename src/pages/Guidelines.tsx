@@ -9,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 
 const keyTopics = [
   {
@@ -113,7 +114,9 @@ const Guidelines = () => {
               Det følger et ansvar med å bruke AI. Bruk det til å utforske emner, sjekke forståelsen din og lære mer. Men still alltid spørsmål og kontroller alt selv.
             </p>
             <div className="mt-6 flex justify-center gap-3">
-              <Link to="/tools" className="rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">Les mer</Link>
+              <Button asChild>
+                <Link to="/tools">Les mer</Link>
+              </Button>
               <Link to="/privacy" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
                 Personvern <ArrowRight className="h-3 w-3" />
               </Link>
@@ -156,9 +159,9 @@ const Guidelines = () => {
                 AI-modeller kan gjøre feil som følge av skjevheter i treningsdataene. Det kan resultere i stereotype eller ubalanserte svar. Stol aldri blindt på AI.
               </p>
               <div className="mt-6 flex gap-3">
-                <Link to="/privacy" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
-                  Personvern
-                </Link>
+                <Button asChild>
+                  <Link to="/privacy">Personvern</Link>
+                </Button>
                 <Link to="#" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
                   Mer <ArrowRight className="h-3 w-3" />
                 </Link>
@@ -178,10 +181,14 @@ const Guidelines = () => {
           <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
             Bruk sjekklisten vår hver gang du skriver en innlevering med AI-støtte.
           </p>
-          <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-            <a href="#checklist-section" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground">Start</a>
-            <Link to="/tools" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground">Verktøy</Link>
-          </div>
+            <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
+              <Button asChild>
+                <a href="#checklist-section">Start</a>
+              </Button>
+              <Button asChild variant="outline">
+                <Link to="/tools">Verktøy</Link>
+              </Button>
+            </div>
         </div>
       </section>
 

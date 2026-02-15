@@ -6,6 +6,7 @@ import DarkVeil from "@/components/DarkVeil/DarkVeil";
 import ParallaxSection from "@/components/ParallaxSection";
 import AsciiHero from "@/components/AsciiHero";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 
 const overviewCards = [
   {
@@ -147,18 +148,12 @@ const Index = () => {
                   er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
                 </p>
                 <div className="flex justify-center gap-3 md:justify-start">
-                  <Link
-                    to="/guidelines"
-                    className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-semibold text-accent-foreground transition-transform hover:scale-105"
-                  >
-                    Start
-                  </Link>
-                  <Link
-                    to="/tools"
-                    className="inline-flex items-center gap-2 rounded-md border border-border px-6 py-3 font-semibold text-foreground transition-colors hover:bg-muted"
-                  >
-                    Les mer
-                  </Link>
+                  <Button asChild size="lg">
+                    <Link to="/guidelines">Start</Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link to="/tools">Les mer</Link>
+                  </Button>
                 </div>
               </div>
             </div>
