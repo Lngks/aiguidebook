@@ -214,7 +214,7 @@ const Index = () => {
       </section>
 
       {/* Bruk AI med tillit — transparent, hero background shows through */}
-      <section className="relative z-10 bg-background py-20">
+      <section className="relative z-10 bg-background py-24">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
             <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
