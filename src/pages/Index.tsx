@@ -161,10 +161,12 @@ const Index = () => {
         </section>
       </div>
 
+
+
       {/* Separator line + decorative tab — static, NOT inside any animated container */}
       <div className="relative z-20">
         <div className="absolute top-0 left-0 w-full h-px bg-border/20" />
-        <div className="absolute top-[-31px] left-1/2 -translate-x-1/2 w-[1040px] h-[32px] pointer-events-none">
+        <div className="absolute top-[-32px] left-1/2 -translate-x-1/2 w-[1040px] h-[33px] pointer-events-none">
           <svg viewBox="0 0 640 48" preserveAspectRatio="none" className="w-full h-full text-background fill-current">
             <path d="M0 48 L 180 48 C 220 48 240 0 280 0 L 360 0 C 400 0 420 48 460 48 L 640 48 Z" />
           </svg>
@@ -174,7 +176,7 @@ const Index = () => {
       </div>
 
       {/* Tre ting du må vite — scrolls OVER hero */}
-      <section className="relative z-10 bg-background px-4 pt-10 pb-20">
+      <section className="relative z-10 bg-background px-4 pt-20 pb-20">
         <div className="container mx-auto">
           <div className="mb-12 text-center">
             <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
