@@ -29,30 +29,35 @@ const Navbar = () => {
       <header
         className={cn(
           "relative pointer-events-auto transition-all duration-500 ease-in-out flex items-center overflow-hidden",
-          isScrolled
-            ? "mt-4 h-14 w-[95%] max-w-5xl rounded-2xl"
-            : "mt-0 h-16 w-full max-w-none rounded-none",
-          mobileOpen && "h-auto rounded-2xl w-full max-w-none mt-0 flex-col items-stretch"
+          isScrolled ? "mt-4 h-14 w-[95%] max-w-5xl rounded-2xl" : "mt-0 h-16 w-full max-w-none rounded-none",
+          mobileOpen && "h-auto rounded-2xl w-full max-w-none mt-0 flex-col items-stretch",
         )}
       >
         {/* Isolated Decorative Layer - Handles background, blur, border, and shadow with asymmetric transitions */}
-        <div className={cn(
-          "absolute inset-0 -z-10 transition-all",
-          (isScrolled || mobileOpen)
-            ? "opacity-100 duration-200"
-            : "opacity-0 duration-0 pointer-events-none"
-        )}>
-          <div className={cn(
-            "absolute inset-0 bg-background/50 backdrop-blur-md shadow-sm border border-border/40 rounded-2xl",
-            mobileOpen && "bg-background/95 backdrop-blur-xl shadow-lg border-border/10"
-          )} />
+        <div
+          className={cn(
+            "absolute inset-0 -z-10 transition-all",
+            isScrolled || mobileOpen ? "opacity-100 duration-200" : "opacity-0 duration-0 pointer-events-none",
+          )}
+        >
+          <div
+            className={cn(
+              "absolute inset-0 bg-background/50 backdrop-blur-md shadow-sm border border-border/40 rounded-2xl",
+              mobileOpen && "bg-background/95 backdrop-blur-xl shadow-lg border-border/10",
+            )}
+          />
         </div>
 
-        <div className={cn(
-          "flex w-full items-center justify-between px-6 transition-all duration-500 mx-auto h-14 md:h-full",
-          !isScrolled && "max-w-7xl"
-        )}>
-          <Link to="/" className="flex items-center gap-2 shrink-0 transition-transform duration-300 hover:scale-105 active:scale-95">
+        <div
+          className={cn(
+            "flex w-full items-center justify-between px-6 transition-all duration-500 mx-auto h-14 md:h-full",
+            !isScrolled && "max-w-7xl",
+          )}
+        >
+          <Link
+            to="/"
+            className="flex items-center gap-2 shrink-0 transition-transform duration-300 hover:scale-105 active:scale-95"
+          >
             <Logo variant="auto" className="h-4 w-auto transition-all duration-300" />
           </Link>
 
@@ -66,16 +71,16 @@ const Navbar = () => {
                       to={item.path}
                       className={cn(
                         "text-xs font-medium transition-all duration-300 hover:text-primary relative group",
-                        location.pathname === item.path
-                          ? "text-primary"
-                          : "text-muted-foreground"
+                        location.pathname === item.path ? "text-primary" : "text-muted-foreground",
                       )}
                     >
                       {item.label}
-                      <span className={cn(
-                        "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300",
-                        location.pathname === item.path ? "w-full" : "w-0 group-hover:w-full"
-                      )} />
+                      <span
+                        className={cn(
+                          "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300",
+                          location.pathname === item.path ? "w-full" : "w-0 group-hover:w-full",
+                        )}
+                      />
                     </Link>
                   </li>
                 ))}
@@ -115,7 +120,7 @@ const Navbar = () => {
                       "block rounded-lg px-4 py-3 text-base font-medium transition-all duration-200 hover:bg-primary/5",
                       location.pathname === item.path
                         ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:text-foreground"
+                        : "text-muted-foreground hover:text-foreground",
                     )}
                   >
                     {item.label}
@@ -126,7 +131,7 @@ const Navbar = () => {
                 <Link
                   to="/guidelines"
                   onClick={() => setMobileOpen(false)}
-                  className="block w-full rounded-full bg-primary px-4 py-3.5 text-center text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-95 transition-all"
+                  className="block w-full rounded-full bg-accent px-4 py-3.5 text-center text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-95 transition-all"
                 >
                   Kom i gang
                 </Link>
