@@ -46,17 +46,17 @@ const needsGradientWrapper = (v?: string | null) =>
 const gradientClasses: Record<string, string> = {
   default: "bg-gradient-to-r from-[hsl(var(--accent))] to-[hsl(var(--accent-secondary))]",
   destructive: "bg-gradient-to-r from-destructive to-destructive/60",
-  secondary: "bg-gradient-to-r from-[hsl(var(--muted-foreground))] to-[hsl(var(--muted-foreground)/0.3)]",
+  secondary: "bg-gradient-to-r from-muted-foreground to-muted",
 };
 
 const innerVariants = cva(
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap w-full rounded-[calc(var(--radius))] bg-card/90 backdrop-blur-xl transition-all duration-200 text-sm font-medium text-foreground group-hover:bg-transparent",
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap w-full rounded-[calc(var(--radius))] bg-card/90 backdrop-blur-xl transition-all duration-200 text-sm font-medium text-foreground group-hover:bg-transparent group-hover:text-accent-foreground",
   {
     variants: {
       size: {
-        default: "px-6 py-2",
-        sm: "px-5 py-1.5",
-        lg: "px-10 py-2.5",
+        default: "px-4 py-2",
+        sm: "px-3 py-1.5",
+        lg: "px-8 py-2.5",
         icon: "",
       },
     },
