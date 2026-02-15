@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, HelpCircle, Image as ImageIcon } from "lucide-react";
+import DarkVeil from "@/components/DarkVeil/DarkVeil";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -58,8 +59,18 @@ const Guidelines = () => {
   return (
     <>
       {/* Hero */}
-      <section className="bg-primary py-16 text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
+      <section className="relative overflow-hidden bg-secondary py-16 text-primary-foreground">
+        <div className="absolute inset-0">
+          <DarkVeil
+            hueShift={0}
+            noiseIntensity={0}
+            scanlineIntensity={0}
+            speed={0.5}
+            scanlineFrequency={0}
+            warpAmount={0}
+          />
+        </div>
+        <div className="container relative z-10 mx-auto px-4 text-center">
           <p className="section-fade-in mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/60">Retningslinjer</p>
           <h1 className="section-fade-in text-4xl font-bold md:text-5xl">Bruk AI ansvarlig</h1>
           <p className="section-fade-in-delay-1 mx-auto mt-4 max-w-xl text-lg text-primary-foreground/70">
