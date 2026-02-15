@@ -175,20 +175,26 @@ const Guidelines = () => {
       </section>
 
       {/* Sjekkliste CTA */}
-      <section id="checklist" className="bg-primary py-16 text-primary-foreground">
+      <section id="checklist" className="relative z-10 bg-accent-secondary py-16 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Sjekkliste</h2>
           <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
             Bruk sjekklisten vår hver gang du skriver en innlevering med AI-støtte.
           </p>
-            <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-              <Button asChild>
-                <a href="#checklist-section">Start</a>
-              </Button>
-              <Button asChild variant="outline">
-                <Link to="/tools">Verktøy</Link>
-              </Button>
-            </div>
+          <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
+            <a
+              href="#checklist-section"
+              className="rounded-md bg-tertiary px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
+            >
+              Start
+            </a>
+            <Link
+              to="/tools"
+              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+            >
+              Verktøy
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -215,9 +221,8 @@ const Guidelines = () => {
                 />
                 <label
                   htmlFor={`check-${i}`}
-                  className={`cursor-pointer text-sm transition-colors ${
-                    checked[i] ? "text-muted-foreground line-through" : "text-card-foreground"
-                  }`}
+                  className={`cursor-pointer text-sm transition-colors ${checked[i] ? "text-muted-foreground line-through" : "text-card-foreground"
+                    }`}
                 >
                   {item}
                 </label>
@@ -257,6 +262,31 @@ const Guidelines = () => {
           <Link to="#" className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
             Kontakt
           </Link>
+        </div>
+      </section>
+
+
+      {/* CTA Banner */}
+      <section className="relative z-10 bg-accent-secondary py-16 text-primary-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
+          <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
+            Utforsk retningslinjene våre eller test AI-pipelinen selv.
+          </p>
+          <div className="mt-6 flex justify-center gap-3">
+            <Link
+              to="/interactive"
+              className="rounded-md bg-tertiary px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
+            >
+              Prøv selv
+            </Link>
+            <Link
+              to="/tools"
+              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+            >
+              Se verktøy
+            </Link>
+          </div>
         </div>
       </section>
 

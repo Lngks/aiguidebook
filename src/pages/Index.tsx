@@ -257,22 +257,18 @@ const Index = () => {
             Utforsk retningslinjene våre eller test AI-pipelinen selv.
           </p>
           <div className="mt-6 flex justify-center gap-3">
-            <Button asChild size="default">
-              <Link
-                to="/interactive"
-                className="rounded-md bg-background px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105"
-              >
-                Prøv selv
-              </Link>
-            </Button>
-            <Button asChild variant="default" size="sm">
-              <Link
-                to="/guidelines"
-                className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
-              >
-                Retningslinjer
-              </Link>
-            </Button>
+            <Link
+              to="/interactive"
+              className="rounded-md bg-tertiary px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
+            >
+              Prøv selv
+            </Link>
+            <Link
+              to="/guidelines"
+              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+            >
+              Retningslinjer
+            </Link>
           </div>
         </div>
       </section>

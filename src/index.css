@@ -23,17 +23,14 @@
     --secondary: 300 100% 2%;
     --secondary-foreground: 240 5.9% 98%;
 
-    --tertiary: 23 100% 30.4%;
-    --tertiary-foreground: 23 100% 50%;
-
-    --muted: 0 0% 95%;
+    --muted: 0 0% 20%;
     --muted-foreground: 240 5.9% 85%;
 
     --accent: 270 100% 47%;
-    --accent-secondary: 270 100% 25%;
+    --accent-secondary: 270 100% 15%;
     --accent-foreground: 0 0% 100%;
 
-    --tertiary: 38 92% 50%;
+    --tertiary: 73 100% 47%;
     --tertiary-foreground: 0 0% 100%;
     --tertiary-secondary: 25 95% 40%;
 

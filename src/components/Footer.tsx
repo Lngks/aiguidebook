@@ -56,8 +56,8 @@ const footerColumns = [
 const Footer = () => (
   <footer className="border-t border-border bg-background">
     {/* Newsletter */}
-    <div className="border-b border-border bg-primary">
-      <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-6 md:flex-row">
+    <div className="border-b border-border bg-background/90">
+      <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 pt-24 pb-6 md:flex-row">
         <div>
           <p className="font-medium text-primary-foreground" style={{ fontFamily: "'Poppins', sans-serif" }}>
             Få oppdateringer
@@ -70,9 +70,9 @@ const Footer = () => (
             placeholder="Din e-post"
             className="flex-1 rounded-md border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-2 text-sm text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent"
           />
-           <Button size="sm">
-             Abonner
-           </Button>
+          <Button size="sm">
+            Abonner
+          </Button>
         </div>
       </div>
     </div>

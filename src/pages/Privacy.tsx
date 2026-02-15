@@ -156,19 +156,25 @@ const Privacy = () => {
       </section>
 
       {/* CTA Banner */}
-      <section className="bg-primary py-16 text-primary-foreground">
+      <section className="relative z-10 bg-accent-secondary py-16 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Bruk AI med omtanke</h2>
-          <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
-            Ansvarlig bruk starter med kunnskap. Les retningslinjene våre.
+          <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
+          <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
+            Utforsk retningslinjene våre eller test AI-pipelinen selv.
           </p>
-          <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-            <Button asChild>
-              <Link to="/guidelines">Retningslinjer</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link to="/tools">Verktøy</Link>
-            </Button>
+          <div className="mt-6 flex justify-center gap-3">
+            <Link
+              to="/interactive"
+              className="rounded-md bg-tertiary px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
+            >
+              Prøv selv
+            </Link>
+            <Link
+              to="/guidelines"
+              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+            >
+              Retningslinjer
+            </Link>
           </div>
         </div>
       </section>
