@@ -18,7 +18,7 @@ const buttonVariants = cva(
         secondary:
           "p-[0.5px] overflow-hidden rounded-lg bg-gradient-to-r from-muted-foreground to-muted text-foreground hover:text-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-background/95 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
         tertiary:
-          "p-[0.5px] overflow-hidden rounded-lg bg-gradient-to-r from-muted-foreground to-muted text-foreground hover:text-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-background/95 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+          "p-[0.5px] overflow-hidden rounded-lg bg-gradient-to-r from-[hsl(var(--tertiary))] to-[hsl(var(--tertiary-secondary))] text-foreground hover:text-tertiary-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-background/95 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
         ghost: "hover:bg-accent hover:text-accent-foreground rounded-lg transition-colors",
         link: "text-primary underline-offset-4 hover:underline",
       },
@@ -43,12 +43,13 @@ export interface ButtonProps
 }
 
 const needsGradientWrapper = (v?: string | null) =>
-  !v || v === "default" || v === "destructive" || v === "secondary";
+  !v || v === "default" || v === "destructive" || v === "secondary" || v === "tertiary";
 
 const gradientClasses: Record<string, string> = {
   default: "bg-gradient-to-r from-[hsl(var(--accent))] to-[hsl(var(--accent-secondary))]",
   destructive: "bg-gradient-to-r from-destructive to-destructive/60",
   secondary: "bg-gradient-to-r from-[hsl(0_0%_60%)] to-[hsl(0_0%_30%)]",
+  tertiary: "bg-gradient-to-r from-[hsl(var(--tertiary))] to-[hsl(var(--tertiary-secondary))]",
 };
 
 const innerVariants = cva(
