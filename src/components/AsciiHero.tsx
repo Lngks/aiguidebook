@@ -33,7 +33,7 @@ function CustomModel() {
     );
 }
 
-const AsciiHero = () => {
+const AsciiHero = ({ isMobile = false }: { isMobile?: boolean }) => {
     return (
         <div className="absolute inset-0 w-full h-full font-mono text-xs md:text-sm bg-transparent">
             {/* Camera moved further back and UP to view larger model */}
@@ -47,6 +47,7 @@ const AsciiHero = () => {
                 <OrbitControls
                     enableZoom={false}
                     enablePan={false}
+                    enableRotate={!isMobile}
                     maxPolarAngle={Math.PI / 1.5}
                     minPolarAngle={Math.PI / 3}
                     autoRotate
