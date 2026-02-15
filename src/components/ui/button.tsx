@@ -40,16 +40,81 @@ export interface ButtonProps
   asChild?: boolean;
 }
 
-const needsSpanWrapper = (v?: string | null) =>
+const needsGradientWrapper = (v?: string | null) =>
   !v || v === "default" || v === "destructive" || v === "secondary";
+
+const gradientClasses: Record<string, string> = {
+  default: "bg-gradient-to-r from-[hsl(var(--accent))] to-[hsl(var(--accent-secondary))]",
+  destructive: "bg-gradient-to-r from-destructive to-destructive/60",
+  secondary: "bg-gradient-to-r from-muted-foreground to-muted",
+};
+
+const innerVariants = cva(
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap w-full rounded-[calc(var(--radius))] bg-card/90 backdrop-blur-xl transition-all duration-200 text-sm font-medium text-foreground group-hover:bg-transparent group-hover:text-accent-foreground",
+  {
+    variants: {
+      size: {
+        default: "px-4 py-2",
+        sm: "px-3 py-1.5",
+        lg: "px-8 py-2.5",
+        icon: "",
+      },
+    },
+    defaultVariants: { size: "default" },
+  },
+);
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, children, ...props }, ref) => {
+    const wrap = needsGradientWrapper(variant);
+
+    if (wrap) {
+      const Comp = asChild ? Slot : "button";
+      // For asChild (Link), we wrap in an outer div for the gradient border
+      if (asChild) {
+        return (
+          <span
+            className={cn(
+              "group relative inline-flex p-[2px] overflow-hidden rounded-lg cursor-pointer",
+              gradientClasses[variant || "default"],
+              "focus-within:ring-2 focus-within:ring-ring",
+              className,
+            )}
+          >
+            <Comp
+              ref={ref}
+              className={innerVariants({ size })}
+              {...props}
+            >
+              {children}
+            </Comp>
+          </span>
+        );
+      }
+      return (
+        <Comp
+          ref={ref}
+          className={cn(
+            "group relative inline-flex p-[2px] overflow-hidden rounded-lg",
+            gradientClasses[variant || "default"],
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+            className,
+          )}
+          {...props}
+        >
+          <span className={innerVariants({ size })}>{children}</span>
+        </Comp>
+      );
+    }
+
     const Comp = asChild ? Slot : "button";
-    const wrap = needsSpanWrapper(variant);
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
-        {wrap ? <span>{children}</span> : children}
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      >
+        {children}
       </Comp>
     );
   },

@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 
 const featuredTools = [
   {
@@ -51,8 +52,8 @@ const Tools = () => {
             Lær hvilke verktøy som fungerer best og hvordan du bruker dem riktig.
           </p>
           <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-            <button className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground">Utforsk</button>
-            <button className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground">Retningslinjer</button>
+            <Button>Utforsk</Button>
+            <Button variant="outline">Retningslinjer</Button>
           </div>
         </div>
       </section>
@@ -160,12 +161,12 @@ const Tools = () => {
             Ansvarlig bruk starter med kunnskap. Les retningslinjene våre før du begynner.
           </p>
           <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-            <Link to="/guidelines" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10">
-              Les
-            </Link>
-            <Link to="/privacy" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10">
-              Personvern
-            </Link>
+            <Button asChild variant="outline">
+              <Link to="/guidelines">Les</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/privacy">Personvern</Link>
+            </Button>
           </div>
         </div>
       </section>

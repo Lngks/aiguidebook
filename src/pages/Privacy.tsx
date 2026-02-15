@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 
 const risks = [
   {
@@ -162,12 +163,12 @@ const Privacy = () => {
             Ansvarlig bruk starter med kunnskap. Les retningslinjene våre.
           </p>
           <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-            <Link to="/guidelines" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground">
-              Retningslinjer
-            </Link>
-            <Link to="/tools" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground">
-              Verktøy
-            </Link>
+            <Button asChild>
+              <Link to="/guidelines">Retningslinjer</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/tools">Verktøy</Link>
+            </Button>
           </div>
         </div>
       </section>
