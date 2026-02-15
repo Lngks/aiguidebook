@@ -250,25 +250,29 @@ const Index = () => {
       </section>
 
       {/* Se det i praksis — static, no gap */}
-      <section className="relative z-10 bg-primary py-16 text-primary-foreground">
+      <section className="relative z-10 bg-accent-secondary py-16 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
           <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
             Utforsk retningslinjene våre eller test AI-pipelinen selv.
           </p>
           <div className="mt-6 flex justify-center gap-3">
-            <Link
-              to="/guidelines"
-              className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105"
-            >
-              Retningslinjer
-            </Link>
-            <Link
-              to="/interactive"
-              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
-            >
-              Pipeline
-            </Link>
+            <Button asChild size="default">
+              <Link
+                to="/interactive"
+                className="rounded-md bg-background px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105"
+              >
+                Prøv selv
+              </Link>
+            </Button>
+            <Button asChild variant="default" size="sm">
+              <Link
+                to="/guidelines"
+                className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+              >
+                Retningslinjer
+              </Link>
+            </Button>
           </div>
         </div>
       </section>

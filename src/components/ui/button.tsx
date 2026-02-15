@@ -10,13 +10,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "p-[2px] overflow-hidden rounded-lg bg-gradient-to-r from-[hsl(var(--accent))] to-[hsl(var(--accent-secondary))] text-foreground hover:text-accent-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-card/90 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+          "p-[2px] overflow-hidden rounded-lg bg-gradient-to-r from-[hsl(var(--accent))] to-[hsl(var(--accent-secondary))] text-foreground hover:text-accent-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-background/95 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
         destructive:
-          "p-[2px] overflow-hidden rounded-lg bg-gradient-to-r from-destructive to-destructive/60 text-foreground hover:text-destructive-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-card/90 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+          "p-[2px] overflow-hidden rounded-lg bg-gradient-to-r from-destructive to-destructive/60 text-foreground hover:text-destructive-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-background/95 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
         outline:
-          "border border-input bg-card/60 backdrop-blur-xl rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors",
+          "border border-input bg-background/60 backdrop-blur-xl rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors",
         secondary:
-          "p-[0.5px] overflow-hidden rounded-lg bg-gradient-to-r from-muted-foreground to-muted text-foreground hover:text-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-card/90 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+          "p-[0.5px] overflow-hidden rounded-lg bg-gradient-to-r from-muted-foreground to-muted text-foreground hover:text-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-background/95 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+        tertiary:
+          "p-[0.5px] overflow-hidden rounded-lg bg-gradient-to-r from-muted-foreground to-muted text-foreground hover:text-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius))] [&>span]:bg-background/95 [&>span]:backdrop-blur-xl [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
         ghost: "hover:bg-accent hover:text-accent-foreground rounded-lg transition-colors",
         link: "text-primary underline-offset-4 hover:underline",
       },
@@ -50,7 +52,7 @@ const gradientClasses: Record<string, string> = {
 };
 
 const innerVariants = cva(
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap w-full rounded-[calc(var(--radius))] bg-card/90 backdrop-blur-xl transition-all duration-200 text-sm font-medium text-foreground group-hover:bg-transparent",
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap w-full rounded-[calc(var(--radius))] bg-background/95 backdrop-blur-xl transition-all duration-200 text-sm font-medium text-foreground group-hover:bg-transparent",
   {
     variants: {
       size: {

@@ -8,12 +8,13 @@
   :root {
     /* Dark mode colors as default */
     --background: 240 5.9% 10%;
+    --background-secondary: 240 5.9% 10%;
     --foreground: 240 5.9% 95%;
 
-    --card: 222 47% 9%;
+    --card: 260 5% 14%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222 47% 9%;
+    --popover: 260 5% 14%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 210 40% 98%;
@@ -22,11 +23,14 @@
     --secondary: 300 100% 2%;
     --secondary-foreground: 240 5.9% 98%;
 
+    --tertiary: 23 100% 30.4%;
+    --tertiary-foreground: 23 100% 50%;
+
     --muted: 0 0% 95%;
     --muted-foreground: 240 5.9% 85%;
 
     --accent: 270 100% 47%;
-    --accent-secondary: 220 90% 56%;
+    --accent-secondary: 270 100% 25%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 63% 31%;
