@@ -5,21 +5,25 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        default:
+          "p-0.5 overflow-hidden rounded-md bg-gradient-to-br from-accent to-sky text-foreground hover:text-accent-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius)-2px)] [&>span]:bg-background/80 [&>span]:backdrop-blur-md [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+        destructive:
+          "p-0.5 overflow-hidden rounded-md bg-gradient-to-br from-destructive to-destructive/60 text-foreground hover:text-destructive-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius)-2px)] [&>span]:bg-background/80 [&>span]:backdrop-blur-md [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+        outline:
+          "border border-input bg-background/60 backdrop-blur-md rounded-md hover:bg-accent hover:text-accent-foreground transition-colors",
+        secondary:
+          "p-0.5 overflow-hidden rounded-md bg-gradient-to-br from-muted-foreground to-muted text-foreground hover:text-foreground [&>span]:relative [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center [&>span]:w-full [&>span]:rounded-[calc(var(--radius)-2px)] [&>span]:bg-background/80 [&>span]:backdrop-blur-md [&>span]:transition-all [&>span]:duration-200 hover:[&>span]:bg-transparent",
+        ghost: "hover:bg-accent hover:text-accent-foreground rounded-md transition-colors",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        default: "h-10 [&>span]:px-4 [&>span]:py-2",
+        sm: "h-9 [&>span]:px-3 [&>span]:py-1.5",
+        lg: "h-11 [&>span]:px-8 [&>span]:py-2.5",
         icon: "h-10 w-10",
       },
     },
@@ -36,10 +40,18 @@ export interface ButtonProps
   asChild?: boolean;
 }
 
+const needsSpanWrapper = (v?: string | null) =>
+  !v || v === "default" || v === "destructive" || v === "secondary";
+
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+    const wrap = needsSpanWrapper(variant);
+    return (
+      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
+        {wrap ? <span>{children}</span> : children}
+      </Comp>
+    );
   },
 );
 Button.displayName = "Button";
