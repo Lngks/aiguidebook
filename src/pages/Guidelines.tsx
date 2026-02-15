@@ -282,7 +282,7 @@ const Guidelines = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
           <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
-            Utforsk retningslinjene våre eller test AI-pipelinen selv.
+            Få et unikt innblikk i prosessene som styrer dagens kunstige intelligens.
           </p>
           <div className="mt-6 flex justify-center gap-3">
             <Link
