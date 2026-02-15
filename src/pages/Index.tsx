@@ -133,7 +133,7 @@ const Index = () => {
           >
             <div className="relative grid items-center gap-10 md:grid-cols-2">
               {/* ASCII — background on mobile, right column on desktop */}
-              <div className="absolute inset-0 opacity-25 pointer-events-none md:relative md:order-2 md:opacity-100 md:pointer-events-auto md:h-full md:min-h-[600px]">
+              <div className="absolute inset-0 opacity-50 pointer-events-none md:relative md:order-2 md:opacity-100 md:pointer-events-auto md:h-full md:min-h-[600px]">
                 <AsciiHero isMobile={isMobile} />
               </div>
 
