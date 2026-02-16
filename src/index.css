@@ -68,9 +68,19 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Source Sans 3', system-ui, sans-serif;
+    overflow-x: clip;
+    width: 100%;
+  }
+
+  section[id] {
+    scroll-margin-top: 5rem;
   }
 
   h1,

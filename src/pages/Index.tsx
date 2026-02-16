@@ -166,7 +166,7 @@ const Index = () => {
       {/* Separator line + decorative tab — static, NOT inside any animated container */}
       <div className="relative z-20">
         <div className="absolute top-0 left-0 w-full h-px bg-border/20" />
-        <div className="absolute top-[-32px] left-1/2 -translate-x-1/2 w-[1040px] h-[33px] pointer-events-none">
+        <div className="absolute top-[-28px] left-1/2 -translate-x-1/2 w-[1100px] h-[29px] pointer-events-none">
           <svg viewBox="0 0 640 48" preserveAspectRatio="none" className="w-full h-full text-background fill-current">
             <path d="M0 48 L 180 48 C 220 48 240 0 280 0 L 360 0 C 400 0 420 48 460 48 L 640 48 Z" />
           </svg>

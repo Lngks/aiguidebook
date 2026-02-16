@@ -45,7 +45,7 @@ const Tools = () => {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-secondary py-16 text-primary-foreground">
+      <section className="relative overflow-hidden bg-secondary py-32 text-primary-foreground">
         <div className="absolute inset-0">
           <DarkVeil
             hueShift={0}
@@ -64,7 +64,7 @@ const Tools = () => {
           </p>
           <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
             <Button>Utforsk</Button>
-            <Button variant="outline">Retningslinjer</Button>
+            <Button variant="secondary">Retningslinjer</Button>
           </div>
         </div>
       </section>
@@ -82,14 +82,14 @@ const Tools = () => {
           {featuredTools.map((tool, i) => (
             <div
               key={tool.name}
-              className={`section-fade-in-delay-${i + 1} group relative overflow-hidden rounded-xl bg-primary p-6 text-primary-foreground shadow-md transition-all hover:-translate-y-1 hover:shadow-lg`}
+              className={`section-fade-in-delay-${i + 1} group relative overflow-hidden rounded-xl bg-muted/50 p-6 text-primary-foreground shadow-md transition-all hover:-translate-y-1 hover:shadow-lg`}
             >
               <div className="mb-4 inline-flex rounded-lg bg-primary-foreground/10 p-3">
                 <tool.icon className="h-6 w-6" />
               </div>
               <h3 className="mb-2 text-lg font-bold">{tool.name}</h3>
               <p className="mb-4 text-sm text-primary-foreground/70">{tool.description}</p>
-              <span className="inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-accent/80">
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-tertiary transition-colors group-hover:text-accent/80">
                 Besøk <ArrowRight className="h-3 w-3" />
               </span>
             </div>

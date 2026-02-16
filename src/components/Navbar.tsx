@@ -30,8 +30,8 @@ const Navbar = () => {
       <header
         className={cn(
           "relative pointer-events-auto transition-all duration-500 ease-in-out flex items-center overflow-hidden",
-          isScrolled ? "mt-4 h-14 w-[95%] max-w-5xl rounded-2xl" : "mt-0 h-16 w-full max-w-none rounded-none",
-          mobileOpen && "h-auto rounded-2xl w-full max-w-none mt-0 flex-col items-stretch",
+          isScrolled ? "mt-4 h-14 w-[95%] max-w-5xl rounded-lg" : "mt-0 h-16 w-full max-w-none rounded-none",
+          mobileOpen && "h-auto rounded-lg w-full max-w-none mt-0 flex-col items-stretch",
         )}
       >
         {/* Isolated Decorative Layer - Handles background, blur, border, and shadow with asymmetric transitions */}
@@ -43,7 +43,7 @@ const Navbar = () => {
         >
           <div
             className={cn(
-              "absolute inset-0 bg-background/50 backdrop-blur-md shadow-sm border border-border/40 rounded-2xl",
+              "absolute inset-0 bg-background/50 backdrop-blur-md shadow-sm border border-border/40 rounded-lg",
               mobileOpen && "bg-background/95 backdrop-blur-xl shadow-lg border-border/10",
             )}
           />
@@ -57,9 +57,9 @@ const Navbar = () => {
         >
           <Link
             to="/"
-            className="flex items-center gap-2 shrink-0 transition-transform duration-300 hover:scale-105 active:scale-95"
+            className="flex items-center py-2.5 gap-2 shrink-0 rounded-md p-1.5 transition-colors duration-200 hover:bg-muted/50"
           >
-            <Logo variant="auto" className="h-4 w-auto transition-all duration-300" />
+            <Logo variant="auto" className="h-4 w-auto" />
           </Link>
 
           {/* Desktop nav */}

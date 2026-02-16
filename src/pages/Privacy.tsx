@@ -71,7 +71,7 @@ const Privacy = () => {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-secondary py-16 text-primary-foreground">
+      <section className="relative overflow-hidden bg-secondary py-32 text-primary-foreground">
         <div className="absolute inset-0">
           <DarkVeil
             hueShift={0}
