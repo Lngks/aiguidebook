@@ -57,7 +57,7 @@ const Footer = () => (
   <footer className="border-t border-border bg-background">
     {/* Newsletter */}
     <div className="border-b border-border bg-background/90">
-      <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 pt-24 pb-6 md:flex-row">
+      <div className="container mx-auto flex flex-col items-start justify-between gap-4 px-4 pt-24 pb-6 md:flex-row md:items-center">
         <div>
           <p className="font-medium text-primary-foreground" style={{ fontFamily: "'Poppins', sans-serif" }}>
             Få oppdateringer
