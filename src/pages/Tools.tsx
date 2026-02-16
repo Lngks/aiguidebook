@@ -39,6 +39,7 @@ const altTools = [
     name: "Claude",
     description: "Avansert samtale-AI fra Anthropic.",
     longDescription: "Claude er kjent for sin naturlige samtalestil og sterke evne til resonnering. Den er spesielt god på å analysere store tekstmengder, skrive kreativt og kode.",
+    image: "public/Verktøy Logo/claude.svg",
     icon: MessageSquare,
     color: "bg-orange-500/10",
     iconColor: "text-orange-500",
@@ -49,6 +50,7 @@ const altTools = [
     name: "Gemini",
     description: "Googles kraftigste AI-modell.",
     longDescription: "Gemini er integrert i Googles økosystem og er beryktet for sin multimodalitet. Den kan behandle tekst, bilder, video og lyd sømløst.",
+    image: "public/Verktøy Logo/gemini.svg",
     icon: Sparkles,
     color: "bg-blue-500/10",
     iconColor: "text-blue-500",
@@ -59,6 +61,7 @@ const altTools = [
     name: "Perplexity",
     description: "AI-drevet søkemotor med kilder.",
     longDescription: "Perplexity fungerer som en hybrid mellom en søkemotor og en chatbot. Den gir deg svar med direkte kildehenvisninger til nettsider.",
+    image: "public/Verktøy Logo/perplexity.svg",
     icon: Globe,
     color: "bg-teal-500/10",
     iconColor: "text-teal-500",
@@ -69,6 +72,7 @@ const altTools = [
     name: "Midjourney",
     description: "Banebrytende AI-bildegenerering.",
     longDescription: "Midjourney er kanskje den mest kunstneriske AI-en for bildegenerering. Den kjører gjennom Discord og skaper fotorealistiske og kunstneriske bilder.",
+    image: "public/Verktøy Logo/midjourney.svg",
     icon: ImageIcon,
     color: "bg-purple-500/10",
     iconColor: "text-purple-500",
@@ -79,6 +83,7 @@ const altTools = [
     name: "DeepL",
     description: "Verdens beste AI-oversettelse.",
     longDescription: "DeepL overgår ofte Google Translate i nyanse og nøyaktighet. Den er uunnværlig for studenter som jobber med akademiske tekster på tvers av språk.",
+    image: "public/Verktøy Logo/deepl.svg",
     icon: Languages,
     color: "bg-sky-600/10",
     iconColor: "text-sky-600",
@@ -89,6 +94,7 @@ const altTools = [
     name: "Grammarly",
     description: "AI-assistent for skriving og retting.",
     longDescription: "Grammarly hjelper deg med å forbedre grammatikk, rettskriving og toneleie i sanntid. Perfekt for å polere essays og rapporter.",
+    image: "public/Verktøy Logo/grammarly.svg",
     icon: PenTool,
     color: "bg-green-500/10",
     iconColor: "text-green-500",
@@ -116,7 +122,15 @@ const ExpandableCard = ({ tool, onExpand }: { tool: any; onExpand: (id: string) 
         layoutId={`icon-bg-${tool.id}`}
         className={cn("mb-4 inline-flex rounded-lg p-3", tool.color)}
       >
-        <tool.icon className={cn("h-8 w-8", tool.iconColor)} />
+        {tool.image ? (
+          <img
+            src={tool.image}
+            alt={tool.name}
+            className="h-8 w-8 object-contain"
+          />
+        ) : (
+          <tool.icon className={cn("h-8 w-8", tool.iconColor)} />
+        )}
       </motion.div>
       <motion.h3 layoutId={`title-${tool.id}`} className="text-lg font-bold text-foreground">{tool.name}</motion.h3>
       <motion.p layoutId={`desc-${tool.id}`} className="mt-2 text-center text-sm text-muted-foreground line-clamp-2">
@@ -162,7 +176,15 @@ const Tools = () => {
                     layoutId={`icon-bg-${expandedId}`}
                     className={cn("inline-flex rounded-xl p-6", selectedTool?.color)}
                   >
-                    {selectedTool && <selectedTool.icon className={cn("h-12 w-12", selectedTool.iconColor)} />}
+                    {selectedTool?.image ? (
+                      <img
+                        src={selectedTool.image}
+                        alt={selectedTool.name}
+                        className="h-12 w-12 object-contain"
+                      />
+                    ) : (
+                      selectedTool && <selectedTool.icon className={cn("h-12 w-12", selectedTool.iconColor)} />
+                    )}
                   </motion.div>
 
                   <div className="flex-1">
