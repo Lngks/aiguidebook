@@ -241,10 +241,10 @@ const Tools = () => {
           <p className="section-fade-in-delay-1 mx-auto mt-4 max-w-xl text-lg text-primary-foreground/70">
             Lær hvilke verktøy som fungerer best og hvordan du bruker dem riktig.
           </p>
-          <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
+          {/*   <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
             <Button>Utforsk</Button>
             <Button variant="secondary">Retningslinjer</Button>
-          </div>
+          </div> */}
         </div>
       </section>
 

@@ -76,10 +76,10 @@ const Guidelines = () => {
           <p className="section-fade-in-delay-1 mx-auto mt-4 max-w-xl text-lg text-primary-foreground/70">
             Lær hvordan du bruker kunnskap, teknologi og integritet riktig i studiene dine.
           </p>
-          <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
+          {/* <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
             <a href="#checklist" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground">Les</a>
             <a href="#faq" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground">Spørsmål</a>
-          </div>
+          </div> */}
         </div>
       </section>
 
