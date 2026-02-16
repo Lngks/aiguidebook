@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Image as ImageIcon, Code, Edit3, Search } from "lucide-react";
+import { ArrowRight, Image as ImageIcon, Code, Edit3, Search, X, MessageSquare, Globe, Sparkles, Languages, PenTool } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import DarkVeil from "@/components/DarkVeil/DarkVeil";
 import {
   Accordion,
@@ -8,29 +10,91 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const featuredTools = [
   {
     name: "Sikt.no for kilder og sitater",
     description: "Søk gjennom norske forskningskilder og få sitater direkte.",
+    link: "https://ki.sikt.no/nb",
     icon: Search,
   },
   {
     name: "GitHub Copilot for koding",
     description: "AI-hjelp med programmering og kodeassistert utvikling.",
+    link: "https://github.com/features/copilot",
     icon: Code,
   },
   {
     name: "Microsoft Copilot for skriving",
     description: "Skriv bedre tekster og få støtte i skriveprosessen.",
+    link: "https://copilot.microsoft.com/",
     icon: Edit3,
   },
 ];
 
-const altTools = Array.from({ length: 8 }, (_, i) => ({
-  id: i,
-  name: `Verktøy ${i + 1}`,
-}));
+const altTools = [
+  {
+    id: "claude",
+    name: "Claude",
+    description: "Avansert samtale-AI fra Anthropic.",
+    longDescription: "Claude er kjent for sin naturlige samtalestil og sterke evne til resonnering. Den er spesielt god på å analysere store tekstmengder, skrive kreativt og kode.",
+    icon: MessageSquare,
+    color: "bg-orange-500/10",
+    iconColor: "text-orange-500",
+    link: "https://claude.ai"
+  },
+  {
+    id: "gemini",
+    name: "Gemini",
+    description: "Googles kraftigste AI-modell.",
+    longDescription: "Gemini er integrert i Googles økosystem og er beryktet for sin multimodalitet. Den kan behandle tekst, bilder, video og lyd sømløst.",
+    icon: Sparkles,
+    color: "bg-blue-500/10",
+    iconColor: "text-blue-500",
+    link: "https://gemini.google.com"
+  },
+  {
+    id: "perplexity",
+    name: "Perplexity",
+    description: "AI-drevet søkemotor med kilder.",
+    longDescription: "Perplexity fungerer som en hybrid mellom en søkemotor og en chatbot. Den gir deg svar med direkte kildehenvisninger til nettsider.",
+    icon: Globe,
+    color: "bg-teal-500/10",
+    iconColor: "text-teal-500",
+    link: "https://perplexity.ai"
+  },
+  {
+    id: "midjourney",
+    name: "Midjourney",
+    description: "Banebrytende AI-bildegenerering.",
+    longDescription: "Midjourney er kanskje den mest kunstneriske AI-en for bildegenerering. Den kjører gjennom Discord og skaper fotorealistiske og kunstneriske bilder.",
+    icon: ImageIcon,
+    color: "bg-purple-500/10",
+    iconColor: "text-purple-500",
+    link: "https://midjourney.com"
+  },
+  {
+    id: "deepl",
+    name: "DeepL",
+    description: "Verdens beste AI-oversettelse.",
+    longDescription: "DeepL overgår ofte Google Translate i nyanse og nøyaktighet. Den er uunnværlig for studenter som jobber med akademiske tekster på tvers av språk.",
+    icon: Languages,
+    color: "bg-sky-600/10",
+    iconColor: "text-sky-600",
+    link: "https://deepl.com"
+  },
+  {
+    id: "grammarly",
+    name: "Grammarly",
+    description: "AI-assistent for skriving og retting.",
+    longDescription: "Grammarly hjelper deg med å forbedre grammatikk, rettskriving og toneleie i sanntid. Perfekt for å polere essays og rapporter.",
+    icon: PenTool,
+    color: "bg-green-500/10",
+    iconColor: "text-green-500",
+    link: "https://grammarly.com"
+  },
+];
 
 const faqs = [
   { q: "Koster disse verktøyene penger?", a: "Ikke nødvendigvis. GitHub Copilot og Microsoft Copilot er tilgjengelige gratis for studenter. Andre verktøy varierer i pris." },
@@ -41,9 +105,102 @@ const faqs = [
   { q: "Hvordan bruker jeg AI til læring?", a: "AI kan gi deg enklere forklaringer, stille prøvespørsmål og lage quizer. Men bruk det som et støtteverktøy, ikke som en erstatning for egen læring." },
 ];
 
+const ExpandableCard = ({ tool, onExpand }: { tool: any; onExpand: (id: string) => void }) => {
+  return (
+    <motion.div
+      layoutId={`card-${tool.id}`}
+      onClick={() => onExpand(tool.id)}
+      className="cursor-pointer group relative flex flex-col items-center justify-center rounded-xl bg-card p-6 shadow-sm transition-shadow hover:shadow-md border border-border/50"
+    >
+      <motion.div
+        layoutId={`icon-bg-${tool.id}`}
+        className={cn("mb-4 inline-flex rounded-lg p-3", tool.color)}
+      >
+        <tool.icon className={cn("h-8 w-8", tool.iconColor)} />
+      </motion.div>
+      <motion.h3 layoutId={`title-${tool.id}`} className="text-lg font-bold text-foreground">{tool.name}</motion.h3>
+      <motion.p layoutId={`desc-${tool.id}`} className="mt-2 text-center text-sm text-muted-foreground line-clamp-2">
+        {tool.description}
+      </motion.p>
+    </motion.div>
+  );
+};
+
 const Tools = () => {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const selectedTool = altTools.find(t => t.id === expandedId);
+
   return (
     <>
+      <div className={cn(
+        "fixed inset-0 z-[60] flex items-center justify-center p-4 pointer-events-none",
+        expandedId ? "pointer-events-auto" : ""
+      )}>
+        <AnimatePresence>
+          {expandedId && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setExpandedId(null)}
+                className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+              />
+              <motion.div
+                layoutId={`card-${expandedId}`}
+                className="relative w-full max-w-2xl bg-card rounded-2xl p-8 border border-border shadow-2xl overflow-hidden"
+              >
+                <button
+                  onClick={() => setExpandedId(null)}
+                  className="absolute top-4 right-4 p-2 rounded-full hover:bg-muted transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  <motion.div
+                    layoutId={`icon-bg-${expandedId}`}
+                    className={cn("inline-flex rounded-xl p-6", selectedTool?.color)}
+                  >
+                    {selectedTool && <selectedTool.icon className={cn("h-12 w-12", selectedTool.iconColor)} />}
+                  </motion.div>
+
+                  <div className="flex-1">
+                    <motion.h3
+                      layoutId={`title-${expandedId}`}
+                      className="text-3xl font-bold text-foreground mb-4"
+                    >
+                      {selectedTool?.name}
+                    </motion.h3>
+                    <motion.p
+                      layoutId={`desc-${expandedId}`}
+                      className="text-muted-foreground mb-6"
+                    >
+                      {selectedTool?.description}
+                    </motion.p>
+
+                    <div className="space-y-4">
+                      <h4 className="font-semibold text-foreground">Om verktøyet</h4>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {selectedTool?.longDescription}
+                      </p>
+
+                      <div className="pt-6">
+                        <Button asChild className="w-full md:w-auto">
+                          <a href={selectedTool?.link} target="_blank" rel="noopener noreferrer">
+                            Besøk nettside <ArrowRight className="ml-2 h-4 w-4" />
+                          </a>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
+
       {/* Hero */}
       <section className="relative overflow-hidden bg-secondary py-32 text-primary-foreground">
         <div className="absolute inset-0">
@@ -80,19 +237,22 @@ const Tools = () => {
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {featuredTools.map((tool, i) => (
-            <div
+            <a
               key={tool.name}
-              className={`section-fade-in-delay-${i + 1} group relative overflow-hidden rounded-xl bg-muted/50 p-6 text-primary-foreground shadow-md transition-all hover:-translate-y-1 hover:shadow-lg`}
+              href={tool.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`section-fade-in-delay-${i + 1} group relative block overflow-hidden rounded-xl bg-muted/50 p-6 text-primary-foreground shadow-md transition-all hover:-translate-y-1 hover:shadow-lg`}
             >
               <div className="mb-4 inline-flex rounded-lg bg-primary-foreground/10 p-3">
                 <tool.icon className="h-6 w-6" />
               </div>
               <h3 className="mb-2 text-lg font-bold">{tool.name}</h3>
               <p className="mb-4 text-sm text-primary-foreground/70">{tool.description}</p>
-              <span className="inline-flex items-center gap-1 text-sm font-medium text-tertiary transition-colors group-hover:text-accent/80">
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-tertiary transition-colors group-hover:text-tertiary/90">
                 Besøk <ArrowRight className="h-3 w-3" />
               </span>
-            </div>
+            </a>
           ))}
         </div>
       </section>
@@ -119,11 +279,13 @@ const Tools = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
             {altTools.map((tool) => (
-              <div key={tool.id} className="flex aspect-[4/3] items-center justify-center rounded-xl bg-card shadow-sm">
-                <ImageIcon className="h-10 w-10 text-muted-foreground/30" />
-              </div>
+              <ExpandableCard
+                key={tool.id}
+                tool={tool}
+                onExpand={(id) => setExpandedId(id)}
+              />
             ))}
           </div>
         </div>
