@@ -209,8 +209,8 @@ const Tools = () => {
 
                       <div className="pt-6">
                         <Button asChild className="w-full md:w-auto">
-                          <a href={selectedTool?.link} target="_blank" rel="noopener noreferrer">
-                            Besøk nettside <ArrowRight className="ml-2 h-4 w-4" />
+                          <a href={selectedTool?.link} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                            Besøk nettside <ArrowRight className="h-4 w-4" />
                           </a>
                         </Button>
                       </div>
@@ -241,10 +241,6 @@ const Tools = () => {
           <p className="section-fade-in-delay-1 mx-auto mt-4 max-w-xl text-lg text-primary-foreground/70">
             Lær hvilke verktøy som fungerer best og hvordan du bruker dem riktig.
           </p>
-          {/*   <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-            <Button>Utforsk</Button>
-            <Button variant="secondary">Retningslinjer</Button>
-          </div> */}
         </div>
       </section>
 
