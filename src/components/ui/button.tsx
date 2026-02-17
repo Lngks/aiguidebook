@@ -1,4 +1,5 @@
 import * as React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -6,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Ripple, type RippleHandle } from "./ripple";
 
 const buttonVariants = cva(
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 select-none",
   {
     variants: {
       variant: {
@@ -18,6 +19,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground rounded-lg transition-colors",
         link: "text-primary underline-offset-4 hover:underline",
         custom: "text-foreground hover:text-accent-foreground",
+        graphic: "border-2 border-[var(--btn-border,hsl(var(--accent)))] bg-background text-foreground transition-all duration-300 overflow-hidden",
       },
       size: {
         default: "h-10",
@@ -89,10 +91,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       onPointerDown?.(e);
     };
 
+    const rippleColorFinal = rippleColor || (variant === "ghost" || variant === "outline" || variant === "tertiary" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.35)");
+
     const rippleElement = showRipple && (
       <Ripple
         ref={rippleRef}
-        color={rippleColor || (variant === "ghost" || variant === "outline" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.35)")}
+        color={rippleColorFinal}
       />
     );
 
@@ -137,16 +141,97 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       );
     }
 
-    const Comp = asChild ? Slot : "button";
+    const isGraphic = variant === "graphic";
+    const { style, ...rest } = props;
+    const customStyle = isGraphic ? {
+      "--btn-border": style?.["--btn-gradient-from" as any] || "hsl(var(--accent))",
+      ...style
+    } : style;
+
+    const graphicFillVariants = {
+      initial: {
+        width: "0%",
+        height: 12,
+        opacity: 0,
+        left: 0
+      },
+      animate: {
+        width: "100%",
+        height: ["12px", "12px", "100%"],
+        opacity: 1,
+        transition: {
+          width: { duration: 0.4, ease: "easeOut" },
+          height: {
+            times: [0, 0.4, 1],
+            duration: 0.7,
+            delay: 0.35, // Wait for pan to almost finish
+            ease: "easeInOut",
+          },
+          opacity: { duration: 0.1 }
+        } as any,
+      },
+    };
+
+    const wavePathVariants = {
+      initial: {
+        d: "M0 12 C 30 12, 70 12, 100 12 V 12 H 0 Z"
+      },
+      animate: {
+        d: [
+          "M0 12 C 30 12, 70 12, 100 12 V 12 H 0 Z", // Flat during pan
+          "M0 12 C 30 4, 70 4, 100 12 V 12 H 0 Z",   // Soften as it rises
+          "M0 12 C 30 -2, 70 -2, 100 12 V 12 H 0 Z", // Smooth wide crest
+          "M0 12 C 30 12, 70 12, 100 12 V 12 H 0 Z"  // Re-flatten at top
+        ],
+        transition: {
+          times: [0, 0.4, 0.7, 1],
+          duration: 0.8,
+          delay: 0.35,
+          ease: "easeInOut",
+        }
+      }
+    };
+
+    const Comp = asChild ? Slot : isGraphic ? (motion.button as any) : "button";
+
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
+        className={cn(
+          buttonVariants({ variant, size, className }),
+          isGraphic && "hover:text-background"
+        )}
+        ref={ref as any}
         onPointerDown={handlePointerDown}
-        style={props.style}
-        {...props}
+        style={customStyle as React.CSSProperties}
+        {...(isGraphic && !asChild ? {
+          initial: "initial",
+          whileHover: "animate"
+        } : {})}
+        {...(rest as any)}
       >
-        <span className="relative z-10 flex items-center gap-2">{children}</span>
+        {isGraphic && (
+          <motion.div
+            variants={graphicFillVariants}
+            className="absolute inset-x-0 bottom-0 z-0 pointer-events-none"
+            style={{
+              backgroundColor: "var(--btn-border, hsl(var(--accent)))"
+            }}
+          >
+            <svg
+              className="absolute top-0 left-0 w-full h-[12px] -translate-y-full"
+              viewBox="0 0 100 12"
+              preserveAspectRatio="none"
+              style={{ fill: "var(--btn-border, hsl(var(--accent)))" }}
+            >
+              <motion.path
+                variants={wavePathVariants}
+              />
+            </svg>
+          </motion.div>
+        )}
+        <span className="relative z-10 flex items-center gap-2 pointer-events-none">
+          {children}
+        </span>
         {rippleElement}
       </Comp>
     );
@@ -154,5 +239,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-// eslint-disable-next-line react-refresh/only-export-components
 export { Button, buttonVariants };

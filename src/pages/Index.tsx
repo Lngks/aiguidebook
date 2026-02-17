@@ -202,12 +202,9 @@ const Index = () => {
             ))}
           </div>
           <div className="mt-10 flex justify-center gap-3">
-            <Link
-              to="/guidelines"
-              className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
-            >
-              Utforsk
-            </Link>
+            <Button asChild variant="tertiary" size="default">
+              <Link to="/guidelines">Utforsk</Link>
+            </Button>
             <Link
               to="/tools"
               className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -218,7 +215,26 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Bruk AI med tillit — transparent, hero background shows through */}
+      {/* Showcase - New Graphic Button */}
+      {/* <section className="relative z-10 bg-muted/30 py-12 border-y border-border">
+        <div className="container mx-auto px-4 text-center">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Eksperimentell</p>
+          <h2 className="mb-8 text-2xl font-bold text-foreground">Ny "Graphic" Knapp-variant</h2>
+          <div className="flex flex-wrap justify-center gap-6">
+            <Button variant="graphic" size="lg">
+              Graphic Button <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button variant="graphic" size="lg" style={{ "--btn-gradient-from": "#3b82f6", "--btn-gradient-to": "#1d4ed8" } as any}>
+              Blue Graphic <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button variant="graphic" size="lg" style={{ "--btn-gradient-from": "#10b981", "--btn-gradient-to": "#059669" } as any}>
+              Green Graphic <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </section> */}
+
+      {/* Bruk AI med tillit */}
       <section className="relative z-10 bg-background py-24">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
