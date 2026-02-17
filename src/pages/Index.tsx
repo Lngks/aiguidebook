@@ -8,6 +8,8 @@ import AsciiHero from "@/components/AsciiHero";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 
+import { ScrambleText } from "@/components/ScrambleText";
+
 const overviewCards = [
   {
     title: "Klare retningslinjer",
@@ -144,7 +146,7 @@ const Index = () => {
                 <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.4)_0%,transparent_80%)] blur-2xl pointer-events-none scale-150" />
 
                 <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
-                  Mestre <br /> <span className="text-tertiary">fremtidens</span> studieteknikk
+                  Mestre <br /> <span className="text-tertiary"><ScrambleText text="fremtidens" /></span><br /> studieteknikk
                 </h1>
                 <p className="mb-8 mx-auto max-w-lg text-lg text-muted-foreground md:mx-0 [text-shadow:_0_2px_10px_rgba(0,0,0,0.8)]">
                   AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som

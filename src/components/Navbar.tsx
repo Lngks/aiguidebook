@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -27,32 +28,32 @@ const Navbar = () => {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-0 transition-all duration-500 pointer-events-none">
-      <header
+      <motion.header
         className={cn(
-          "relative pointer-events-auto transition-all duration-500 ease-in-out flex items-center overflow-hidden",
-          isScrolled ? "mt-4 h-14 w-[95%] max-w-5xl rounded-lg" : "mt-0 h-16 w-full max-w-none rounded-none",
-          mobileOpen && "h-auto rounded-lg w-full max-w-none mt-0 flex-col items-stretch",
+          "relative pointer-events-auto flex items-center overflow-hidden transition-all duration-500 ease-in-out",
+          isScrolled ? "mt-4 h-14 w-[95%] max-w-5xl rounded-lg shadow-sm" : "mt-0 h-16 w-full max-w-none rounded-none",
+          mobileOpen ? "h-auto rounded-b-lg w-full max-w-none mt-0 flex-col items-stretch" : "flex-row",
         )}
       >
-        {/* Isolated Decorative Layer - Handles background, blur, border, and shadow with asymmetric transitions */}
+        {/* Isolated Decorative Layer - Handles background, blur, border, and shadow */}
         <div
           className={cn(
-            "absolute inset-0 -z-10 transition-all",
-            isScrolled || mobileOpen ? "opacity-100 duration-200" : "opacity-0 duration-0 pointer-events-none",
+            "absolute inset-0 -z-10 transition-all duration-500",
+            (isScrolled || mobileOpen) ? "opacity-100" : "opacity-0",
           )}
         >
           <div
             className={cn(
-              "absolute inset-0 bg-background/50 backdrop-blur-md shadow-sm border border-border/40 rounded-lg",
-              mobileOpen && "bg-background/95 backdrop-blur-xl shadow-lg border-border/10",
+              "absolute inset-0 bg-background/50 backdrop-blur-md border border-border/40 rounded-lg transition-all duration-500",
+              mobileOpen && "bg-background/95 backdrop-blur-xl border-border/10 rounded-t-none rounded-b-lg",
             )}
           />
         </div>
 
         <div
           className={cn(
-            "flex w-full items-center justify-between px-6 transition-all duration-500 mx-auto h-14 md:h-full",
-            !isScrolled && "max-w-7xl",
+            "flex w-full items-center justify-between px-6 mx-auto h-14 shrink-0 transition-all duration-500",
+            !isScrolled && !mobileOpen && "max-w-7xl h-16",
           )}
         >
           <Link
@@ -63,37 +64,35 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop nav */}
-          {!mobileOpen && (
-            <>
-              <ul className="hidden items-center gap-8 md:flex">
-                {navItems.map((item) => (
-                  <li key={item.path}>
-                    <Link
-                      to={item.path}
+          <div className="hidden md:flex flex-1 items-center justify-between ml-8">
+            <ul className="flex items-center gap-8">
+              {navItems.map((item) => (
+                <li key={item.path}>
+                  <Link
+                    to={item.path}
+                    className={cn(
+                      "text-xs font-medium transition-all duration-300 hover:text-primary relative group",
+                      location.pathname === item.path ? "text-primary" : "text-muted-foreground",
+                    )}
+                  >
+                    {item.label}
+                    <span
                       className={cn(
-                        "text-xs font-medium transition-all duration-300 hover:text-primary relative group",
-                        location.pathname === item.path ? "text-primary" : "text-muted-foreground",
+                        "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300",
+                        location.pathname === item.path ? "w-full" : "w-0 group-hover:w-full",
                       )}
-                    >
-                      {item.label}
-                      <span
-                        className={cn(
-                          "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300",
-                          location.pathname === item.path ? "w-full" : "w-0 group-hover:w-full",
-                        )}
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
 
-              <div className="hidden items-center gap-4 md:flex shrink-0">
-                <Button asChild size="sm">
-                  <Link to="/guidelines">Kom i gang</Link>
-                </Button>
-              </div>
-            </>
-          )}
+            <div className="flex items-center gap-4 shrink-0">
+              <Button asChild size="sm">
+                <Link to="/guidelines">Kom i gang</Link>
+              </Button>
+            </div>
+          </div>
 
           {/* Mobile toggle */}
           <button
@@ -106,36 +105,44 @@ const Navbar = () => {
         </div>
 
         {/* Mobile menu content */}
-        {mobileOpen && (
-          <div className="overflow-hidden border-t border-border/10 md:hidden w-full relative">
-            <ul className="flex flex-col space-y-1 px-4 py-6">
-              {navItems.map((item) => (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    onClick={() => setMobileOpen(false)}
-                    className={cn(
-                      "block rounded-lg px-4 py-3 text-base font-medium transition-all duration-200 hover:bg-primary/5",
-                      location.pathname === item.path
-                        ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:text-foreground",
-                    )}
-                  >
-                    {item.label}
-                  </Link>
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden border-t border-border/10 md:hidden w-full relative"
+            >
+              <ul className="flex flex-col space-y-1 px-4 py-6">
+                {navItems.map((item) => (
+                  <li key={item.path}>
+                    <Link
+                      to={item.path}
+                      onClick={() => setMobileOpen(false)}
+                      className={cn(
+                        "block rounded-lg px-4 py-3 text-base font-medium transition-all duration-200 hover:bg-primary/5",
+                        location.pathname === item.path
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:text-foreground",
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+                <li className="pt-4">
+                  <Button asChild className="w-full">
+                    <Link to="/guidelines" onClick={() => setMobileOpen(false)}>
+                      Kom i gang
+                    </Link>
+                  </Button>
                 </li>
-              ))}
-              <li className="pt-4">
-                <Button asChild className="w-full">
-                  <Link to="/guidelines" onClick={() => setMobileOpen(false)}>
-                    Kom i gang
-                  </Link>
-                </Button>
-              </li>
-            </ul>
-          </div>
-        )}
-      </header>
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.header>
     </div>
   );
 };
