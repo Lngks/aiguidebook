@@ -153,7 +153,7 @@ const Index = () => {
                   er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
                 </p>
                 <div className="flex justify-center gap-3 md:justify-start">
-                  <Button asChild size="lg">
+                  <Button asChild variant="tertiary" size="lg">
                     <Link to="/guidelines">Start</Link>
                   </Button>
                   <Button asChild variant="secondary" size="lg">

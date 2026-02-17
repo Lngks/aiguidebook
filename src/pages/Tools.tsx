@@ -43,6 +43,8 @@ const altTools = [
     icon: MessageSquare,
     color: "bg-orange-500/10",
     iconColor: "text-orange-500",
+    gradientFrom: "#f97316", // orange-500
+    gradientTo: "#c2410c",   // orange-700
     link: "https://claude.ai"
   },
   {
@@ -54,6 +56,8 @@ const altTools = [
     icon: Sparkles,
     color: "bg-blue-500/10",
     iconColor: "text-blue-500",
+    gradientFrom: "#3b82f6", // blue-500
+    gradientTo: "#1d4ed8",   // blue-700
     link: "https://gemini.google.com"
   },
   {
@@ -65,6 +69,8 @@ const altTools = [
     icon: Globe,
     color: "bg-teal-500/10",
     iconColor: "text-teal-500",
+    gradientFrom: "#14b8a6", // teal-500
+    gradientTo: "#0f766e",   // teal-700
     link: "https://perplexity.ai"
   },
   {
@@ -76,6 +82,8 @@ const altTools = [
     icon: ImageIcon,
     color: "bg-purple-500/10",
     iconColor: "text-purple-500",
+    gradientFrom: "#a855f7", // purple-500
+    gradientTo: "#7e22ce",   // purple-700
     link: "https://midjourney.com"
   },
   {
@@ -87,6 +95,8 @@ const altTools = [
     icon: Languages,
     color: "bg-sky-600/10",
     iconColor: "text-sky-600",
+    gradientFrom: "#0284c7", // sky-600
+    gradientTo: "#0369a1",   // sky-700
     link: "https://deepl.com"
   },
   {
@@ -98,6 +108,8 @@ const altTools = [
     icon: PenTool,
     color: "bg-green-500/10",
     iconColor: "text-green-500",
+    gradientFrom: "#22c55e", // green-500
+    gradientTo: "#15803d",   // green-700
     link: "https://grammarly.com"
   },
 ];
@@ -208,7 +220,15 @@ const Tools = () => {
                       </p>
 
                       <div className="pt-6">
-                        <Button asChild className="w-full md:w-auto">
+                        <Button
+                          asChild
+                          variant="custom"
+                          className="w-full md:w-auto"
+                          style={{
+                            "--btn-gradient-from": selectedTool?.gradientFrom,
+                            "--btn-gradient-to": selectedTool?.gradientTo,
+                          } as React.CSSProperties}
+                        >
                           <a href={selectedTool?.link} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                             Besøk nettside <ArrowRight className="h-4 w-4" />
                           </a>

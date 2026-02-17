@@ -31,10 +31,10 @@
     --accent-foreground: 33.75 42.11% 96%;
     /* white */
 
-    --tertiary: 73 100% 47%;
+    --tertiary: 73 100% 50%;
     --tertiary-foreground: 33.75 42.11% 96%;
     /* white */
-    --tertiary-secondary: 25 95% 40%;
+    --tertiary-secondary: 73 50% 40%;
 
     --destructive: 0 63% 31%;
     --destructive-foreground: 33.75 42.11% 96%;

@@ -17,6 +17,7 @@ const buttonVariants = cva(
         tertiary: "text-foreground hover:text-tertiary-foreground",
         ghost: "hover:bg-accent hover:text-accent-foreground rounded-lg transition-colors",
         link: "text-primary underline-offset-4 hover:underline",
+        custom: "text-foreground hover:text-accent-foreground",
       },
       size: {
         default: "h-10",
@@ -38,13 +39,14 @@ export interface ButtonProps
 }
 
 const needsGradientWrapper = (v?: string | null) =>
-  !v || v === "default" || v === "destructive" || v === "secondary" || v === "tertiary";
+  !v || v === "default" || v === "destructive" || v === "secondary" || v === "tertiary" || v === "custom";
 
 const gradientClasses: Record<string, string> = {
-  default: "bg-gradient-to-r from-[hsl(var(--accent))] to-[hsl(var(--accent-secondary))]",
+  default: "bg-gradient-to-r from-accent to-accent-secondary",
   destructive: "bg-gradient-to-r from-destructive to-destructive/60",
   secondary: "bg-gradient-to-r from-[hsl(0_0%_40%)] to-[hsl(0_0%_20%)]",
-  tertiary: "bg-gradient-to-r from-[hsl(var(--tertiary))] to-[hsl(var(--tertiary-secondary))]",
+  tertiary: "bg-gradient-to-r from-tertiary to-tertiary-secondary",
+  custom: "bg-gradient-to-r from-[var(--btn-gradient-from)] to-[var(--btn-gradient-to)]",
 };
 
 // --- EDIT SIZE AND COLORS HERE ---
@@ -57,7 +59,8 @@ const innerVariants = cva(
         default: "bg-background/95 group-hover:bg-background/10",
         destructive: "bg-background/95 group-hover:bg-background/10",
         secondary: "bg-background/95 group-hover:bg-background/10",
-        tertiary: "bg-background/95 group-hover:bg-background/10",
+        tertiary: "bg-background/95 group-hover:bg-background/10 group-hover:text-background",
+        custom: "bg-background/95 group-hover:bg-background/10",
         // These variants handle their own background in buttonVariants
         outline: "",
         ghost: "",
@@ -94,14 +97,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
 
     if (wrap) {
+      const { style, ...rest } = props;
       if (asChild) {
         const Comp = Slot;
         return (
           <span
             className={cn("group relative inline-flex p-[2px] overflow-hidden rounded-lg cursor-pointer", gradientClasses[variant || "default"], buttonVariants({ size, className }))}
             onPointerDown={handlePointerDown as any}
+            style={style}
           >
-            <Comp ref={ref} className={innerVariants({ variant: variant as any, size })} {...props}>
+            <Comp ref={ref} className={innerVariants({ variant: variant as any, size })} {...rest}>
               <span className="relative z-10 flex items-center gap-2">
                 {rippleElement}
                 {children}
@@ -121,7 +126,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             buttonVariants({ size, className })
           )}
           onPointerDown={handlePointerDown}
-          {...props}
+          style={style}
+          {...rest}
         >
           <span className={innerVariants({ variant: variant as any, size })}>
             {rippleElement}
@@ -137,6 +143,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         onPointerDown={handlePointerDown}
+        style={props.style}
         {...props}
       >
         <span className="relative z-10 flex items-center gap-2">{children}</span>
