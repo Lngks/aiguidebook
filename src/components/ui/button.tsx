@@ -44,10 +44,10 @@ const needsGradientWrapper = (v?: string | null) =>
   !v || v === "default" || v === "destructive" || v === "secondary" || v === "tertiary" || v === "custom";
 
 const gradientClasses: Record<string, string> = {
-  default: "bg-gradient-to-r from-accent to-accent-secondary",
+  default: "bg-gradient-to-r from-accent to-accent",
   destructive: "bg-gradient-to-r from-destructive to-destructive/60",
-  secondary: "bg-gradient-to-r from-[hsl(0_0%_40%)] to-[hsl(0_0%_20%)]",
-  tertiary: "bg-gradient-to-r from-tertiary to-tertiary-secondary",
+  secondary: "bg-gradient-to-r from-[hsl(0_0%_30%)] to-[hsl(0_0%_30%)]",
+  tertiary: "bg-gradient-to-r from-tertiary to-tertiary",
   custom: "bg-gradient-to-r from-[var(--btn-gradient-from)] to-[var(--btn-gradient-to)]",
 };
 
