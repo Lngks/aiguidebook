@@ -24,7 +24,7 @@ export function AsciiRenderer({
 
     // Create effect
     const effect = useMemo(() => {
-        const effect = new AsciiEffect(gl, characters, { invert });
+        const effect = new AsciiEffect(gl, characters, { invert, resolution });
         effect.domElement.style.position = 'absolute';
         effect.domElement.style.top = '0px';
         effect.domElement.style.left = '0px';
