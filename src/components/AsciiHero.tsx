@@ -50,7 +50,7 @@ const AsciiHero = ({ isMobile = false }: { isMobile?: boolean }) => {
                     maxPolarAngle={Math.PI / 1.5}
                     minPolarAngle={Math.PI / 3}
                     autoRotate
-                    autoRotateSpeed={0.2} // Slower rotation reduces jarring flicker
+                    autoRotateSpeed={0.1} // Slower rotation reduces jarring flicker
                 />
                 <AsciiRenderer
                     fgColor="hsl(var(--accent))"
