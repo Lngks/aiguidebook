@@ -248,7 +248,7 @@ const Index = () => {
               Vit at du handler riktig når du bruker AI-verktøy.
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-3 pb-24">
             {trustCards.map((card) => (
               <Link
                 key={card.title}
@@ -296,18 +296,23 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Placeholder image — static */}
-      <section className="relative z-10 bg-background">
-        <div className="container mx-auto px-4 py-16">
-          <div className="mx-auto flex max-w-md items-center justify-center rounded-2xl bg-muted py-20">
-            <ImageIcon className="h-16 w-16 text-muted-foreground/30" />
-          </div>
+      {/* Full-width Banner Image — static */}
+      <section className="relative z-10 w-full overflow-hidden bg-background">
+        <div className="relative h-[400px] w-full md:h-[500px] lg:h-[600px]">
+          <img
+            src="/images/ai_banner.png"
+            alt="AI Visualization"
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+          {/* Subtle overlay to blend with surrounding sections if needed */}
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-accent-secondary/20 to-transparent pointer-events-none" />
         </div>
       </section>
 
       {/* FAQ — static */}
       <section className="relative z-10 bg-background">
-        <div className="container mx-auto px-4 pb-20">
+        <div className="container mx-auto px-4 pb-20 pt-32">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
             <p className="mx-auto mt-3 max-w-lg text-muted-foreground">Svar på det du lurer på om ansvarlig AI-bruk.</p>
@@ -331,7 +336,7 @@ const Index = () => {
 
       {/* Trenger du mer hjelp — static */}
       <section className="relative z-10 bg-background">
-        <div className="container mx-auto px-4 pb-20 text-center">
+        <div className="container mx-auto px-4 pb-20 pt-20 text-center">
           <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
           <p className="mt-2 text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
           <Link
