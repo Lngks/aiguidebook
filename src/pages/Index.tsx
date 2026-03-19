@@ -181,7 +181,7 @@ const Index = () => {
       </div>
 
       {/* Tre ting du må vite — scrolls OVER hero */}
-      <section className="relative z-10 bg-background px-4 pt-20 pb-20">
+      <section className="relative z-10 bg-background px-4 pt-40 pb-40">
         <div className="container mx-auto">
           <div className="mb-12 text-center">
             <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
@@ -201,7 +201,7 @@ const Index = () => {
               </div>
             ))}
           </div>
-          <div className="mt-10 flex justify-center gap-3">
+          <div className="mt-20 flex justify-center gap-3">
             <Button asChild variant="tertiary" size="default">
               <Link to="/guidelines">Utforsk</Link>
             </Button>

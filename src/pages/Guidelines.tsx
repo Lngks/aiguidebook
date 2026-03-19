@@ -103,13 +103,13 @@ const Guidelines = () => {
             </div>
           ))}
         </div>
-        <div className="mt-8 flex justify-center gap-3">
-          <Link to="/tools" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
-            Utforsk
-          </Link>
-          <Link to="#" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
-            Mer <ArrowRight className="h-3 w-3" />
-          </Link>
+        <div className="flex justify-center gap-3 pt-14">
+          <Button asChild variant="tertiary" size="lg">
+            <Link to="/tools"> Utforsk </Link>
+          </Button>
+          <Button asChild variant="secondary" size="lg">
+            <Link to="#" className="inline-flex rounded-xl items-center">Mer<ArrowRight className="ml-2 h-3 w-3" /></Link>
+          </Button>
         </div>
       </section>
 
@@ -125,12 +125,14 @@ const Guidelines = () => {
               Det følger et ansvar med å bruke AI. Bruk det til å utforske emner, sjekke forståelsen din og lære mer. Men still alltid spørsmål og kontroller alt selv.
             </p>
             <div className="mt-6 flex justify-center gap-3">
-              <Button asChild>
+              <Button asChild variant="tertiary">
                 <Link to="/tools">Les mer</Link>
               </Button>
-              <Link to="/privacy" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
-                Personvern <ArrowRight className="h-3 w-3" />
-              </Link>
+              <Button asChild variant="secondary">
+                <Link to="/privacy" className="inline-flex rounded-xl items-center">
+                  Personvern<ArrowRight className="ml-2 h-3 w-3" />
+                </Link>
+              </Button>
             </div>
           </div>
           <div className="mx-auto mt-8 flex max-w-xl justify-center gap-4 text-sm text-muted-foreground">
@@ -170,12 +172,14 @@ const Guidelines = () => {
                 AI-modeller kan gjøre feil som følge av skjevheter i treningsdataene. Det kan resultere i stereotype eller ubalanserte svar. Stol aldri blindt på AI.
               </p>
               <div className="mt-6 flex gap-3">
-                <Button asChild>
+                <Button asChild variant="tertiary">
                   <Link to="/privacy">Personvern</Link>
                 </Button>
-                <Link to="#" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
-                  Mer <ArrowRight className="h-3 w-3" />
-                </Link>
+                <Button asChild variant="secondary">
+                  <Link to="#" className="inline-flex rounded-xl items-center">
+                    Mer<ArrowRight className="ml-2 h-3 w-3" />
+                  </Link>
+                </Button>
               </div>
             </div>
             <div className="flex aspect-video items-center justify-center rounded-xl bg-card shadow-sm">
@@ -193,18 +197,9 @@ const Guidelines = () => {
             Bruk sjekklisten vår hver gang du skriver en innlevering med AI-støtte.
           </p>
           <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-            <a
-              href="#checklist-section"
-              className="rounded-md bg-tertiary px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
-            >
-              Start
-            </a>
-            <Link
-              to="/tools"
-              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
-            >
-              Verktøy
-            </Link>
+            <Button asChild variant="tertiary" className="transition-transform hover:scale-105">
+              <a href="#checklist-section">Start</a>
+            </Button>
           </div>
         </div>
       </section>
@@ -270,9 +265,9 @@ const Guidelines = () => {
         <div className="mt-10 text-center">
           <p className="text-lg font-bold text-foreground">Har du flere spørsmål?</p>
           <p className="mt-1 text-sm text-muted-foreground">Kontakt veilederen din eller fagansatte ved universitetet ditt.</p>
-          <Link to="#" className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
-            Kontakt
-          </Link>
+          <Button asChild variant="outline" className="mt-4">
+            <Link to="#">Kontakt</Link>
+          </Button>
         </div>
       </section>
 
@@ -285,18 +280,9 @@ const Guidelines = () => {
             Få et unikt innblikk i prosessene som styrer dagens kunstige intelligens.
           </p>
           <div className="mt-6 flex justify-center gap-3">
-            <Link
-              to="/interactive"
-              className="rounded-md bg-tertiary px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
-            >
-              Prøv selv
-            </Link>
-            <Link
-              to="/tools"
-              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
-            >
-              Se verktøy
-            </Link>
+            <Button asChild variant="tertiary" className="transition-transform hover:scale-105">
+              <Link to="/interactive">Prøv selv</Link>
+            </Button>
           </div>
         </div>
       </section>

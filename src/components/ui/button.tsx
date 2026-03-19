@@ -102,20 +102,23 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (wrap) {
       const { style, ...rest } = props;
+      const content = (
+        <span className={innerVariants({ variant: variant as any, size })}>
+          {rippleElement}
+          <span className="relative z-10 flex items-center gap-2">{children}</span>
+        </span>
+      );
+
       if (asChild) {
-        const Comp = Slot;
         return (
           <span
             className={cn("group relative inline-flex p-[2px] overflow-hidden rounded-lg cursor-pointer", gradientClasses[variant || "default"], buttonVariants({ size, className }))}
             onPointerDown={handlePointerDown as any}
             style={style}
           >
-            <Comp ref={ref} className={innerVariants({ variant: variant as any, size })} {...rest}>
-              <span className="relative z-10 flex items-center gap-2">
-                {rippleElement}
-                {children}
-              </span>
-            </Comp>
+            <Slot ref={ref} {...rest}>
+              {content}
+            </Slot>
           </span>
         );
       }
@@ -133,10 +136,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           style={style}
           {...rest}
         >
-          <span className={innerVariants({ variant: variant as any, size })}>
-            {rippleElement}
-            <span className="relative z-10 flex items-center gap-2">{children}</span>
-          </span>
+          {content}
         </button>
       );
     }
@@ -187,7 +187,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           times: [0, 0.4, 0.7, 1],
           duration: 0.8,
           delay: 0.35,
-          ease: "easeInOut",
+          ease: "easeInOut" as any,
         }
       }
     };
@@ -209,30 +209,44 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         } : {})}
         {...(rest as any)}
       >
-        {isGraphic && (
-          <motion.div
-            variants={graphicFillVariants}
-            className="absolute inset-x-0 bottom-0 z-0 pointer-events-none"
-            style={{
-              backgroundColor: "var(--btn-border, hsl(var(--accent)))"
-            }}
-          >
-            <svg
-              className="absolute top-0 left-0 w-full h-[12px] -translate-y-full"
-              viewBox="0 0 100 12"
-              preserveAspectRatio="none"
-              style={{ fill: "var(--btn-border, hsl(var(--accent)))" }}
+        {isGraphic ? (
+          <>
+            <motion.div
+              variants={graphicFillVariants}
+              className="absolute inset-x-0 bottom-0 z-0 pointer-events-none"
+              style={{
+                backgroundColor: "var(--btn-border, hsl(var(--accent)))"
+              }}
             >
-              <motion.path
-                variants={wavePathVariants}
-              />
-            </svg>
-          </motion.div>
+              <svg
+                className="absolute top-0 left-0 w-full h-[12px] -translate-y-full"
+                viewBox="0 0 100 12"
+                preserveAspectRatio="none"
+                style={{ fill: "var(--btn-border, hsl(var(--accent)))" }}
+              >
+                <motion.path
+                  variants={wavePathVariants}
+                />
+              </svg>
+            </motion.div>
+            <span className="relative z-10 flex items-center gap-2 pointer-events-none">
+              {children}
+            </span>
+            {rippleElement}
+          </>
+        ) : asChild ? (
+          <span className="relative z-10 flex items-center gap-2 pointer-events-none h-full w-full">
+            {children}
+            {rippleElement}
+          </span>
+        ) : (
+          <>
+            <span className="relative z-10 flex items-center gap-2 pointer-events-none">
+              {children}
+            </span>
+            {rippleElement}
+          </>
         )}
-        <span className="relative z-10 flex items-center gap-2 pointer-events-none">
-          {children}
-        </span>
-        {rippleElement}
       </Comp>
     );
   },
