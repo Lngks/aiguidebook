@@ -12,7 +12,7 @@ const navItems = [
   { label: "Verktøy", path: "/tools" },
   { label: "Retningslinjer", path: "/guidelines" },
   { label: "Personvern", path: "/privacy" },
-  { label: "Interaktiv", path: "/interactive" },
+  { label: "Interaktiv - WIP", path: "/interactive" },
 ];
 
 const Navbar = () => {
