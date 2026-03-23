@@ -130,7 +130,7 @@ const Index = () => {
             />
           </div>
           <div
-            className="container relative z-10 mx-auto px-4 transition-opacity duration-100"
+            className="container relative z-10 mx-auto mt-20 px-4 transition-opacity duration-100"
             style={{ opacity: heroContentOpacity }}
           >
             <div className="relative grid items-center gap-10 md:grid-cols-[1fr_minmax(0,680px)]">
