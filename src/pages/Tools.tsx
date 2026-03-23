@@ -195,10 +195,7 @@ const ExpandableCard = ({ tool, onExpand, index }: { tool: any; onExpand: (id: s
 
 
 
-      {tool.id === 'midjourney' && (
-        <div className="absolute right-4 bottom-4 md:right-8 md:bottom-8 w-24 h-24 md:w-32 md:h-32 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 opacity-50 group-hover:opacity-100 transition-opacity">
-        </div>
-      )}
+
     </motion.div>
   );
 };
