@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,14 +7,14 @@
 @layer base {
   :root {
     /* Dark mode colors as default */
-    --background: 240 5.9% 10%;
-    --background-secondary: 240 5.9% 10%;
+    --background: 240 7% 8%;
+    --background-secondary: 240 7% 8%;
     --foreground: 33.75 42.11% 96%;
 
-    --card: 260 5% 14%;
+    --card: 240 5% 13%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 260 5% 14%;
+    --popover: 240 5% 13%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 210 40% 98%;
@@ -23,7 +23,7 @@
     --secondary: 300 100% 2%;
     --secondary-foreground: 240 5.9% 98%;
 
-    --muted: 0 0% 20%;
+    --muted: 240 7% 4%;
     --muted-foreground: 240 5.9% 85%;
 
     --accent: 270 100% 47%;
@@ -76,8 +76,8 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Source Sans 3', system-ui, sans-serif;
+    @apply bg-background text-foreground font-sans;
+
     overflow-x: clip;
     width: 100%;
   }
@@ -92,8 +92,8 @@
   h4,
   h5,
   h6 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
+    @apply font-sans font-medium;
+
   }
 }
 

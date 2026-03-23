@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Shield, Eye, AlertTriangle, Brain, Lock, Fingerprint, ArrowRight } from "lucide-react";
-import DarkVeil from "@/components/DarkVeil/DarkVeil";
 import {
   Accordion,
   AccordionContent,
@@ -71,17 +70,7 @@ const Privacy = () => {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-secondary py-32 text-primary-foreground">
-        <div className="absolute inset-0">
-          <DarkVeil
-            hueShift={0}
-            noiseIntensity={0}
-            scanlineIntensity={0}
-            speed={0.5}
-            scanlineFrequency={0}
-            warpAmount={0}
-          />
-        </div>
+      <section className="relative overflow-hidden bg-background pt-40 pb-32 md:pt-56 border-b border-border/10">
         <div className="container relative z-10 mx-auto px-4 text-center">
           <p className="section-fade-in mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/60">Personvern</p>
           <h1 className="section-fade-in text-4xl font-bold md:text-5xl">Personvern og risikoer</h1>

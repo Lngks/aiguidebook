@@ -13,13 +13,13 @@ const buttonVariants = cva(
       variant: {
         default: "text-foreground hover:text-accent-foreground",
         destructive: "text-foreground hover:text-destructive-foreground",
-        outline: "border border-input bg-background/30 backdrop-blur-xl rounded-sm hover:bg-accent/10 hover:text-accent-foreground transition-all",
+        outline: "border border-input bg-background/30 backdrop-blur-xl rounded-lg hover:bg-accent/10 hover:text-accent-foreground transition-all",
         secondary: "text-foreground hover:text-foreground",
         tertiary: "text-foreground hover:text-tertiary-foreground",
-        ghost: "hover:bg-accent hover:text-accent-foreground rounded-sm transition-colors",
+        ghost: "hover:bg-accent hover:text-accent-foreground rounded-lg transition-colors",
         link: "text-primary underline-offset-4 hover:underline",
         custom: "text-foreground hover:text-accent-foreground",
-        graphic: "border-2 border-[var(--btn-border,hsl(var(--accent)))] bg-background text-foreground transition-all duration-300 overflow-hidden",
+        graphic: "border-2 border-[var(--btn-border,hsl(var(--accent)))] bg-background text-foreground transition-all duration-300 overflow-hidden rounded-lg",
       },
       size: {
         default: "h-10",
@@ -53,7 +53,7 @@ const gradientClasses: Record<string, string> = {
 
 // --- EDIT SIZE AND COLORS HERE ---
 const innerVariants = cva(
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap w-full rounded-[calc(var(--radius))] backdrop-blur-xl transition-all duration-200 text-sm font-medium h-full",
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap w-full rounded-md backdrop-blur-xl transition-all duration-200 text-sm font-medium h-full",
   {
     variants: {
       variant: {
@@ -112,7 +112,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       if (asChild) {
         return (
           <span
-            className={cn("group relative inline-flex p-[2px] overflow-hidden rounded-sm cursor-pointer", gradientClasses[variant || "default"], buttonVariants({ size, className }))}
+            className={cn("group relative inline-flex p-[2px] overflow-hidden rounded-lg cursor-pointer", gradientClasses[variant || "default"], buttonVariants({ size, className }))}
             onPointerDown={handlePointerDown as any}
             style={style}
           >
@@ -127,7 +127,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <button
           ref={ref}
           className={cn(
-            "group relative inline-flex p-[2px] overflow-hidden rounded-sm",
+            "group relative inline-flex p-[2px] overflow-hidden rounded-lg",
             gradientClasses[variant || "default"],
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
             buttonVariants({ size, className })

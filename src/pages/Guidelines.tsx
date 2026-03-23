@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, HelpCircle, Image as ImageIcon } from "lucide-react";
-import DarkVeil from "@/components/DarkVeil/DarkVeil";
+import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -59,17 +59,7 @@ const Guidelines = () => {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-secondary py-32 text-primary-foreground">
-        <div className="absolute inset-0">
-          <DarkVeil
-            hueShift={0}
-            noiseIntensity={0}
-            scanlineIntensity={0}
-            speed={0.5}
-            scanlineFrequency={0}
-            warpAmount={0}
-          />
-        </div>
+      <section className="relative overflow-hidden bg-background pt-40 pb-32 md:pt-56 border-b border-border/10">
         <div className="container relative z-10 mx-auto px-4 text-center">
           <p className="section-fade-in mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/60">Retningslinjer</p>
           <h1 className="section-fade-in text-4xl font-bold md:text-5xl">Bruk AI ansvarlig</h1>
@@ -94,13 +84,20 @@ const Guidelines = () => {
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {keyTopics.map((topic, i) => (
-            <div key={topic.title} className={`section-fade-in-delay-${i + 1} rounded-xl border border-border bg-card p-6 shadow-sm`}>
+            <motion.div 
+              key={topic.title} 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: i * 0.15 }}
+              className="rounded-xl border border-border bg-card p-6 shadow-sm"
+            >
               <div className="mb-4 flex aspect-video items-center justify-center rounded-lg bg-muted">
                 <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
               </div>
               <h3 className="mb-2 text-lg font-bold text-card-foreground">{topic.title}</h3>
               <p className="text-sm text-muted-foreground">{topic.description}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
         <div className="flex justify-center gap-3 pt-14">

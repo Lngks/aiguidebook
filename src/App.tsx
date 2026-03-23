@@ -12,6 +12,18 @@ import Privacy from "./pages/Privacy";
 import Interactive from "./pages/Interactive";
 import NotFound from "./pages/NotFound";
 
+const NoiseOverlay = () => (
+  <svg
+    className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.04] mix-blend-overlay"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <filter id="noiseFilter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+  </svg>
+);
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -20,6 +32,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <NoiseOverlay />
         <ScrollToTop />
         <Layout>
           <Routes>

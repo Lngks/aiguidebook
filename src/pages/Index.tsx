@@ -282,13 +282,13 @@ const Index = () => {
           <div className="mt-6 flex justify-center gap-3">
             <Link
               to="/interactive"
-              className="rounded-md bg-tertiary px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
+              className="rounded-lg bg-tertiary px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
             >
               Prøv selv
             </Link>
             <Link
               to="/guidelines"
-              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+              className="rounded-lg border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
             >
               Retningslinjer
             </Link>
@@ -341,7 +341,7 @@ const Index = () => {
           <p className="mt-2 text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
           <Link
             to="/guidelines"
-            className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+            className="mt-4 inline-flex rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
           >
             Kontakt
           </Link>

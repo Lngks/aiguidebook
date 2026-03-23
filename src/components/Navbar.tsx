@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ScrambleText } from "./ScrambleText";
 import Logo from "./Logo";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 const navItems = [
   { label: "Verktøy", path: "/tools" },
@@ -17,6 +19,17 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const [isDark, setIsDark] = useState(() =>
+    document.documentElement.classList.contains("dark")
+  );
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,14 +44,20 @@ const Navbar = () => {
       <motion.header
         className={cn(
           "relative pointer-events-auto flex items-center overflow-hidden transition-all duration-500 ease-in-out",
-          isScrolled ? "mt-4 h-14 w-[95%] max-w-5xl rounded-lg shadow-sm" : "mt-0 h-16 w-full max-w-none rounded-none",
-          mobileOpen ? "h-auto rounded-b-lg w-full max-w-none mt-0 flex-col items-stretch" : "flex-row",
+          // Base mobile classes
+          "mt-0 h-16 w-full max-w-none rounded-none",
+          // Mobile scrolled state
+          isScrolled && "max-md:mt-4 max-md:h-14 max-md:w-[95%] max-md:max-w-5xl max-md:rounded-lg max-md:shadow-sm",
+          // Mobile open state
+          mobileOpen ? "max-md:h-auto max-md:rounded-b-lg max-md:w-full max-md:max-w-none max-md:mt-0 max-md:flex-col max-md:items-stretch" : "flex-row",
+          // Desktop fixed dark background
+          "md:bg-background md:border-b md:border-border/40"
         )}
       >
         {/* Isolated Decorative Layer - Handles background, blur, border, and shadow */}
         <div
           className={cn(
-            "absolute inset-0 -z-10 transition-all duration-500",
+            "absolute inset-0 -z-10 transition-all duration-500 max-md:block md:hidden",
             (isScrolled || mobileOpen) ? "opacity-100" : "opacity-0",
           )}
         >
@@ -52,8 +71,11 @@ const Navbar = () => {
 
         <div
           className={cn(
-            "flex w-full items-center justify-between px-6 mx-auto h-14 shrink-0 transition-all duration-500",
-            !isScrolled && !mobileOpen && "max-w-7xl h-16",
+            "container flex w-full items-center justify-between px-4 mx-auto shrink-0 transition-all duration-500",
+            // Mobile sizes keep dynamic height
+            isScrolled ? "h-14" : "h-16",
+            // Desktop consistent height
+            "md:h-16"
           )}
         >
           <Link
@@ -75,7 +97,7 @@ const Navbar = () => {
                       location.pathname === item.path ? "text-primary" : "text-muted-foreground",
                     )}
                   >
-                    {item.label}
+                    <ScrambleText text={item.label} duration={0.4} triggerOnHover={true} />
                     <span
                       className={cn(
                         "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300",
@@ -88,9 +110,14 @@ const Navbar = () => {
             </ul>
 
             <div className="flex items-center gap-4 shrink-0">
-              <Button asChild size="sm">
-                <Link to="/guidelines">Kom i gang</Link>
-              </Button>
+              <button
+                onClick={() => setIsDark(!isDark)}
+                className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border/40 bg-muted/20 text-muted-foreground transition-all hover:bg-muted/50 hover:text-foreground"
+                aria-label="Toggle theme"
+              >
+                <Sun className="h-4 w-4 transition-all duration-300 dark:-rotate-90 dark:scale-0 dark:opacity-0" />
+                <Moon className="absolute h-4 w-4 rotate-90 scale-0 opacity-0 transition-all duration-300 dark:rotate-0 dark:scale-100 dark:opacity-100" />
+              </button>
             </div>
           </div>
 
@@ -127,16 +154,23 @@ const Navbar = () => {
                           : "text-muted-foreground hover:text-foreground",
                       )}
                     >
-                      {item.label}
+                      <ScrambleText text={item.label} duration={0.4} triggerOnHover={true} />
                     </Link>
                   </li>
                 ))}
-                <li className="pt-4">
-                  <Button asChild className="w-full">
-                    <Link to="/guidelines" onClick={() => setMobileOpen(false)}>
-                      Kom i gang
-                    </Link>
-                  </Button>
+                <li className="pt-4 flex justify-between items-center px-4 py-3 border-t border-border/10">
+                  <span className="text-sm font-medium text-muted-foreground">Tema</span>
+                  <button
+                    onClick={() => {
+                      setIsDark(!isDark);
+                      setMobileOpen(false);
+                    }}
+                    className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border/40 bg-muted/20 text-muted-foreground transition-all hover:bg-muted/50 hover:text-foreground"
+                    aria-label="Toggle theme"
+                  >
+                    <Sun className="h-4 w-4 transition-all duration-300 dark:-rotate-90 dark:scale-0 dark:opacity-0" />
+                    <Moon className="absolute h-4 w-4 rotate-90 scale-0 opacity-0 transition-all duration-300 dark:rotate-0 dark:scale-100 dark:opacity-100" />
+                  </button>
                 </li>
               </ul>
             </motion.div>
