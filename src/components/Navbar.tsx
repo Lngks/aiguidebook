@@ -10,8 +10,8 @@ import { Switch } from "@/components/ui/switch";
 
 const navItems = [
   { label: "Verktøy", path: "/tools" },
-  { label: "Retningslinjer", path: "/guidelines" },
-  { label: "Personvern", path: "/privacy" },
+  { label: "Retningslinjer - WIP", path: "/guidelines" },
+  { label: "Personvern - WIP", path: "/privacy" },
   { label: "Interaktiv - WIP", path: "/interactive" },
 ];
 
