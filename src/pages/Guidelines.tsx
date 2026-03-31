@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { 
-  ArrowRight, 
-  ShieldCheck, 
-  Lock, 
-  PenTool, 
-  IterationCcw, 
-  Search, 
-  Mic, 
-  AlertTriangle, 
-  AlertCircle, 
+import {
+  ArrowRight,
+  ShieldCheck,
+  Lock,
+  PenTool,
+  IterationCcw,
+  Search,
+  Mic,
+  AlertTriangle,
+  AlertCircle,
   CheckSquare,
   ChevronDown
 } from "lucide-react";
@@ -108,9 +108,9 @@ const Guidelines = () => {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
   const toggleItem = (index: number) => {
-    setCheckedItems(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index) 
+    setCheckedItems(prev =>
+      prev.includes(index)
+        ? prev.filter(i => i !== index)
         : [...prev, index]
     );
   };
@@ -127,10 +127,10 @@ const Guidelines = () => {
             className="flex flex-col items-start text-left"
           >
             <p className="mb-4 text-xs font-mono font-bold uppercase tracking-[0.2em] text-primary/40">Etikk / Ansvar</p>
-            <h1 className="text-4xl md:text-6xl font-black text-white leading-[1.1]">
-              Bruk AI <span className="text-[#d2bbff]">ansvarlig.</span>
+            <h1 className="text-4xl md:text-6xl font-black text-foreground leading-[1.1]">
+              Bruk AI <span className="text-stitch-primary">ansvarlig.</span>
             </h1>
-            <p className="mt-6 text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl">
+            <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
               Kunstig intelligens er en kraftig partner i læringsprosessen, men krever kritisk tenkning og etisk bevissthet. Her finner du rammeverket for korrekt bruk.
             </p>
           </motion.div>
@@ -142,7 +142,7 @@ const Guidelines = () => {
         <section className="mb-32">
           <div className="flex items-center gap-4 mb-12 text-center text-xs">
             <div className="h-px flex-grow bg-border/40"></div>
-            <h2 className="font-bold tracking-tight text-white uppercase tracking-widest px-4">Tre ting du må vite</h2>
+            <h2 className="font-bold tracking-tight text-foreground uppercase tracking-widest px-4">Tre ting du må vite</h2>
             <div className="h-px flex-grow bg-border/40"></div>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
@@ -154,15 +154,15 @@ const Guidelines = () => {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.15 }}
                 className={cn(
-                  "group relative overflow-hidden rounded-xl border-l-4 bg-card p-8 shadow-sm transition-all hover:bg-[#2A2A2C]",
+                  "group relative overflow-hidden rounded-xl border-l-4 bg-card p-8 shadow-sm transition-all hover:bg-muted",
                   topic.borderColor
                 )}
               >
-                <div className="mb-6 inline-flex rounded-lg bg-muted p-3 border border-white/5">
+                <div className="mb-6 inline-flex rounded-lg bg-muted p-3 border border-border">
                   <topic.icon className={cn("h-6 w-6", topic.iconColor)} />
                 </div>
-                <h3 className="mb-4 text-xl font-bold text-white">{topic.title}</h3>
-                <p className="text-sm leading-relaxed text-neutral-400 font-medium">
+                <h3 className="mb-4 text-xl font-bold text-foreground">{topic.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground font-medium">
                   {topic.description}
                 </p>
               </motion.div>
@@ -175,7 +175,7 @@ const Guidelines = () => {
           {/* AI Usage Tips (3/5 width) */}
           <section className="lg:col-span-3 space-y-8">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">Slik bruker du AI korrekt</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">Slik bruker du AI korrekt</h2>
               <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#caf300]/80">Best practices</span>
             </div>
             <div className="space-y-4">
@@ -186,12 +186,12 @@ const Guidelines = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="flex items-start gap-6 rounded-xl bg-card p-6 border border-white/5 hover:bg-[#2A2A2C] transition-colors"
+                  className="flex items-start gap-6 rounded-xl bg-card p-6 border border-border hover:bg-muted transition-colors"
                 >
-                  <span className="text-3xl font-bold text-neutral-700 font-mono">{tip.number}</span>
+                  <span className="text-3xl font-bold text-foreground font-mono">{tip.number}</span>
                   <div>
-                    <h4 className="mb-2 font-bold text-white uppercase tracking-wide text-sm">{tip.title}</h4>
-                    <p className="text-sm text-neutral-400 font-medium">{tip.description}</p>
+                    <h4 className="mb-2 font-bold text-foreground uppercase tracking-wide text-sm">{tip.title}</h4>
+                    <p className="text-sm text-muted-foreground font-medium">{tip.description}</p>
                   </div>
                 </motion.div>
               ))}
@@ -203,13 +203,13 @@ const Guidelines = () => {
             <div className="absolute -right-8 -top-8 opacity-5">
               <AlertTriangle className="h-40 w-40 text-destructive" />
             </div>
-            <h2 className="mb-8 text-3xl font-bold tracking-tight text-white">Kjenn farene</h2>
+            <h2 className="mb-8 text-3xl font-bold tracking-tight text-foreground">Kjenn farene</h2>
             <ul className="relative z-10 space-y-6">
               {risks.map((risk, i) => (
                 <li key={risk.title} className="flex gap-4">
                   <AlertCircle className="h-5 w-5 shrink-0 text-destructive mt-0.5" />
-                  <p className="text-sm text-neutral-300 font-medium">
-                    <strong className="text-white">{risk.title}:</strong> {risk.description}
+                  <p className="text-sm text-muted-foreground font-medium">
+                    <strong className="text-foreground">{risk.title}:</strong> {risk.description}
                   </p>
                 </li>
               ))}
@@ -239,12 +239,12 @@ const Guidelines = () => {
                       : "bg-white/10 text-white border-white/5 hover:bg-white/20"
                   )}
                 >
-                  <Checkbox 
+                  <Checkbox
                     checked={checkedItems.includes(i)}
                     className={cn(
                       "h-5 w-5 border-2 transition-colors",
-                      checkedItems.includes(i) 
-                        ? "border-[#7c3aed] data-[state=checked]:bg-[#7c3aed] data-[state=checked]:text-white" 
+                      checkedItems.includes(i)
+                        ? "border-[#7c3aed] data-[state=checked]:bg-[#7c3aed] data-[state=checked]:text-white"
                         : "border-white/30"
                     )}
                   />
@@ -262,16 +262,16 @@ const Guidelines = () => {
 
         {/* FAQ Section */}
         <section className="mx-auto max-w-3xl">
-          <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-white md:text-4xl">Spørsmål & Svar</h2>
+          <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-foreground md:text-4xl">Spørsmål & Svar</h2>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
               <Accordion key={i} type="single" collapsible className="w-full">
                 <AccordionItem value={`faq-${i}`} className="border-none mb-2">
-                  <AccordionTrigger className="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:no-underline hover:bg-white/[0.02] px-6 rounded-xl group data-[state=open]:text-[#d2bbff] border border-white/5">
+                  <AccordionTrigger className="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:no-underline hover:bg-muted/50 px-6 rounded-xl group data-[state=open]:text-stitch-primary border border-border">
                     <span className="text-left text-base font-semibold">{faq.q}</span>
                   </AccordionTrigger>
                   <AccordionContent className="px-6 pb-6 pt-4">
-                    <div className="text-sm sm:text-base text-neutral-400 leading-relaxed bg-[#1b1b1e] p-6 rounded-xl border border-white/5">
+                    <div className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-6 rounded-xl border border-border">
                       {faq.a}
                     </div>
                   </AccordionContent>

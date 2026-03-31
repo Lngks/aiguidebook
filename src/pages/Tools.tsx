@@ -20,8 +20,9 @@ const featuredTools = [
     description: "Sikre KI-tjenester for utdanningssektoren. Designet for å ivareta personvern og datahåndtering i tråd med norske retningslinjer.",
     link: "https://ki.sikt.no/nb",
     icon: ShieldCheck,
-    image: "/tool-logos/sikt.png",
+    image: "/tool-logos/sikt.svg",
     iconColor: "text-purple-400",
+    themeAwareIcon: true,
   },
   {
     name: "GitHub Copilot",
@@ -30,7 +31,7 @@ const featuredTools = [
     icon: Code,
     image: "/tool-logos/github.svg",
     iconColor: "text-white",
-    forceWhite: true,
+    themeAwareIcon: true,
   },
   {
     name: "Microsoft Copilot",
@@ -39,7 +40,7 @@ const featuredTools = [
     icon: TerminalSquare,
     image: "/tool-logos/microsoft.svg",
     iconColor: "text-white",
-    forceWhite: true,
+    themeAwareIcon: true,
   },
 ];
 
@@ -166,7 +167,7 @@ const ExpandableCard = ({ tool, onExpand, index }: { tool: any; onExpand: (id: s
       transition={{ duration: 0.5, delay: index * 0.1 }}
       onClick={() => onExpand(tool.id)}
       className={cn(
-        "cursor-pointer group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-6 shadow-sm transition-all hover:bg-[#2A2A2C] border border-white/5 hover:border-white/10 hover:shadow-lg",
+        "cursor-pointer group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-6 shadow-sm transition-all hover:bg-muted border border-border/50 hover:border-border hover:shadow-lg",
         tool.colSpan
       )}
     >
@@ -187,8 +188,8 @@ const ExpandableCard = ({ tool, onExpand, index }: { tool: any; onExpand: (id: s
       </div>
 
       <div className="relative z-10 w-full md:w-2/3 lg:w-3/4">
-        <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">{tool.name}</h3>
-        <p className="text-sm text-neutral-400 line-clamp-2 pr-4">{tool.description}</p>
+        <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2">{tool.name}</h3>
+        <p className="text-sm text-muted-foreground line-clamp-2 pr-4">{tool.description}</p>
       </div>
 
       <div className="h-10" /> {/* Spacer to restore card height */}
@@ -296,10 +297,10 @@ const Tools = () => {
             className="flex flex-col items-start text-left"
           >
             <p className="mb-4 text-xs font-mono font-bold uppercase tracking-[0.2em] text-primary/40">Bibliotek / Ressurser</p>
-            <h1 className="text-4xl md:text-6xl font-black text-white leading-[1.1]">
-              Finn de rette <span className="text-[#d2bbff]">verktøyene</span> for din hverdag
+            <h1 className="text-4xl md:text-6xl font-black text-foreground leading-[1.1]">
+              Finn de rette <span className="text-stitch-primary">verktøyene</span> for din hverdag
             </h1>
-            <p className="mt-6 text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl">
+            <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
               En kuratert samling av KI-tjenester tilpasset dine akademiske behov og institusjonens retningslinjer.
             </p>
           </motion.div>
@@ -310,8 +311,8 @@ const Tools = () => {
       <section className="container mx-auto px-4 py-24 sm:py-32">
         <div className="mb-16 flex flex-col items-start text-left max-w-2xl">
           <p className="mb-3 text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-[#caf300]/80">Anbefalte verktøy</p>
-          <h2 className="text-3xl font-bold text-white md:text-4xl tracking-tight">Kvalitetssikrede plattformer</h2>
-          <p className="mt-4 text-neutral-400 leading-relaxed">
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl tracking-tight">Kvalitetssikrede plattformer</h2>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
             Universitetet har valgt ut og vurdert disse plattformene for å sikre trygg og effektiv bruk i utdanningssektoren.
           </p>
         </div>
@@ -326,25 +327,25 @@ const Tools = () => {
               href={tool.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-8 shadow-sm transition-all hover:bg-[#2A2A2C] border border-white/5"
+              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-8 shadow-sm transition-all hover:bg-muted border border-border/50"
             >
               <div>
                 <div className="mb-10 h-10 w-10 flex-shrink-0">
                   {tool.image ? (
-                    <img 
-                      src={tool.image} 
-                      alt={tool.name} 
+                    <img
+                      src={tool.image}
+                      alt={tool.name}
                       className={cn(
                         "h-full w-full object-contain transition-all duration-300",
-                        tool.forceWhite ? "brightness-0 invert" : "filter grayscale group-hover:grayscale-0"
-                      )} 
+                        tool.themeAwareIcon ? "brightness-0 dark:invert" : "filter grayscale group-hover:grayscale-0"
+                      )}
                     />
                   ) : (
                     <tool.icon className={cn("h-full w-full stroke-[2.5]", tool.iconColor)} />
                   )}
                 </div>
-                <h3 className="mb-3 text-2xl font-bold text-white tracking-tight">{tool.name}</h3>
-                <p className="text-[15px] leading-relaxed text-neutral-400 font-medium pr-4">{tool.description}</p>
+                <h3 className="mb-3 text-2xl font-bold text-foreground tracking-tight">{tool.name}</h3>
+                <p className="text-[15px] leading-relaxed text-muted-foreground font-medium pr-4">{tool.description}</p>
               </div>
               <div className="mt-8 flex items-center gap-2 font-mono">
                 <span className="text-xs font-bold tracking-widest uppercase text-tertiary">
@@ -383,18 +384,18 @@ const Tools = () => {
       <section className="container mx-auto px-4 py-24 sm:py-32 border-t border-border/10">
         <div className="mb-16 flex flex-col items-start text-left max-w-2xl">
           <p className="mb-3 text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-primary/40">Ofte stilte spørsmål</p>
-          <h2 className="text-3xl font-bold text-white md:text-4xl tracking-tight">Det du måtte lure på</h2>
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl tracking-tight">Det du måtte lure på</h2>
         </div>
         <div className="mx-auto max-w-none">
           <div className="grid gap-x-12 md:grid-cols-2">
             {faqs.map((faq, i) => (
               <Accordion key={i} type="single" collapsible className="w-full">
                 <AccordionItem value={`faq-${i}`} className="border-none mb-2">
-                  <AccordionTrigger className="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:no-underline hover:bg-white/[0.02] px-4 rounded-lg group data-[state=open]:text-[#d2bbff]">
+                  <AccordionTrigger className="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:no-underline hover:bg-muted/50 px-4 rounded-lg group data-[state=open]:text-stitch-primary">
                     <span className="text-left text-sm sm:text-base font-semibold transition-colors">{faq.q}</span>
                   </AccordionTrigger>
                   <AccordionContent className="px-4 pb-6 pt-2">
-                    <div className="text-sm sm:text-base text-neutral-400 leading-relaxed bg-[#1b1b1e] p-6 rounded-xl border border-white/5">
+                    <div className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-6 rounded-xl border border-border">
                       {faq.a}
                     </div>
                   </AccordionContent>

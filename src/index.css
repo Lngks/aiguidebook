@@ -6,7 +6,77 @@
 
 @layer base {
   :root {
-    /* Dark mode colors as default */
+    /* Global Light Mode Colors */
+    --background: 0 0% 100%;
+    --background-secondary: 0 0% 98%;
+    --foreground: 240 10% 4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+
+    --primary: 240 6% 10%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 10%;
+
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+
+    --accent: 270 100% 47%;
+    --accent-secondary: 270 100% 85%;
+    --accent-foreground: 0 0% 100%;
+
+    --tertiary: 73 100% 30%;
+    --tertiary-foreground: 0 0% 100%;
+    --tertiary-secondary: 73 50% 85%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 240 5% 65%;
+
+    --radius: 0.5rem;
+
+    /* Shared variables */
+    --green: 73 100% 50%;
+    --green-light: 73 100% 50%;
+    --green-dark: 73 100% 50%;
+    --sky: 199 89% 48%;
+    --sky-light: 199 80% 92%;
+    --success: 152 60% 40%;
+    --warning: 38 92% 50%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 10% 4%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 10% 4%;
+    --sidebar-border: 240 6% 90%;
+    --sidebar-ring: 240 5% 65%;
+
+    /* Stitch Light Mode Tokens */
+    --stitch-primary: 262 80% 58%;
+    --stitch-primary-container: 260 100% 90%;
+    --stitch-secondary: 0 0% 10%;
+    --stitch-tertiary: 154 60% 30%;
+    --stitch-error: 0 75% 42%;
+    --stitch-surface: 260 20% 98%;
+    --stitch-surface-container-low: 260 15% 96%;
+    --stitch-surface-container-highest: 260 15% 92%;
+    --stitch-outline-variant: 270 11% 80%;
+    --stitch-on-surface: 264 8% 12%;
+    --stitch-on-surface-variant: 264 7% 29%;
+  }
+
+  .dark {
+    /* Global Dark Mode Colors */
     --background: 240 7% 8%;
     --background-secondary: 240 7% 8%;
     --foreground: 33.75 42.11% 96%;
@@ -29,11 +99,9 @@
     --accent: 270 100% 47%;
     --accent-secondary: 270 100% 15%;
     --accent-foreground: 33.75 42.11% 96%;
-    /* white */
 
     --tertiary: 73 100% 50%;
     --tertiary-foreground: 33.75 42.11% 96%;
-    /* white */
     --tertiary-secondary: 73 50% 40%;
 
     --destructive: 0 63% 31%;
@@ -43,26 +111,27 @@
     --input: 210 3% 10%;
     --ring: 212 27% 84%;
 
-    --radius: 0.5rem;
-
-    /* Shared variables */
-    --green: 73 100% 50%;
-    --green-light: 73 100% 50%;
-    --green-dark: 73 100% 50%;
-    --sky: 199 89% 48%;
-    --sky-light: 199 80% 92%;
-    --success: 152 60% 40%;
-    --warning: 38 92% 50%;
-
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 33.75, 42.11%, 92.55%;
-    /* white */
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Stitch Dark Mode Tokens */
+    --stitch-primary: 260 100% 87%;
+    --stitch-primary-container: 262 80% 58%;
+    --stitch-secondary: 0 0% 100%;
+    --stitch-tertiary: 154 69% 59%;
+    --stitch-error: 6 100% 83%;
+    --stitch-surface: 240 7% 8%;
+    --stitch-surface-container-low: 240 5% 11%;
+    --stitch-surface-container-highest: 255 4% 21%;
+    --stitch-outline-variant: 261 11% 30%;
+    --stitch-on-surface: 276 11% 89%;
+    --stitch-on-surface-variant: 266 21% 81%;
   }
 }
 

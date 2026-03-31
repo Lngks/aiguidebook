@@ -229,7 +229,7 @@ const Privacy = () => {
             <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface">Fortsatt usikker på sikkerheten?</h3>
             <p className="text-stitch-on-surface-variant">Vårt team av etikkeksperter står klare til å hjelpe deg med konkrete vurderinger av din organisasjons AI-strategi.</p>
           </div>
-          <Link to="/guidelines" className="whitespace-nowrap bg-stitch-secondary text-black px-8 py-4 rounded-lg font-bold hover:scale-105 transition-transform text-center shadow-md">
+          <Link to="/guidelines" className="whitespace-nowrap bg-stitch-secondary text-stitch-surface px-8 py-4 rounded-lg font-bold hover:scale-105 transition-transform text-center shadow-md">
             Oppdag våre retningslinjer
           </Link>
         </div>

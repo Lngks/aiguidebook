@@ -59,16 +59,16 @@ const Footer = () => (
     <div className="border-b border-border bg-background/90">
       <div className="container mx-auto flex flex-col items-start justify-between gap-4 px-4 pt-24 pb-6 md:flex-row md:items-center">
         <div>
-          <p className="font-medium text-primary-foreground" style={{ fontFamily: "'Poppins', sans-serif" }}>
+          <p className="font-medium text-foreground" style={{ fontFamily: "'Poppins', sans-serif" }}>
             Få oppdateringer
           </p>
-          <p className="text-sm text-primary-foreground/70">Motta tips og veiledning direkte</p>
+          <p className="text-sm text-muted-foreground">Motta tips og veiledning direkte</p>
         </div>
         <div className="flex w-full max-w-md gap-2">
           <input
             type="email"
             placeholder="Din e-post"
-            className="flex-1 rounded-md border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-2 text-sm text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent"
+            className="flex-1 rounded-md border border-foreground/20 bg-foreground/5 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent"
           />
           <Button size="sm">
             Abonner

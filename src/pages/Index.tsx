@@ -7,6 +7,7 @@ import AsciiHero from "@/components/AsciiHero";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { ScrambleText } from "@/components/ScrambleText";
+import ColorBends from "@/components/ui/ColorBends";
 
 const overviewCards = [
   {
@@ -74,6 +75,20 @@ const Index = () => {
   const isMobile = useIsMobile();
   const heroRef = useRef<HTMLDivElement>(null);
   const [heroContentOpacity, setHeroContentOpacity] = useState(1);
+  const [isDark, setIsDark] = useState(() =>
+    document.documentElement.classList.contains("dark")
+  );
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -90,17 +105,33 @@ const Index = () => {
   return (
     <>
       {/* Hero — sticky, stays behind */}
-      <div ref={heroRef} className="sticky top-0 z-0">
-        <section className="relative flex min-h-[90vh] flex-col justify-center overflow-hidden bg-secondary pb-32 pt-20 text-primary-foreground md:pb-48 md:pt-28">
+      <div ref={heroRef} className="sticky top-0 z-0 bg-background text-foreground">
+        <section className="relative flex min-h-[90vh] flex-col justify-center overflow-hidden bg-background pb-32 pt-20 text-foreground md:pb-48 md:pt-28 dark:bg-secondary">
           <div className="absolute inset-0">
-            <DarkVeil
-              hueShift={0}
-              noiseIntensity={0}
-              scanlineIntensity={0}
-              speed={0.5}
-              scanlineFrequency={0}
-              warpAmount={0}
-            />
+            {isDark ? (
+              <DarkVeil
+                hueShift={0}
+                noiseIntensity={0}
+                scanlineIntensity={0}
+                speed={0.5}
+                scanlineFrequency={0}
+                warpAmount={0}
+              />
+            ) : (
+              <ColorBends
+                rotation={45}
+                speed={0.2}
+                colors={["#5227FF", "#FF9FFC", "#7cff67"]}
+                transparent
+                autoRotate={0}
+                scale={1.3}
+                frequency={1}
+                warpStrength={1}
+                mouseInfluence={0}
+                parallax={0.5}
+                noise={0.1}
+              />
+            )}
           </div>
           <div
             className="container relative z-10 mx-auto mt-20 px-4 transition-opacity duration-100"
@@ -116,18 +147,27 @@ const Index = () => {
               <div className="relative z-10 text-center md:text-left md:order-1">
                 <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.4)_0%,transparent_80%)] blur-2xl pointer-events-none scale-150" />
 
-                <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-tertiary">
+                <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-stitch-primary dark:text-tertiary">
                   AIGuidebook
                 </p>
                 <h1 className="mb-8 text-5xl font-bold leading-[0.9] tracking-tighter md:text-7xl">
-                  Mestre <br /> <span className="italic text-tertiary"><ScrambleText text="fremtidens" /></span><br /> studieteknikk.
+                  Mestre <br /> <span className="italic text-stitch-primary dark:text-tertiary"><ScrambleText text="fremtidens" /></span><br /> studieteknikk.
                 </h1>
-                <p className="mb-10 mx-auto max-w-xl text-lg leading-relaxed text-muted-foreground md:mx-0 [text-shadow:_0_2px_10px_rgba(0,0,0,0.8)]">
+                <p className="mb-10 mx-auto max-w-xl text-lg leading-relaxed text-foreground/90 font-medium md:mx-0 dark:text-muted-foreground dark:font-normal dark:[text-shadow:none]">
                   AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som
                   er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-4 md:justify-start">
-                  <Button asChild variant="tertiary" size="lg" className="uppercase tracking-widest shadow-xl shadow-tertiary/10">
+                  <Button
+                    asChild
+                    variant="custom"
+                    size="lg"
+                    className="uppercase tracking-widest shadow-xl shadow-stitch-primary/10 dark:shadow-tertiary/10"
+                    style={{
+                      "--btn-gradient-from": isDark ? "hsl(var(--tertiary))" : "hsl(var(--stitch-primary))",
+                      "--btn-gradient-to": isDark ? "hsl(var(--tertiary))" : "hsl(var(--stitch-primary))"
+                    } as React.CSSProperties}
+                  >
                     <Link to="/guidelines">Start</Link>
                   </Button>
                   <Button asChild variant="secondary" size="lg" className="uppercase tracking-widest">
@@ -165,7 +205,7 @@ const Index = () => {
             {overviewCards.map((card) => (
               <div
                 key={card.title}
-                className="group relative rounded-xl border border-border/10 bg-card/30 p-10 transition-all hover:bg-card/50 border-b-4 border-b-tertiary"
+                className="group relative rounded-xl border border-border/40 bg-card p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b-4 border-b-tertiary dark:border-border/10 dark:bg-card/30 dark:hover:bg-card/50 dark:shadow-none"
               >
                 <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-lg bg-muted/20 transition-transform group-hover:scale-110">
                   <card.icon className="h-8 w-8 text-tertiary" />
@@ -203,7 +243,7 @@ const Index = () => {
               <Link
                 key={card.title}
                 to={card.path}
-                className="group flex flex-col overflow-hidden rounded-xl border border-border/10 bg-card transition-all hover:border-tertiary/50"
+                className="group flex flex-col overflow-hidden rounded-xl border border-border/40 bg-card shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all hover:border-tertiary/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:border-border/10 dark:shadow-none"
               >
                 <div className="relative flex h-56 items-center justify-center bg-muted/20">
                   <card.icon className="h-16 w-16 text-muted-foreground/20 group-hover:text-tertiary/20 transition-colors" />
@@ -226,22 +266,26 @@ const Index = () => {
       </section>
 
       {/* CTA Banner — Se det i praksis */}
-      <section className="relative z-10 overflow-hidden bg-[#7c3aed] py-20 text-center text-white">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute top-0 left-0 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-[100px]" />
-        </div>
-        <div className="container relative z-10 mx-auto max-w-4xl px-6">
-          <h2 className="mb-6 text-4xl font-bold uppercase tracking-tight text-white">Se det i praksis</h2>
-          <p className="mb-10 text-xl opacity-90 text-white/90">
-            Få et unikk innblikk i prosessene som styrer dagens kunstige intelligens.
-          </p>
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Button asChild variant="tertiary" size="lg" className="uppercase tracking-widest hover:scale-105 transition-all font-bold">
-              <Link to="/interactive">Prøv selv</Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg" className="border-white/20 bg-white/10 uppercase tracking-widest hover:bg-white/20 transition-all text-white font-bold">
-              <Link to="/guidelines">Retningslinjer</Link>
-            </Button>
+      <section className="relative z-10 bg-background py-16">
+        <div className="container mx-auto px-4">
+          <div className="relative overflow-hidden rounded-3xl bg-[#7c3aed] py-20 text-center text-white">
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+              <div className="absolute top-0 left-0 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-[100px]" />
+            </div>
+            <div className="relative z-10 mx-auto max-w-4xl px-6">
+              <h2 className="mb-6 text-4xl font-bold uppercase tracking-tight text-white">Se det i praksis</h2>
+              <p className="mb-10 text-xl opacity-90 text-white/90">
+                Få et unikk innblikk i prosessene som styrer dagens kunstige intelligens.
+              </p>
+              <div className="flex flex-col justify-center gap-4 sm:flex-row">
+                <Button asChild variant="tertiary" size="lg" className="uppercase tracking-widest hover:scale-105 transition-all font-bold">
+                  <Link to="/interactive">Prøv selv</Link>
+                </Button>
+                <Button asChild variant="secondary" size="lg" className="border-white/20 bg-white uppercase tracking-widest hover:bg-white/90 transition-all text-zinc-900 font-bold dark:bg-white/10 dark:hover:bg-white/20 dark:text-white">
+                  <Link to="/guidelines">Retningslinjer</Link>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
