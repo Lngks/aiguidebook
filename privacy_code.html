@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="no"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary": "#003824",
+              "primary-container": "#7c3aed",
+              "outline-variant": "#4a4455",
+              "surface": "#131316",
+              "on-secondary-fixed-variant": "#3e4c00",
+              "on-primary": "#3f008e",
+              "on-error": "#690005",
+              "secondary-container": "#caf300",
+              "on-secondary-container": "#596c00",
+              "secondary-fixed": "#caf300",
+              "tertiary-fixed-dim": "#4edea3",
+              "surface-variant": "#353438",
+              "secondary-fixed-dim": "#b0d500",
+              "tertiary": "#4edea3",
+              "on-tertiary-fixed": "#002113",
+              "inverse-primary": "#732ee4",
+              "on-background": "#e4e1e6",
+              "on-secondary": "#2a3400",
+              "surface-container-highest": "#353438",
+              "surface-bright": "#39393c",
+              "on-secondary-fixed": "#171e00",
+              "surface-container-low": "#1b1b1e",
+              "on-primary-container": "#ede0ff",
+              "on-primary-fixed-variant": "#5a00c6",
+              "inverse-surface": "#e4e1e6",
+              "outline": "#958da1",
+              "error": "#ffb4ab",
+              "on-surface": "#e4e1e6",
+              "inverse-on-surface": "#303033",
+              "primary-fixed": "#eaddff",
+              "tertiary-fixed": "#6ffbbe",
+              "surface-container-high": "#2a2a2d",
+              "on-tertiary-container": "#76ffc2",
+              "secondary": "#ffffff",
+              "background": "#131316",
+              "surface-dim": "#131316",
+              "on-surface-variant": "#ccc3d8",
+              "on-error-container": "#ffdad6",
+              "primary": "#d2bbff",
+              "primary-fixed-dim": "#d2bbff",
+              "surface-container-lowest": "#0e0e11",
+              "error-container": "#93000a",
+              "on-primary-fixed": "#25005a",
+              "surface-tint": "#d2bbff",
+              "tertiary-container": "#007650",
+              "on-tertiary-fixed-variant": "#005236",
+              "surface-container": "#1f1f22"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="sticky top-0 z-50 w-full bg-zinc-950/80 backdrop-blur-xl shadow-2xl shadow-black/50 bg-zinc-900/40">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+<div class="text-xl font-bold tracking-tighter text-violet-300 font-headline">AI Guiden</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-zinc-400 hover:text-violet-200 transition-colors font-label uppercase tracking-widest text-[10px]" href="#">Verktøy</a>
+<a class="text-zinc-400 hover:text-violet-200 transition-colors font-label uppercase tracking-widest text-[10px]" href="#">Retningslinjer</a>
+<a class="text-lime-400 font-bold border-b-2 border-lime-400 pb-1 font-label uppercase tracking-widest text-[10px]" href="#">Personvern</a>
+<a class="text-zinc-400 hover:text-violet-200 transition-colors font-label uppercase tracking-widest text-[10px]" href="#">Interaktiv</a>
+</div>
+<div class="flex items-center space-x-4">
+<div class="hidden sm:block relative">
+<span class="absolute inset-y-0 left-3 flex items-center text-zinc-500">
+<span class="material-symbols-outlined text-sm">search</span>
+</span>
+<input class="bg-surface-container-lowest border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary-container w-48 transition-all" placeholder="Søk i guiden..." type="text"/>
+</div>
+<button class="bg-primary-container text-on-primary-container px-5 py-2 rounded-lg font-bold text-sm hover:scale-95 transition-all duration-150">Kom i gang</button>
+</div>
+</div>
+</nav>
+<main class="max-w-7xl mx-auto px-6 py-16">
+<!-- Hero Header -->
+<header class="mb-20">
+<div class="label-md uppercase tracking-[0.2em] text-secondary font-medium mb-4 flex items-center gap-2">
+<span class="w-8 h-[1px] bg-secondary"></span>
+                Sikkerhet &amp; Etikk
+            </div>
+<h1 class="font-headline text-5xl md:text-7xl font-bold text-on-surface mb-6 tracking-tight">Personvern og <span class="text-primary italic">risikoer</span>.</h1>
+<p class="max-w-2xl text-on-surface-variant text-lg leading-relaxed">
+                Navigering i AI-landskapet krever en dyp forståelse av sikkerhet, etikk og integritet. Vi har identifisert de mest kritiske områdene du bør kjenne til.
+            </p>
+</header>
+<!-- Bento Grid Risks Section -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24">
+<!-- Risk 1: Data Privacy -->
+<div class="md:col-span-7 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 hover:bg-surface-container transition-all group flex flex-col">
+<div class="flex items-start justify-between mb-8">
+<div class="bg-surface-container-highest p-4 rounded-lg">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="shield_lock">shield_lock</span>
+</div>
+<span class="text-primary-container font-headline font-bold text-4xl opacity-20">01</span>
+</div>
+<h3 class="font-headline text-3xl font-bold mb-4">Dataprivatliv</h3>
+<p class="text-on-surface-variant mb-6">Informasjonen du mater inn i AI-modeller kan bli brukt til fremtidig trening. Beskytt dine sensitive data.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle">check_circle</span>
+                        Del aldri personopplysninger eller konfidensielle dokumenter.
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle">check_circle</span>
+                        Bruk anonymiserte datasett når du ber om analyse.
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle">check_circle</span>
+                        Sjekk personverninnstillingene for hvert spesifikke verktøy.
+                    </li>
+</ul>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<div class="text-xs uppercase tracking-widest text-on-surface-variant font-bold mb-2">Tiltak</div>
+<p class="text-sm font-medium text-tertiary">Aktiver "Private Mode" eller "Opt-out" i plattforminnstillingene.</p>
+</div>
+</div>
+<!-- Risk 2: Bias -->
+<div class="md:col-span-5 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 hover:bg-surface-container transition-all flex flex-col">
+<div class="flex items-start justify-between mb-8">
+<div class="bg-surface-container-highest p-4 rounded-lg">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="balance">balance</span>
+</div>
+<span class="text-secondary font-headline font-bold text-4xl opacity-20">02</span>
+</div>
+<h3 class="font-headline text-3xl font-bold mb-4">Skjevheter i AI</h3>
+<p class="text-on-surface-variant mb-6">AI-modeller gjenspeiler fordommer i treningsdataene sine, noe som kan føre til diskriminerende resultater.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="warning">warning</span>
+                        Vær kritisk til kulturelle og demografiske antagelser.
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="warning">warning</span>
+                        Mangfold i prompts gir mer balanserte svar.
+                    </li>
+</ul>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<div class="text-xs uppercase tracking-widest text-on-surface-variant font-bold mb-2">Tiltak</div>
+<p class="text-sm font-medium text-secondary">Kryssjekk AI-generert innhold med uavhengige, objektive kilder.</p>
+</div>
+</div>
+<!-- Risk 3: Hallucinations -->
+<div class="md:col-span-5 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 hover:bg-surface-container transition-all flex flex-col">
+<div class="flex items-start justify-between mb-8">
+<div class="bg-surface-container-highest p-4 rounded-lg">
+<span class="material-symbols-outlined text-error text-3xl" data-icon="visibility_off">visibility_off</span>
+</div>
+<span class="text-error font-headline font-bold text-4xl opacity-20">03</span>
+</div>
+<h3 class="font-headline text-3xl font-bold mb-4">Hallusinasjoner</h3>
+<p class="text-on-surface-variant mb-6">AI kan presentere falsk informasjon med stor selvsikkerhet. Dette er spesielt kritisk ved faktasjekking.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-error text-lg" data-icon="close">close</span>
+                        Stol aldri på kildehenvisninger fra AI uten å sjekke dem.
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-error text-lg" data-icon="close">close</span>
+                        Verifiser alle årstall, sitater og statistikker manuelt.
+                    </li>
+</ul>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<div class="text-xs uppercase tracking-widest text-on-surface-variant font-bold mb-2">Tiltak</div>
+<p class="text-sm font-medium text-error">Be AI-en om å "tenke steg for steg" for å redusere feilrater.</p>
+</div>
+</div>
+<!-- Risk 4: Academic Integrity -->
+<div class="md:col-span-7 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 hover:bg-surface-container transition-all relative overflow-hidden flex flex-col">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container/5 rounded-full blur-3xl -mr-10 -mt-10"></div>
+<div class="flex items-start justify-between mb-8">
+<div class="bg-surface-container-highest p-4 rounded-lg">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="history_edu">history_edu</span>
+</div>
+<span class="text-primary font-headline font-bold text-4xl opacity-20">04</span>
+</div>
+<h3 class="font-headline text-3xl font-bold mb-4">Akademisk integritet</h3>
+<p class="text-on-surface-variant mb-6">Bruk av AI uten å oppgi kilde kan anses som plagiat. Balanser assistanse med original tenkning.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+<div class="bg-background/50 p-4 rounded-lg border border-outline-variant/5">
+<div class="text-primary font-bold text-sm mb-1">Gjennomsiktighet</div>
+<p class="text-xs text-on-surface-variant leading-relaxed">Deklarer alltid når og hvordan AI har blitt brukt i arbeidet ditt.</p>
+</div>
+<div class="bg-background/50 p-4 rounded-lg border border-outline-variant/5">
+<div class="text-tertiary font-bold text-sm mb-1">Kildekritikk</div>
+<p class="text-xs text-on-surface-variant leading-relaxed">AI skal være en samtalepartner, ikke din primære informasjonskilde.</p>
+</div>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/10 flex items-center justify-between">
+<div>
+<div class="text-xs uppercase tracking-widest text-on-surface-variant font-bold mb-2">Tiltak</div>
+<p class="text-sm font-medium text-primary">Følg institusjonens spesifikke retningslinjer for AI-bruk.</p>
+</div>
+<button class="bg-surface-container-highest hover:bg-surface-bright text-on-surface text-xs font-bold py-2 px-4 rounded-full transition-colors flex items-center gap-2">
+                        Les retningslinjer <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Data Protection Principles -->
+<section class="bg-zinc-900/20 rounded-2xl p-12 border border-outline-variant/5 mb-24 relative overflow-hidden">
+<div class="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary/5 rounded-full blur-[120px]"></div>
+<div class="relative z-10">
+<div class="label-md uppercase tracking-[0.2em] text-secondary font-medium mb-12 text-center">Beskyttelse av data</div>
+<h2 class="font-headline text-4xl font-bold text-center mb-16">Våre tre kjerneprinsipper for <span class="text-secondary">sikker bruk</span></h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="text-center group">
+<div class="w-16 h-16 bg-surface-container-high rounded-full flex items-center justify-center mx-auto mb-6 border border-outline-variant/10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary" data-icon="lock">lock</span>
+</div>
+<h4 class="font-headline text-xl font-bold mb-4">Minimumseksponering</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Mat kun inn nødvendig data. Jo mindre informasjon du deler, desto mindre er risikoen for lekkasjer.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 bg-surface-container-high rounded-full flex items-center justify-center mx-auto mb-6 border border-outline-variant/10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary" data-icon="visibility">visibility</span>
+</div>
+<h4 class="font-headline text-xl font-bold mb-4">Menneskelig tilsyn</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">AI-generert innhold skal aldri publiseres eller brukes uten en grundig manuell kvalitetskontroll.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 bg-surface-container-high rounded-full flex items-center justify-center mx-auto mb-6 border border-outline-variant/10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary" data-icon="history">history</span>
+</div>
+<h4 class="font-headline text-xl font-bold mb-4">Full sporbarhet</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Dokumenter alle steg i prosessen der AI har blitt brukt til å forme det endelige resultatet.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="max-w-3xl mx-auto mb-24">
+<h2 class="font-headline text-4xl font-bold mb-12 text-center">Ofte stilte <span class="text-primary italic">spørsmål</span></h2>
+<div class="space-y-6">
+<!-- FAQ Item 1 -->
+<div class="border-b border-outline-variant/10 pb-6 group">
+<button class="flex items-center justify-between w-full text-left">
+<span class="font-headline text-xl font-medium text-on-surface group-hover:text-primary transition-colors">Er mine prompts offentlig tilgjengelige?</span>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</button>
+<div class="mt-4 text-on-surface-variant text-sm leading-relaxed px-4 py-3 bg-surface-container-low rounded-lg hidden group-focus-within:block">
+                        Som hovedregel kan data du skriver inn brukes til å trene modellene videre, med mindre du eksplisitt slår av dette i innstillingene (f.eks. i ChatGPT Plus eller ved bruk av API-løsninger). Sjekk alltid vilkårene for tjenesten du bruker.
+                    </div>
+</div>
+<!-- FAQ Item 2 -->
+<div class="border-b border-outline-variant/10 pb-6 group">
+<button class="flex items-center justify-between w-full text-left">
+<span class="font-headline text-xl font-medium text-on-surface group-hover:text-primary transition-colors">Hvordan vet jeg om AI-en lyver?</span>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</button>
+<div class="mt-4 text-on-surface-variant text-sm leading-relaxed px-4 py-3 bg-surface-container-low rounded-lg hidden group-focus-within:block">
+                        Det finnes ingen innebygd indikator, men du kan teste svar ved å be om kilder, eller be AI-en om å kritisere sitt eget svar for logiske brister. Den beste metoden er alltid ekstern faktasjekking.
+                    </div>
+</div>
+<!-- FAQ Item 3 -->
+<div class="border-b border-outline-variant/10 pb-6 group">
+<button class="flex items-center justify-between w-full text-left">
+<span class="font-headline text-xl font-medium text-on-surface group-hover:text-primary transition-colors">Kan jeg bruke AI til å skrive eksamen?</span>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</button>
+<div class="mt-4 text-on-surface-variant text-sm leading-relaxed px-4 py-3 bg-surface-container-low rounded-lg hidden group-focus-within:block">
+                        Dette avhenger helt av institusjonens regelverk. De fleste skoler og universiteter i Norge har nå strenge regler for AI-bruk. Sjekk din studieplan eller spør faglærer før du bruker AI som verktøy i vurderingssituasjoner.
+                    </div>
+</div>
+</div>
+</section>
+<!-- CTA / Help Card -->
+<section class="relative p-1 bg-gradient-to-r from-primary-container to-secondary rounded-2xl">
+<div class="bg-surface p-12 rounded-[0.9rem] flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="max-w-xl">
+<h3 class="font-headline text-3xl font-bold mb-4">Fortsatt usikker på sikkerheten?</h3>
+<p class="text-on-surface-variant">Vårt team av etikkeksperter står klare til å hjelpe deg med konkrete vurderinger av din organisasjons AI-strategi.</p>
+</div>
+<button class="whitespace-nowrap bg-secondary text-on-secondary px-8 py-4 rounded-lg font-bold hover:scale-105 transition-transform">Kontakt oss i dag</button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-zinc-950 border-t border-zinc-800/50 full-width py-12 mt-24">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-6 max-w-7xl mx-auto tonal-shift bg-zinc-900/20">
+<div class="md:col-span-1">
+<div class="font-space-grotesk font-bold text-lg text-white mb-6">AI Guiden</div>
+<p class="text-zinc-500 text-sm mb-6 leading-relaxed">
+                    Et redaksjonelt rammeverk for sikker og innovativ bruk av kunstig intelligens i utdanning og næringsliv.
+                </p>
+<div class="flex gap-4">
+<a class="w-8 h-8 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-500 hover:text-white hover:border-zinc-500 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">share</span>
+</a>
+<a class="w-8 h-8 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-500 hover:text-white hover:border-zinc-500 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">mail</span>
+</a>
+</div>
+</div>
+<div>
+<h5 class="font-headline font-bold text-white mb-4">Navigasjon</h5>
+<ul class="space-y-3">
+<li><a class="text-zinc-500 hover:text-white transition-colors font-inter text-sm" href="#">Verktøy</a></li>
+<li><a class="text-zinc-500 hover:text-white transition-colors font-inter text-sm" href="#">Retningslinjer</a></li>
+<li><a class="text-lime-400 transition-colors font-inter text-sm" href="#">Personvern</a></li>
+<li><a class="text-zinc-500 hover:text-white transition-colors font-inter text-sm" href="#">Interaktiv</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-headline font-bold text-white mb-4">Ressurser</h5>
+<ul class="space-y-3">
+<li><a class="text-zinc-500 hover:text-white transition-colors font-inter text-sm" href="#">Nyhetsbrev</a></li>
+<li><a class="text-zinc-500 hover:text-white transition-colors font-inter text-sm" href="#">Dokumentasjon</a></li>
+<li><a class="text-zinc-500 hover:text-white transition-colors font-inter text-sm" href="#">API</a></li>
+<li><a class="text-zinc-500 hover:text-white transition-colors font-inter text-sm" href="#">Support</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-headline font-bold text-white mb-4">Meld deg på</h5>
+<p class="text-zinc-500 text-sm mb-4">Få de siste oppdateringene om AI-sikkerhet rett i innboksen.</p>
+<div class="flex gap-2">
+<input class="bg-surface-container-high border-none rounded-lg text-sm flex-grow focus:ring-primary" placeholder="E-post" type="email"/>
+<button class="bg-primary text-on-primary-fixed p-2 rounded-lg">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-zinc-800/50 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-zinc-500 font-inter text-sm">© 2024 Cyber-Editorial AI Framework. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-zinc-500 hover:text-white text-xs" href="#">Vilkår for bruk</a>
+<a class="text-zinc-500 hover:text-white text-xs" href="#">Informasjonskapsler</a>
+</div>
+</div>
+</footer>
+</body></html>

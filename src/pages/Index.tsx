@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "react-router-dom";
-import { ArrowRight, FileText, Lightbulb, Wrench, Image as ImageIcon } from "lucide-react";
+import { ArrowRight, FileText, Lightbulb, Wrench, ShieldCheck, PenTool, Bot, Mail } from "lucide-react";
 import DarkVeil from "@/components/DarkVeil/DarkVeil";
-import ParallaxSection from "@/components/ParallaxSection";
 import AsciiHero from "@/components/AsciiHero";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-
 import { ScrambleText } from "@/components/ScrambleText";
 
 const overviewCards = [
@@ -20,6 +18,7 @@ const overviewCards = [
     title: "Praktiske eksempler",
     description: "Se hvordan ansvarlig AI-bruk ser ut i praksis, dag etter dag.",
     icon: Lightbulb,
+    highlight: true,
   },
   {
     title: "Verktøy som virker",
@@ -34,18 +33,21 @@ const trustCards = [
     title: "Forstå reglene som gjelder",
     description: "Få god oversikt over hva som er lov og hva som ikke er det i studiene dine.",
     path: "/guidelines",
+    icon: ShieldCheck,
   },
   {
     label: "Integritet",
     title: "Hold det akademiske arbeidet ærlig",
     description: "Lær på din egen måte uten å gå på kompromiss med integriteten din.",
     path: "/guidelines",
+    icon: PenTool,
   },
   {
     label: "Praktisk",
     title: "Lær hvordan AI faktisk fungerer",
     description: "Praktiske verktøy og forklaringer om hvordan AI-verktøy egentlig virker.",
     path: "/tools",
+    icon: Bot,
   },
 ];
 
@@ -55,44 +57,16 @@ const faqs = [
     a: "Det kommer an på hva oppgaven krever. Noen ganger er AI-bruk greit, andre ganger ikke. Snakk med faglærer og sjekk institusjonens retningslinjer.",
   },
   {
-    q: "Kan AI «lære» partisk?",
-    a: "Ja. AI trener på data som kan inneholde fordommer. Det kan gjøre svarene ubalanserte eller stereotype. Vær kritisk og sjekk alltid informasjonen.",
-  },
-  {
     q: "Hva er hallusinasjoner i AI?",
     a: "AI kan generere informasjon som høres riktig ut, men som er feil eller oppdiktet. Verifiser alltid fakta og kilder mot pålitelige kilder.",
-  },
-  {
-    q: "Hvor trygge er dataene mine?",
-    a: "Det er viktig å forstå hva som skjer med dataene dine. Ikke del personlig informasjon med AI-verktøy, og les alltid personvernvilkårene.",
   },
   {
     q: "Hvor havner dataene mine?",
     a: "Les personvernerklæringen til verktøyet. Noen AI-verktøy lagrer dataene dine for trening. Sjekk innstillingene dine.",
   },
   {
-    q: "Hva hvis jeg glemmer å oppgi AI-bruk?",
-    a: "Det kan regnes som brudd på akademisk integritet. Oppgi alltid AI-bruk for å unngå konsekvenser.",
-  },
-  {
     q: "Er det plagiat å bruke AI?",
     a: "Ikke nødvendigvis. Men du må oppgi at du har brukt AI i oppgaven, ellers kan det få konsekvenser.",
-  },
-  {
-    q: "Hvordan sjekker jeg AI-svar?",
-    a: "Bruk kilder du stoler på. Se etter sammenheng i informasjonen. Dobbeltsjekk fakta og sitater.",
-  },
-  {
-    q: "Hvilket AI-verktøy er billigst?",
-    a: "Det finnes mange gratisalternativer. Prøv GitHub Copilot og Microsoft Copilot, som har gratis studentkontoer. Andre verktøy varierer i pris.",
-  },
-  {
-    q: "Hvordan bruker jeg AI til læring?",
-    a: "AI kan gi deg enklere forklaringer, stille prøvespørsmål og lage quizer. Men bruk det som et verktøy, ikke som en erstatning for å lære selv.",
-  },
-  {
-    q: "Er personvernet mitt ivaretatt?",
-    a: "Det avhenger av verktøyet. Bruk bare tjenester du stoler på, og sjekk personvernerklæringen for å se hva som lagres.",
   },
 ];
 
@@ -105,7 +79,6 @@ const Index = () => {
     const onScroll = () => {
       if (!heroRef.current) return;
       const sectionHeight = heroRef.current.offsetHeight;
-      // Use scrollY since sticky element's rect.top is always 0
       const scrolled = window.scrollY;
       const opacity = Math.max(0, 1 - scrolled / (sectionHeight * 0.6));
       setHeroContentOpacity(opacity);
@@ -134,7 +107,6 @@ const Index = () => {
             style={{ opacity: heroContentOpacity }}
           >
             <div className="relative grid items-center gap-10 md:grid-cols-[1fr_minmax(0,680px)]">
-              {/* ASCII — hidden on mobile, right column on desktop */}
               {!isMobile && (
                 <div className="relative order-2 h-full min-h-[600px]">
                   <AsciiHero />
@@ -142,21 +114,23 @@ const Index = () => {
               )}
 
               <div className="relative z-10 text-center md:text-left md:order-1">
-                {/* Soft edge-less vignette behind text for grounding */}
                 <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.4)_0%,transparent_80%)] blur-2xl pointer-events-none scale-150" />
 
-                <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
-                  Mestre <br /> <span className="text-tertiary"><ScrambleText text="fremtidens" /></span><br /> studieteknikk
+                <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-tertiary">
+                  AIGuidebook
+                </p>
+                <h1 className="mb-8 text-5xl font-bold leading-[0.9] tracking-tighter md:text-7xl">
+                  Mestre <br /> <span className="italic text-tertiary"><ScrambleText text="fremtidens" /></span><br /> studieteknikk.
                 </h1>
-                <p className="mb-8 mx-auto max-w-lg text-lg text-muted-foreground md:mx-0 [text-shadow:_0_2px_10px_rgba(0,0,0,0.8)]">
+                <p className="mb-10 mx-auto max-w-xl text-lg leading-relaxed text-muted-foreground md:mx-0 [text-shadow:_0_2px_10px_rgba(0,0,0,0.8)]">
                   AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som
                   er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
                 </p>
-                <div className="flex justify-center gap-3 md:justify-start">
-                  <Button asChild variant="tertiary" size="lg">
+                <div className="flex flex-col sm:flex-row justify-center gap-4 md:justify-start">
+                  <Button asChild variant="tertiary" size="lg" className="uppercase tracking-widest shadow-xl shadow-tertiary/10">
                     <Link to="/guidelines">Start</Link>
                   </Button>
-                  <Button asChild variant="secondary" size="lg">
+                  <Button asChild variant="secondary" size="lg" className="uppercase tracking-widest">
                     <Link to="/tools">Les mer</Link>
                   </Button>
                 </div>
@@ -166,187 +140,148 @@ const Index = () => {
         </section>
       </div>
 
-
-
-      {/* Separator line + decorative tab — static, NOT inside any animated container */}
+      {/* Separator line + decorative tab */}
       <div className="relative z-20">
         <div className="absolute top-0 left-0 w-full h-px bg-border/20" />
         <div className="absolute top-[-28px] left-1/2 -translate-x-1/2 w-[1100px] h-[29px] pointer-events-none">
           <svg viewBox="0 0 640 48" preserveAspectRatio="none" className="w-full h-full text-background fill-current">
             <path d="M0 48 L 180 48 C 220 48 240 0 280 0 L 360 0 C 400 0 420 48 460 48 L 640 48 Z" />
           </svg>
-          {/* Accent Line */}
           <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-12 h-0 bg-primary/30 rounded-full blur-[0.5px]" />
         </div>
       </div>
 
-      {/* Tre ting du må vite — scrolls OVER hero */}
+      {/* Key Points — Tre ting du må vite */}
       <section className="relative z-10 bg-background px-4 pt-40 pb-40">
-        <div className="container mx-auto">
-          <div className="mb-12 text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Hovedpoengene</p>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite</h2>
-            <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+        <div className="container mx-auto max-w-7xl">
+          <div className="mb-16 text-center">
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-tertiary">Oppdag mulighetene</p>
+            <h2 className="text-4xl font-bold tracking-tight text-foreground md:text-5xl">Hovedpoengene</h2>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
               Vi bryter ned det kompliserte og gjør det enkelt. Ingen forvirrende fagord, bare svar du kan stole på.
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
             {overviewCards.map((card) => (
-              <div key={card.title} className="text-center">
-                <div className="mx-auto mb-4 inline-flex rounded-lg p-3 text-muted-foreground">
-                  <card.icon className="h-8 w-8" />
+              <div
+                key={card.title}
+                className="group relative rounded-xl border border-border/10 bg-card/30 p-10 transition-all hover:bg-card/50 border-b-4 border-b-tertiary"
+              >
+                <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-lg bg-muted/20 transition-transform group-hover:scale-110">
+                  <card.icon className="h-8 w-8 text-tertiary" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
-                <p className="text-sm text-muted-foreground">{card.description}</p>
+                <h3 className="mb-4 text-2xl font-bold uppercase tracking-tight text-foreground">{card.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground font-light">{card.description}</p>
               </div>
             ))}
           </div>
-          <div className="mt-20 flex justify-center gap-3">
-            <Button asChild variant="tertiary" size="default">
-              <Link to="/guidelines">Utforsk</Link>
-            </Button>
+          <div className="mt-16 text-center">
             <Link
               to="/tools"
-              className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-tertiary transition-all hover:opacity-80"
             >
-              Alle verktøy <ArrowRight className="h-3 w-3" />
+              Utforsk alle verktøy <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Showcase - New Graphic Button */}
-      {/* <section className="relative z-10 bg-muted/30 py-12 border-y border-border">
-        <div className="container mx-auto px-4 text-center">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Eksperimentell</p>
-          <h2 className="mb-8 text-2xl font-bold text-foreground">Ny "Graphic" Knapp-variant</h2>
-          <div className="flex flex-wrap justify-center gap-6">
-            <Button variant="graphic" size="lg">
-              Graphic Button <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button variant="graphic" size="lg" style={{ "--btn-gradient-from": "#3b82f6", "--btn-gradient-to": "#1d4ed8" } as any}>
-              Blue Graphic <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button variant="graphic" size="lg" style={{ "--btn-gradient-from": "#10b981", "--btn-gradient-to": "#059669" } as any}>
-              Green Graphic <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </section> */}
-
-      {/* Bruk AI med tillit */}
-      <section className="relative z-10 bg-background py-24">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-              Trygghet
-            </p>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+      {/* Trust Section — Bruk AI med tillit */}
+      <section className="relative z-10 border-y border-border/10 bg-background py-32">
+        <div className="container mx-auto max-w-7xl px-6">
+          <div className="mb-20 text-center">
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-tertiary">Trygghet</p>
+            <h2 className="text-4xl font-bold tracking-tight text-foreground md:text-5xl">
               Bruk AI med tillit
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
               Vit at du handler riktig når du bruker AI-verktøy.
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-3 pb-24">
+          <div className="grid gap-8 md:grid-cols-3">
             {trustCards.map((card) => (
               <Link
                 key={card.title}
                 to={card.path}
-                className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
+                className="group flex flex-col overflow-hidden rounded-xl border border-border/10 bg-card transition-all hover:border-tertiary/50"
               >
-                <div className="flex aspect-video items-center justify-center rounded-lg bg-muted/30 mb-4">
-                  <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
+                <div className="relative flex h-56 items-center justify-center bg-muted/20">
+                  <card.icon className="h-16 w-16 text-muted-foreground/20 group-hover:text-tertiary/20 transition-colors" />
+                  <div className="absolute inset-0 bg-tertiary/0 transition-colors group-hover:bg-tertiary/5" />
                 </div>
-                <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  {card.label}
-                </p>
-                <h3 className="mb-2 text-lg font-bold text-foreground">{card.title}</h3>
-                <p className="text-sm text-muted-foreground">{card.description}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors group-hover:text-primary/80">
-                  Les mer <ArrowRight className="h-3 w-3" />
-                </span>
+                <div className="flex flex-grow flex-col p-8">
+                  <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-tertiary">
+                    {card.label}
+                  </p>
+                  <h3 className="mb-4 text-xl font-bold leading-tight text-foreground">{card.title}</h3>
+                  <p className="mb-8 flex-grow text-sm font-light text-muted-foreground">{card.description}</p>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-foreground group-hover:text-tertiary transition-colors">
+                    Les mer <ArrowRight className="ml-1 h-3 w-3" />
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Se det i praksis — static, no gap */}
-      <section className="relative z-10 bg-accent-secondary py-16 text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
-          <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
-            Få et unikt innblikk i prosessene som styrer dagens kunstige intelligens.
+      {/* CTA Banner — Se det i praksis */}
+      <section className="relative z-10 overflow-hidden bg-[#7c3aed] py-20 text-center text-white">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute top-0 left-0 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-[100px]" />
+        </div>
+        <div className="container relative z-10 mx-auto max-w-4xl px-6">
+          <h2 className="mb-6 text-4xl font-bold uppercase tracking-tight text-white">Se det i praksis</h2>
+          <p className="mb-10 text-xl opacity-90 text-white/90">
+            Få et unikk innblikk i prosessene som styrer dagens kunstige intelligens.
           </p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Link
-              to="/interactive"
-              className="rounded-lg bg-tertiary px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
-            >
-              Prøv selv
-            </Link>
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
+            <Button asChild variant="tertiary" size="lg" className="uppercase tracking-widest hover:scale-105 transition-all font-bold">
+              <Link to="/interactive">Prøv selv</Link>
+            </Button>
+            <Button asChild variant="secondary" size="lg" className="border-white/20 bg-white/10 uppercase tracking-widest hover:bg-white/20 transition-all text-white font-bold">
+              <Link to="/guidelines">Retningslinjer</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ — Spørsmål & Svar */}
+      <section className="relative z-10 bg-background px-6 pt-32 pb-32">
+        <div className="container mx-auto max-w-3xl">
+          <div className="mb-16 text-center">
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-widest text-tertiary">Lær mer</p>
+            <h2 className="text-4xl font-bold uppercase tracking-tight text-foreground">Spørsmål & Svar</h2>
+            <p className="mt-4 text-muted-foreground">Svar på det du lurer på om ansvarlig AI-bruk.</p>
+          </div>
+          <div className="space-y-4">
+            {faqs.map((faq, i) => (
+              <Accordion key={i} type="single" collapsible>
+                <AccordionItem value={`faq-${i}`} className="overflow-hidden rounded-xl border border-border/10 bg-card/30">
+                  <AccordionTrigger className="p-6 text-left text-sm font-medium uppercase tracking-wide text-foreground hover:bg-muted/10 hover:no-underline [&[data-state=open]>svg]:text-tertiary">
+                    {faq.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-6 pt-2 text-sm leading-relaxed text-muted-foreground">
+                    {faq.a}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            ))}
+          </div>
+
+          <div className="mt-20 rounded-2xl border border-border/5 bg-card/50 p-10 text-center shadow-2xl">
+            <h3 className="mb-3 text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
+            <p className="mb-6 text-sm text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
             <Link
               to="/guidelines"
-              className="rounded-lg border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+              className="group flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-tertiary transition-all hover:text-foreground"
             >
-              Retningslinjer
+              Kontakt oss i dag <Mail className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Full-width Banner Image — static */}
-      <section className="relative z-10 w-full overflow-hidden bg-background">
-        <div className="relative h-[400px] w-full md:h-[500px] lg:h-[600px]">
-          <img
-            src="/images/ai_banner.png"
-            alt="AI Visualization"
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-          {/* Subtle overlay to blend with surrounding sections if needed */}
-          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-accent-secondary/20 to-transparent pointer-events-none" />
-        </div>
-      </section>
-
-      {/* FAQ — static */}
-      <section className="relative z-10 bg-background">
-        <div className="container mx-auto px-4 pb-20 pt-32">
-          <div className="mb-10 text-center">
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
-            <p className="mx-auto mt-3 max-w-lg text-muted-foreground">Svar på det du lurer på om ansvarlig AI-bruk.</p>
-          </div>
-          <div className="mx-auto max-w-4xl">
-            <div className="grid gap-x-8 md:grid-cols-2">
-              {faqs.map((faq, i) => (
-                <Accordion key={i} type="single" collapsible>
-                  <AccordionItem value={`faq - ${i} `} className="border-b border-border">
-                    <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
-                      {faq.q}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-sm text-muted-foreground">{faq.a}</AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Trenger du mer hjelp — static */}
-      <section className="relative z-10 bg-background">
-        <div className="container mx-auto px-4 pb-20 pt-20 text-center">
-          <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
-          <p className="mt-2 text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
-          <Link
-            to="/guidelines"
-            className="mt-4 inline-flex rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
-          >
-            Kontakt
-          </Link>
-        </div>
-      </section>
     </>
   );
 };

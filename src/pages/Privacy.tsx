@@ -1,184 +1,240 @@
 import { Link } from "react-router-dom";
-import { Shield, Eye, AlertTriangle, Brain, Lock, Fingerprint, ArrowRight } from "lucide-react";
+import {
+  Shield,
+  Scale,
+  EyeOff,
+  GraduationCap,
+  Lock,
+  Eye,
+  History,
+  ArrowRight,
+  CheckCircle,
+  AlertTriangle,
+  X
+} from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-
-const risks = [
-  {
-    title: "Dataprivatliv",
-    icon: Eye,
-    description: "Når du bruker AI-verktøy, kan det du skriver inn bli lagret, brukt til trening, eller delt med tredjeparter.",
-    tips: [
-      "Unngå å dele personlig eller sensitiv informasjon i AI-spørsmål.",
-      "Sjekk verktøyets personvernerklæring før bruk.",
-      "Bruk anonymiserte data når det er mulig.",
-    ],
-  },
-  {
-    title: "Skjevheter i AI",
-    icon: Brain,
-    description: "AI-modeller kan reflektere og forsterke fordommer i treningsdataene, noe som kan føre til urettferdige eller skjeve resultater.",
-    tips: [
-      "Sammenlign AI-resultater med mangfoldige, pålitelige kilder.",
-      "Vær kritisk til AI-genererte sammendrag og perspektiver.",
-      "Rapporter partiske resultater når du oppdager dem.",
-    ],
-  },
-  {
-    title: "Hallusinasjoner",
-    icon: AlertTriangle,
-    description: "AI kan generere selvsikre, men helt feilaktige svar — inkludert falske sitater og oppdiktede fakta.",
-    tips: [
-      "Verifiser alltid AI-genererte fakta og sitater mot originale kilder.",
-      "Stol aldri på en AI-generert referanse uten å sjekke at den faktisk eksisterer.",
-      "Bruk AI for ideer, ikke som primær kilde til sannhet.",
-    ],
-  },
-  {
-    title: "Akademisk integritet",
-    icon: Shield,
-    description: "Å levere AI-generert arbeid som ditt eget kan utgjøre akademisk uredelighet og få alvorlige konsekvenser.",
-    tips: [
-      "Sjekk alltid kursets spesifikke retningslinjer for AI-bruk.",
-      "Oppgi AI-bruk åpent og ærlig.",
-      "Bruk sjekklisten vår under Retningslinjer før innlevering.",
-    ],
-  },
-];
-
-const protectionTips = [
-  { icon: Lock, title: "Sterke personverninnstillinger", text: "Velg bort datadeling og trening der det er mulig." },
-  { icon: Fingerprint, title: "Unngå personopplysninger", text: "Skriv aldri inn passord, student-ID eller personlige detaljer i AI-verktøy." },
-  { icon: Shield, title: "Bruk institusjonelle verktøy", text: "Foretrekk AI-verktøy fra universitetet — de har ofte bedre dataavtaler." },
-];
 
 const faqs = [
-  { q: "Hvordan beskytter jeg personvernet mitt?", a: "Les personvernvilkårene for alle AI-verktøy du bruker. Ikke del personlige data, og unngå sensitiv informasjon i spørsmålene dine." },
-  { q: "Hva er hallusinasjoner i AI?", a: "AI kan generere informasjon som høres riktig ut, men som ikke stemmer. Sjekk alltid mot pålitelige kilder." },
-  { q: "Når er det uakseptabelt å bruke AI?", a: "Det er ikke tillatt å bruke AI til å generere svar uten å oppgi det. Sjekk alltid retningslinjene for din oppgave." },
-  { q: "Er det plagiat å bruke AI?", a: "Hvis du oppgir og siterer AI-bruken din, er det vanligvis akseptabelt. Men sjekk alltid retningslinjene ved din institusjon." },
-  { q: "Hvilket AI-verktøy er billigst?", a: "GitHub Copilot og Microsoft Copilot er gratis for studenter. Andre verktøy varierer i pris." },
-  { q: "Er personvernet mitt ivaretatt?", a: "Det avhenger av verktøyet. Bruk bare tjenester du stoler på, og sjekk personvernerklæringen for å se hva som lagres." },
+  {
+    q: "Er mine prompts offentlig tilgjengelige?",
+    a: "Som hovedregel kan data du skriver inn brukes til å trene modellene videre, med mindre du eksplisitt slår av dette i innstillingene (f.eks. i ChatGPT Plus eller ved bruk av API-løsninger). Sjekk alltid vilkårene for tjenesten du bruker."
+  },
+  {
+    q: "Hvordan vet jeg om AI-en lyver?",
+    a: "Det finnes ingen innebygd indikator, men du kan teste svar ved å be om kilder, eller be AI-en om å kritisere sitt eget svar for logiske brister. Den beste metoden er alltid ekstern faktasjekking."
+  },
+  {
+    q: "Kan jeg bruke AI til å skrive eksamen?",
+    a: "Dette avhenger helt av institusjonens regelverk. De fleste skoler og universiteter i Norge har nå strenge regler for AI-bruk. Sjekk din studieplan eller spør faglærer før du bruker AI som verktøy i vurderingssituasjoner."
+  },
 ];
 
 const Privacy = () => {
   return (
-    <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-background pt-40 pb-32 md:pt-56 border-b border-border/10">
-        <div className="container relative z-10 mx-auto px-4 text-center">
-          <p className="section-fade-in mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/60">Personvern</p>
-          <h1 className="section-fade-in text-4xl font-bold md:text-5xl">Personvern og risikoer</h1>
-          <p className="section-fade-in-delay-1 mx-auto mt-4 max-w-xl text-lg text-primary-foreground/70">
-            Forstå risikoene ved AI-verktøy — fra dataprivatliv til hallusinasjoner — og lær hvordan du beskytter deg.
-          </p>
+    <main className="max-w-7xl mx-auto px-6 py-16 text-stitch-on-surface">
+      {/* Hero Header */}
+      <header className="mb-20 mt-20">
+        <div className="uppercase tracking-[0.2em] text-stitch-secondary font-medium mb-4 flex items-center gap-2 text-sm">
+          <span className="w-8 h-[1px] bg-stitch-secondary"></span>
+          Sikkerhet & Etikk
+        </div>
+        <h1 className="text-5xl md:text-7xl font-bold text-stitch-on-surface mb-6 tracking-tight section-fade-in">
+          Personvern og <span className="text-stitch-primary italic">risikoer</span>.
+        </h1>
+        <p className="max-w-2xl text-stitch-on-surface-variant text-lg leading-relaxed section-fade-in-delay-1">
+          Navigering i AI-landskapet krever en dyp forståelse av sikkerhet, etikk og integritet. Vi har identifisert de mest kritiske områdene du bør kjenne til.
+        </p>
+      </header>
+
+      {/* Bento Grid Risks Section */}
+      <section className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24 section-fade-in-delay-2">
+        {/* Risk 1: Data Privacy */}
+        <div className="md:col-span-7 bg-stitch-surface-container-low rounded-xl p-8 border border-stitch-outline-variant/30 hover:bg-stitch-surface-container-highest/20 transition-all group flex flex-col hover:-translate-y-1">
+          <div className="flex items-start justify-between mb-8">
+            <div className="bg-stitch-surface-container-highest p-4 rounded-lg">
+              <Shield className="text-stitch-primary w-8 h-8" />
+            </div>
+            <span className="text-stitch-primary-container font-bold text-4xl opacity-20">01</span>
+          </div>
+          <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface">Dataprivatliv</h3>
+          <p className="text-stitch-on-surface-variant mb-6">Informasjonen du mater inn i AI-modeller kan bli brukt til fremtidig trening. Beskytt dine sensitive data.</p>
+          <ul className="space-y-3 mb-8">
+            <li className="flex items-center gap-3 text-sm text-stitch-on-surface">
+              <CheckCircle className="text-stitch-tertiary w-5 h-5 flex-shrink-0" />
+              Del aldri personopplysninger eller konfidensielle dokumenter.
+            </li>
+            <li className="flex items-center gap-3 text-sm text-stitch-on-surface">
+              <CheckCircle className="text-stitch-tertiary w-5 h-5 flex-shrink-0" />
+              Bruk anonymiserte datasett når du ber om analyse.
+            </li>
+            <li className="flex items-center gap-3 text-sm text-stitch-on-surface">
+              <CheckCircle className="text-stitch-tertiary w-5 h-5 flex-shrink-0" />
+              Sjekk personverninnstillingene for hvert spesifikke verktøy.
+            </li>
+          </ul>
+          <div className="mt-auto pt-6 border-t border-stitch-outline-variant/30">
+            <div className="text-xs uppercase tracking-widest text-stitch-on-surface-variant font-bold mb-2">Tiltak</div>
+            <p className="text-sm font-medium text-stitch-tertiary">Aktiver &quot;Private Mode&quot; eller &quot;Opt-out&quot; i plattforminnstillingene.</p>
+          </div>
+        </div>
+
+        {/* Risk 2: Bias */}
+        <div className="md:col-span-5 bg-stitch-surface-container-low rounded-xl p-8 border border-stitch-outline-variant/30 hover:bg-stitch-surface-container-highest/20 transition-all group flex flex-col hover:-translate-y-1">
+          <div className="flex items-start justify-between mb-8">
+            <div className="bg-stitch-surface-container-highest p-4 rounded-lg">
+              <Scale className="text-stitch-secondary w-8 h-8" />
+            </div>
+            <span className="text-stitch-secondary font-bold text-4xl opacity-20">02</span>
+          </div>
+          <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface">Skjevheter i AI</h3>
+          <p className="text-stitch-on-surface-variant mb-6">AI-modeller gjenspeiler fordommer i treningsdataene sine, noe som kan føre til diskriminerende resultater.</p>
+          <ul className="space-y-3 mb-8">
+            <li className="flex items-center gap-3 text-sm text-stitch-on-surface">
+              <AlertTriangle className="text-stitch-secondary w-5 h-5 flex-shrink-0" />
+              Vær kritisk til kulturelle og demografiske antagelser.
+            </li>
+            <li className="flex items-center gap-3 text-sm text-stitch-on-surface">
+              <AlertTriangle className="text-stitch-secondary w-5 h-5 flex-shrink-0" />
+              Mangfold i prompts gir mer balanserte svar.
+            </li>
+          </ul>
+          <div className="mt-auto pt-6 border-t border-stitch-outline-variant/30">
+            <div className="text-xs uppercase tracking-widest text-stitch-on-surface-variant font-bold mb-2">Tiltak</div>
+            <p className="text-sm font-medium text-stitch-secondary">Kryssjekk AI-generert innhold med uavhengige, objektive kilder.</p>
+          </div>
+        </div>
+
+        {/* Risk 3: Hallucinations */}
+        <div className="md:col-span-5 bg-stitch-surface-container-low rounded-xl p-8 border border-stitch-outline-variant/30 hover:bg-stitch-surface-container-highest/20 transition-all group flex flex-col hover:-translate-y-1">
+          <div className="flex items-start justify-between mb-8">
+            <div className="bg-stitch-surface-container-highest p-4 rounded-lg">
+              <EyeOff className="text-stitch-error w-8 h-8" />
+            </div>
+            <span className="text-stitch-error font-bold text-4xl opacity-20">03</span>
+          </div>
+          <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface">Hallusinasjoner</h3>
+          <p className="text-stitch-on-surface-variant mb-6">AI kan presentere falsk informasjon med stor selvsikkerhet. Dette er spesielt kritisk ved faktasjekking.</p>
+          <ul className="space-y-3 mb-8">
+            <li className="flex items-center gap-3 text-sm text-stitch-on-surface">
+              <X className="text-stitch-error w-5 h-5 flex-shrink-0" />
+              Stol aldri på kildehenvisninger fra AI uten å sjekke dem.
+            </li>
+            <li className="flex items-center gap-3 text-sm text-stitch-on-surface">
+              <X className="text-stitch-error w-5 h-5 flex-shrink-0" />
+              Verifiser alle årstall, sitater og statistikker manuelt.
+            </li>
+          </ul>
+          <div className="mt-auto pt-6 border-t border-stitch-outline-variant/30">
+            <div className="text-xs uppercase tracking-widest text-stitch-on-surface-variant font-bold mb-2">Tiltak</div>
+            <p className="text-sm font-medium text-stitch-error">Be AI-en om å &quot;tenke steg for steg&quot; for å redusere feilrater.</p>
+          </div>
+        </div>
+
+        {/* Risk 4: Academic Integrity */}
+        <div className="md:col-span-7 bg-stitch-surface-container-low rounded-xl p-8 border border-stitch-outline-variant/30 hover:bg-stitch-surface-container-highest/20 transition-all relative overflow-hidden flex flex-col group hover:-translate-y-1">
+
+          <div className="flex items-start justify-between mb-8 relative z-10">
+            <div className="bg-stitch-surface-container-highest p-4 rounded-lg">
+              <GraduationCap className="text-stitch-primary w-8 h-8" />
+            </div>
+            <span className="text-stitch-primary font-bold text-4xl opacity-20">04</span>
+          </div>
+          <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface relative z-10">Akademisk integritet</h3>
+          <p className="text-stitch-on-surface-variant mb-6 relative z-10">Bruk av AI uten å oppgi kilde kan anses som plagiat. Balanser assistanse med original tenkning.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 relative z-10">
+            <div className="bg-stitch-surface p-4 rounded-lg border border-stitch-outline-variant/20">
+              <div className="text-stitch-primary font-bold text-sm mb-1">Gjennomsiktighet</div>
+              <p className="text-xs text-stitch-on-surface-variant leading-relaxed">Deklarer alltid når og hvordan AI har blitt brukt i arbeidet ditt.</p>
+            </div>
+            <div className="bg-stitch-surface p-4 rounded-lg border border-stitch-outline-variant/20">
+              <div className="text-stitch-tertiary font-bold text-sm mb-1">Kildekritikk</div>
+              <p className="text-xs text-stitch-on-surface-variant leading-relaxed">AI skal være en samtalepartner, ikke din primære informasjonskilde.</p>
+            </div>
+          </div>
+          <div className="mt-auto pt-6 border-t border-stitch-outline-variant/30 flex items-center justify-between relative z-10">
+            <div>
+              <div className="text-xs uppercase tracking-widest text-stitch-on-surface-variant font-bold mb-2">Tiltak</div>
+              <p className="text-sm font-medium text-stitch-primary">Følg institusjonens spesifikke retningslinjer for AI-bruk.</p>
+            </div>
+            <Link to="/guidelines" className="bg-stitch-surface-container-highest hover:bg-stitch-surface-bright text-stitch-on-surface text-xs font-bold py-2 px-4 rounded-full transition-colors flex items-center gap-2">
+              Les retningslinjer <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Risk Sections */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="space-y-8">
-          {risks.map((risk, i) => (
-            <article
-              key={risk.title}
-              className={`section-fade-in-delay-${(i % 3) + 1} grid items-start gap-6 rounded-xl border border-border bg-card p-6 shadow-sm md:grid-cols-[auto_1fr] md:p-8`}
-            >
-              <div className="rounded-lg bg-destructive/10 p-3 text-destructive">
-                <risk.icon className="h-6 w-6" />
+      {/* Data Protection Principles */}
+      <section className="bg-stitch-surface-container-low/50 rounded-2xl p-12 border border-stitch-outline-variant/30 mb-24 relative overflow-hidden section-fade-in-delay-3">
+
+        <div className="relative z-10">
+          <div className="uppercase tracking-[0.2em] text-stitch-secondary font-medium mb-12 text-center text-sm">Beskyttelse av data</div>
+          <h2 className="text-4xl font-bold text-center mb-16 text-stitch-on-surface">
+            Våre tre kjerneprinsipper for <span className="text-stitch-secondary">sikker bruk</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-stitch-surface-container-highest rounded-full flex items-center justify-center mx-auto mb-6 border border-stitch-outline-variant/30 group-hover:scale-110 transition-transform shadow-sm">
+                <Lock className="text-stitch-secondary w-6 h-6" />
               </div>
-              <div>
-                <h2 className="mb-2 text-2xl font-bold text-card-foreground">{risk.title}</h2>
-                <p className="mb-4 text-muted-foreground">{risk.description}</p>
-                <ul className="space-y-2">
-                  {risk.tips.map((tip) => (
-                    <li key={tip} className="flex items-start gap-2 text-sm text-card-foreground">
-                      <Shield className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-accent" />
-                      {tip}
-                    </li>
-                  ))}
-                </ul>
+              <h4 className="text-xl font-bold mb-4 text-stitch-on-surface">Minimumseksponering</h4>
+              <p className="text-stitch-on-surface-variant text-sm leading-relaxed">Mat kun inn nødvendig data. Jo mindre informasjon du deler, desto mindre er risikoen for lekkasjer.</p>
+            </div>
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-stitch-surface-container-highest rounded-full flex items-center justify-center mx-auto mb-6 border border-stitch-outline-variant/30 group-hover:scale-110 transition-transform shadow-sm">
+                <Eye className="text-stitch-secondary w-6 h-6" />
               </div>
-            </article>
+              <h4 className="text-xl font-bold mb-4 text-stitch-on-surface">Menneskelig tilsyn</h4>
+              <p className="text-stitch-on-surface-variant text-sm leading-relaxed">AI-generert innhold skal aldri publiseres eller brukes uten en grundig manuell kvalitetskontroll.</p>
+            </div>
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-stitch-surface-container-highest rounded-full flex items-center justify-center mx-auto mb-6 border border-stitch-outline-variant/30 group-hover:scale-110 transition-transform shadow-sm">
+                <History className="text-stitch-secondary w-6 h-6" />
+              </div>
+              <h4 className="text-xl font-bold mb-4 text-stitch-on-surface">Full sporbarhet</h4>
+              <p className="text-stitch-on-surface-variant text-sm leading-relaxed">Dokumenter alle steg i prosessen der AI har blitt brukt til å forme det endelige resultatet.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="max-w-3xl mx-auto mb-24 section-fade-in-delay-3">
+        <h2 className="text-4xl font-bold mb-12 text-center text-stitch-on-surface">
+          Ofte stilte <span className="text-stitch-primary italic">spørsmål</span>
+        </h2>
+
+        <Accordion type="single" collapsible className="w-full space-y-4">
+          {faqs.map((faq, i) => (
+            <AccordionItem key={i} value={`faq-${i}`} className="border border-stitch-outline-variant/30 rounded-lg px-6 bg-stitch-surface-container-low data-[state=open]:bg-stitch-surface-container-highest/50 transition-colors">
+              <AccordionTrigger className="text-lg font-medium hover:no-underline hover:text-stitch-primary transition-colors py-6 text-stitch-on-surface">
+                {faq.q}
+              </AccordionTrigger>
+              <AccordionContent className="text-stitch-on-surface-variant text-sm leading-relaxed pb-6">
+                {faq.a}
+              </AccordionContent>
+            </AccordionItem>
           ))}
-        </div>
+        </Accordion>
       </section>
 
-      {/* Protecting Data */}
-      <section className="border-y border-border bg-muted/50 py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="section-fade-in mb-10 text-center text-3xl font-bold text-foreground">Beskyttelse av data</h2>
-          <div className="grid gap-6 md:grid-cols-3">
-            {protectionTips.map((tip, i) => (
-              <div
-                key={tip.title}
-                className={`section-fade-in-delay-${i + 1} rounded-xl border border-border bg-card p-6 text-center shadow-sm`}
-              >
-                <div className="mx-auto mb-4 inline-flex rounded-lg bg-accent/10 p-3 text-accent">
-                  <tip.icon className="h-6 w-6" />
-                </div>
-                <h3 className="mb-2 font-bold text-card-foreground">{tip.title}</h3>
-                <p className="text-sm text-muted-foreground">{tip.text}</p>
-              </div>
-            ))}
+      {/* CTA / Help Card */}
+      <section className="relative p-1 bg-stitch-primary-container rounded-2xl section-fade-in-delay-3">
+        <div className="bg-stitch-surface p-12 rounded-[0.9rem] flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="max-w-xl">
+            <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface">Fortsatt usikker på sikkerheten?</h3>
+            <p className="text-stitch-on-surface-variant">Vårt team av etikkeksperter står klare til å hjelpe deg med konkrete vurderinger av din organisasjons AI-strategi.</p>
           </div>
+          <Link to="/guidelines" className="whitespace-nowrap bg-stitch-secondary text-black px-8 py-4 rounded-lg font-bold hover:scale-105 transition-transform text-center shadow-md">
+            Oppdag våre retningslinjer
+          </Link>
         </div>
       </section>
-
-      {/* FAQ */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="section-fade-in mb-10 text-center">
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
-          <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
-            Svar på vanlige spørsmål om personvern og AI-risikoer.
-          </p>
-        </div>
-        <div className="mx-auto max-w-4xl">
-          <div className="grid gap-x-8 md:grid-cols-2">
-            {faqs.map((faq, i) => (
-              <Accordion key={i} type="single" collapsible>
-                <AccordionItem value={`faq-${i}`} className="border-b border-border">
-                  <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
-                    {faq.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Banner */}
-      <section className="relative z-10 bg-accent-secondary py-16 text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
-          <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
-            Få et unikt innblikk i prosessene som styrer dagens kunstige intelligens.
-          </p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Link
-              to="/interactive"
-              className="rounded-md bg-tertiary px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
-            >
-              Prøv selv
-            </Link>
-            <Link
-              to="/guidelines"
-              className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
-            >
-              Retningslinjer
-            </Link>
-          </div>
-        </div>
-      </section>
-    </>
+    </main>
   );
 };
 

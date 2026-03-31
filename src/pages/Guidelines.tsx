@@ -1,9 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, HelpCircle, Image as ImageIcon } from "lucide-react";
-import { motion } from "framer-motion";
-import { Progress } from "@/components/ui/progress";
-import { Checkbox } from "@/components/ui/checkbox";
+import { 
+  ArrowRight, 
+  ShieldCheck, 
+  Lock, 
+  PenTool, 
+  IterationCcw, 
+  Search, 
+  Mic, 
+  AlertTriangle, 
+  AlertCircle, 
+  CheckSquare,
+  ChevronDown
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ScrambleText } from "@/components/ScrambleText";
 import {
   Accordion,
   AccordionContent,
@@ -11,299 +22,266 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 
 const keyTopics = [
   {
-    title: "Akseptabel og uakseptabel bruk",
-    description: "Bruk AI til å forstå, ikke til å kopiere. Aldri send inn AI-generert tekst som ditt eget arbeid.",
+    title: "Akseptabel bruk",
+    description: "AI skal brukes som en veileder, ikke en erstatning. Bruk det til idémyldring, forklaring av komplekse konsepter eller koding-assistanse.",
+    icon: ShieldCheck,
+    borderColor: "border-primary",
+    iconColor: "text-primary",
   },
   {
-    title: "Personvern og databeskyttelse",
-    description: "Dataene dine er viktige. Del aldri sensitive opplysninger med AI-verktøy, og les alltid personvernreglene.",
+    title: "Personvern",
+    description: "Del aldri sensitive data, personopplysninger eller upublisert forskning med kommersielle AI-modeller. Din data er ditt ansvar.",
+    icon: Lock,
+    borderColor: "border-tertiary",
+    iconColor: "text-tertiary",
   },
   {
-    title: "Akademisk integritet og plagiat",
-    description: "Hvis du bruker AI, si det. Ikke ta æren for noe som ikke er ditt. Følg universitetets retningslinjer.",
+    title: "Akademisk integritet",
+    description: "All bruk av AI skal oppgis. Å lime inn tekst generert av AI uten kildehenvisning regnes som fusk. Vær transparent om dine metoder.",
+    icon: PenTool,
+    borderColor: "border-[#caf300]",
+    iconColor: "text-[#caf300]",
+  },
+];
+
+const usageTips = [
+  {
+    number: "01",
+    title: "Iterativ Prompting",
+    description: "Ikke nøy deg med første svar. Gi oppfølgingsspørsmål for å drøfte nyanser og be om ulike perspektiver.",
+  },
+  {
+    number: "02",
+    title: "Kildekritikk",
+    description: "AI-modeller kan hallusinere fakta. Verifiser alltid påstander mot troverdige, faglige kilder.",
+  },
+  {
+    number: "03",
+    title: "Stemmestyring",
+    description: "Bruk AI til å polere ditt eget språk, men behold din unike stemme og dine egne argumenter.",
+  },
+];
+
+const risks = [
+  {
+    title: "Ekko-kamre",
+    description: "AI kan forsterke dine egne fordommer om du ikke ber den utfordre deg.",
+  },
+  {
+    title: "Manglende logikk",
+    description: "Modeller forstår ikke årsakssammenheng, de forutsier bare neste ord.",
+  },
+  {
+    title: "Utdatert info",
+    description: "Mange modeller har en kunnskapsstopp som gjør dem upålitelige for dagsaktuelle saker.",
   },
 ];
 
 const checklistItems = [
-  "Jeg forstår hva oppgaven krever angående AI-bruk.",
-  "Jeg har sjekket institusjonens retningslinjer for denne typen arbeid.",
-  "Jeg har brukt AI som støtteverktøy, ikke for å generere innleveringen.",
-  "Jeg har verifisert alle AI-genererte fakta mot pålitelige kilder.",
-  "Jeg kan forklare og forsvare alle deler av innleveringen med egne ord.",
-  "Jeg har oppgitt bruken av AI-verktøy som påkrevd.",
-  "Jeg har sitert AI-assistert innhold etter institusjonens retningslinjer.",
-  "Jeg har gjennomgått resultatene for skjevheter, feil og hallusinasjoner.",
+  "Har jeg opplyst om AI-bruk?",
+  "Er alle kilder verifisert manuelt?",
+  "Inneholder teksten min stemme?",
+  "Er metoden beskrevet i vedlegg?",
 ];
 
 const faqs = [
-  { q: "Kan jeg bruke AI til alt?", a: "Nei. Det finnes viktige områder, som forelesningsbasert forskning og fagkunnskap, der du trenger andre metoder enn AI for å lære." },
-  { q: "Hva skjer med dataene mine?", a: "Det varierer mellom verktøy. Les alltid personvernerklæringen og sjekk hvilke data som lagres når du bruker AI-verktøy." },
-  { q: "Hva er hallusinasjoner i AI?", a: "Hallusinasjoner oppstår når AI genererer informasjon som høres riktig ut, men som ikke stemmer. Det kan være falske kilder og oppdiktede fakta." },
-  { q: "Er det plagiat å bruke AI?", a: "Ikke i seg selv, men hvis du leverer AI-generert innhold som ditt eget uten å oppgi det, kan det anses som plagiat." },
-  { q: "Hvordan siterer jeg AI?", a: "Oppgi verktøyet du har brukt, for eksempel: «Denne teksten ble utarbeidet med hjelp av ChatGPT.» Følg institusjonens retningslinjer for korrekt sitering." },
-  { q: "Har du flere spørsmål?", a: "Kontakt veilederen din eller fagansatte ved universitetet ditt." },
+  {
+    q: "Er det lov å bruke ChatGPT til eksamen?",
+    a: "Dette avhenger av emnebeskrivelsen din. Noen emner tillater alle hjelpemidler, mens andre har strikte forbud. Sjekk alltid emneguiden din på Canvas før du starter.",
+  },
+  {
+    q: "Hvordan refererer jeg til AI-generert innhold?",
+    a: "Du bør oppgi hvilket verktøy som er brukt, datoen det ble brukt, og hvilke spørsmål (prompter) du stilte. Følg institusjonens spesifikke retningslinjer for kildehenvisning.",
+  },
+  {
+    q: "Kan læreren se om jeg har brukt AI?",
+    a: "Det finnes deteksjonsverktøy, men de er ikke 100% pålitelige. Det viktigste er å være ærlig og transparent om din bruk av AI-verktøy.",
+  },
 ];
 
 const Guidelines = () => {
-  const [checked, setChecked] = useState<boolean[]>(new Array(checklistItems.length).fill(false));
-  const completedCount = checked.filter(Boolean).length;
-  const progress = (completedCount / checklistItems.length) * 100;
+  const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
-  const toggle = (index: number) => {
-    setChecked((prev) => prev.map((v, i) => (i === index ? !v : v)));
+  const toggleItem = (index: number) => {
+    setCheckedItems(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index) 
+        : [...prev, index]
+    );
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-background">
       {/* Hero */}
       <section className="relative overflow-hidden bg-background pt-40 pb-32 md:pt-56 border-b border-border/10">
-        <div className="container relative z-10 mx-auto px-4 text-center">
-          <p className="section-fade-in mb-2 text-sm font-semibold uppercase tracking-widest text-primary-foreground/60">Retningslinjer</p>
-          <h1 className="section-fade-in text-4xl font-bold md:text-5xl">Bruk AI ansvarlig</h1>
-          <p className="section-fade-in-delay-1 mx-auto mt-4 max-w-xl text-lg text-primary-foreground/70">
-            Lær hvordan du bruker kunnskap, teknologi og integritet riktig i studiene dine.
-          </p>
-          {/* <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-            <a href="#checklist" className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground">Les</a>
-            <a href="#faq" className="rounded-md border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold text-primary-foreground">Spørsmål</a>
-          </div> */}
-        </div>
-      </section>
-
-      {/* Tre ting */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="section-fade-in mb-12 text-center">
-          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Kjernepunktene</p>
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Tre ting du må vite før du bruker AI</h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Retningslinjene inneholder tips som hjelper deg å navigere AI-bruken på en trygg, ærlig og ansvarlig måte.
-          </p>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {keyTopics.map((topic, i) => (
-            <motion.div 
-              key={topic.title} 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="rounded-xl border border-border bg-card p-6 shadow-sm"
-            >
-              <div className="mb-4 flex aspect-video items-center justify-center rounded-lg bg-muted">
-                <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
-              </div>
-              <h3 className="mb-2 text-lg font-bold text-card-foreground">{topic.title}</h3>
-              <p className="text-sm text-muted-foreground">{topic.description}</p>
-            </motion.div>
-          ))}
-        </div>
-        <div className="flex justify-center gap-3 pt-14">
-          <Button asChild variant="tertiary" size="lg">
-            <Link to="/tools"> Utforsk </Link>
-          </Button>
-          <Button asChild variant="secondary" size="lg">
-            <Link to="#" className="inline-flex rounded-xl items-center">Mer<ArrowRight className="ml-2 h-3 w-3" /></Link>
-          </Button>
-        </div>
-      </section>
-
-      {/* Slik bruker du AI korrekt */}
-      <section className="border-y border-border bg-muted/50 py-20">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-card shadow-sm">
-              <HelpCircle className="h-8 w-8 text-muted-foreground" />
-            </div>
-            <h2 className="text-3xl font-bold text-foreground">Slik bruker du AI korrekt</h2>
-            <p className="mt-3 text-muted-foreground">
-              Det følger et ansvar med å bruke AI. Bruk det til å utforske emner, sjekke forståelsen din og lære mer. Men still alltid spørsmål og kontroller alt selv.
+        <div className="container relative z-10 mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-start text-left"
+          >
+            <p className="mb-4 text-xs font-mono font-bold uppercase tracking-[0.2em] text-primary/40">Etikk / Ansvar</p>
+            <h1 className="text-4xl md:text-6xl font-black text-white leading-[1.1]">
+              Bruk AI <span className="text-[#d2bbff]">ansvarlig.</span>
+            </h1>
+            <p className="mt-6 text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl">
+              Kunstig intelligens er en kraftig partner i læringsprosessen, men krever kritisk tenkning og etisk bevissthet. Her finner du rammeverket for korrekt bruk.
             </p>
-            <div className="mt-6 flex justify-center gap-3">
-              <Button asChild variant="tertiary">
-                <Link to="/tools">Les mer</Link>
-              </Button>
-              <Button asChild variant="secondary">
-                <Link to="/privacy" className="inline-flex rounded-xl items-center">
-                  Personvern<ArrowRight className="ml-2 h-3 w-3" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-          <div className="mx-auto mt-8 flex max-w-xl justify-center gap-4 text-sm text-muted-foreground">
-            <span>Eksempler</span>
-            <span>•</span>
-            <span>Hallusinasjonssjekk</span>
-            <span>•</span>
-            <span>Verktøyliste</span>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Kjenn farene */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="mx-auto max-w-3xl">
-          <div className="section-fade-in mb-6">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Risikoer</p>
-            <h2 className="text-3xl font-bold text-foreground">Kjenn farene</h2>
-            <p className="mt-3 text-muted-foreground">
-              AI-systemer kan gjøre feil. Du kan ikke alltid vite hvordan modellen tolker spørsmålet ditt, eller hvilke data den baserer svaret på. Kontroller alltid resultatene.
-            </p>
+      <main className="container mx-auto px-4 py-24">
+        {/* Tre ting du må vite */}
+        <section className="mb-32">
+          <div className="flex items-center gap-4 mb-12 text-center text-xs">
+            <div className="h-px flex-grow bg-border/40"></div>
+            <h2 className="font-bold tracking-tight text-white uppercase tracking-widest px-4">Tre ting du må vite</h2>
+            <div className="h-px flex-grow bg-border/40"></div>
           </div>
-          <div className="flex aspect-video items-center justify-center rounded-xl bg-muted">
-            <ImageIcon className="h-16 w-16 text-muted-foreground/30" />
-          </div>
-        </div>
-      </section>
-
-      {/* AI bias */}
-      <section className="border-y border-border bg-muted/50 py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid items-center gap-10 md:grid-cols-2">
-            <div className="section-fade-in">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Objektivitet</p>
-              <h2 className="text-3xl font-bold text-foreground">AI kan arve fordommer fra treningsdata</h2>
-              <p className="mt-3 text-muted-foreground">
-                AI-modeller kan gjøre feil som følge av skjevheter i treningsdataene. Det kan resultere i stereotype eller ubalanserte svar. Stol aldri blindt på AI.
-              </p>
-              <div className="mt-6 flex gap-3">
-                <Button asChild variant="tertiary">
-                  <Link to="/privacy">Personvern</Link>
-                </Button>
-                <Button asChild variant="secondary">
-                  <Link to="#" className="inline-flex rounded-xl items-center">
-                    Mer<ArrowRight className="ml-2 h-3 w-3" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-            <div className="flex aspect-video items-center justify-center rounded-xl bg-card shadow-sm">
-              <ImageIcon className="h-16 w-16 text-muted-foreground/30" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Sjekkliste CTA */}
-      <section id="checklist" className="relative z-10 bg-accent-secondary py-16 text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="section-fade-in text-3xl font-bold md:text-4xl">Sjekkliste</h2>
-          <p className="section-fade-in-delay-1 mx-auto mt-3 max-w-lg text-primary-foreground/70">
-            Bruk sjekklisten vår hver gang du skriver en innlevering med AI-støtte.
-          </p>
-          <div className="section-fade-in-delay-2 mt-6 flex justify-center gap-3">
-            <Button asChild variant="tertiary" className="transition-transform hover:scale-105">
-              <a href="#checklist-section">Start</a>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Checklist */}
-      <section id="checklist-section" className="container mx-auto max-w-2xl px-4 py-20">
-        <div className="section-fade-in rounded-xl border border-border bg-card p-6 shadow-sm">
-          <div className="mb-6">
-            <div className="mb-2 flex items-center justify-between text-sm">
-              <span className="font-medium text-card-foreground">
-                {completedCount} av {checklistItems.length} fullført
-              </span>
-              <span className="font-semibold text-primary">{Math.round(progress)}%</span>
-            </div>
-            <Progress value={progress} className="h-2.5" />
-          </div>
-          <ul className="space-y-4">
-            {checklistItems.map((item, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <Checkbox
-                  id={`check-${i}`}
-                  checked={checked[i]}
-                  onCheckedChange={() => toggle(i)}
-                  className="mt-0.5"
-                />
-                <label
-                  htmlFor={`check-${i}`}
-                  className={`cursor-pointer text-sm transition-colors ${checked[i] ? "text-muted-foreground line-through" : "text-card-foreground"
-                    }`}
-                >
-                  {item}
-                </label>
-              </li>
+          <div className="grid gap-8 md:grid-cols-3">
+            {keyTopics.map((topic, i) => (
+              <motion.div
+                key={topic.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                className={cn(
+                  "group relative overflow-hidden rounded-xl border-l-4 bg-card p-8 shadow-sm transition-all hover:bg-[#2A2A2C]",
+                  topic.borderColor
+                )}
+              >
+                <div className="mb-6 inline-flex rounded-lg bg-muted p-3 border border-white/5">
+                  <topic.icon className={cn("h-6 w-6", topic.iconColor)} />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-white">{topic.title}</h3>
+                <p className="text-sm leading-relaxed text-neutral-400 font-medium">
+                  {topic.description}
+                </p>
+              </motion.div>
             ))}
-          </ul>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* FAQ */}
-      <section id="faq" className="container mx-auto px-4 pb-20">
-        <div className="section-fade-in mb-10 text-center">
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Spørsmål</h2>
-          <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
-            Her finner du svar på det du lurer på om AI i studiene.
-          </p>
+        {/* Bento Layout: Tips & Risks */}
+        <div className="grid gap-8 lg:grid-cols-5 mb-32">
+          {/* AI Usage Tips (3/5 width) */}
+          <section className="lg:col-span-3 space-y-8">
+            <div className="flex items-baseline justify-between">
+              <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">Slik bruker du AI korrekt</h2>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#caf300]/80">Best practices</span>
+            </div>
+            <div className="space-y-4">
+              {usageTips.map((tip, i) => (
+                <motion.div
+                  key={tip.title}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="flex items-start gap-6 rounded-xl bg-card p-6 border border-white/5 hover:bg-[#2A2A2C] transition-colors"
+                >
+                  <span className="text-3xl font-bold text-neutral-700 font-mono">{tip.number}</span>
+                  <div>
+                    <h4 className="mb-2 font-bold text-white uppercase tracking-wide text-sm">{tip.title}</h4>
+                    <p className="text-sm text-neutral-400 font-medium">{tip.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          {/* Risks (2/5 width) */}
+          <section className="relative overflow-hidden rounded-xl bg-destructive/5 border border-destructive/20 p-8 lg:col-span-2">
+            <div className="absolute -right-8 -top-8 opacity-5">
+              <AlertTriangle className="h-40 w-40 text-destructive" />
+            </div>
+            <h2 className="mb-8 text-3xl font-bold tracking-tight text-white">Kjenn farene</h2>
+            <ul className="relative z-10 space-y-6">
+              {risks.map((risk, i) => (
+                <li key={risk.title} className="flex gap-4">
+                  <AlertCircle className="h-5 w-5 shrink-0 text-destructive mt-0.5" />
+                  <p className="text-sm text-neutral-300 font-medium">
+                    <strong className="text-white">{risk.title}:</strong> {risk.description}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
-        <div className="mx-auto max-w-4xl">
-          <div className="grid gap-x-8 md:grid-cols-2">
+
+        {/* Checklist for Students */}
+        <section className="relative mb-32 overflow-hidden rounded-3xl bg-[#7c3aed] p-12 text-white">
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            <div className="absolute top-0 left-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-3xl"></div>
+          </div>
+          <div className="relative z-10 flex flex-col gap-12 md:flex-row items-center">
+            <div className="md:w-1/3">
+              <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl text-white">Sjekkliste før innlevering</h2>
+              <p className="text-white/80 font-medium">Gå gjennom disse punktene før du sender inn arbeidet ditt for å sikre full overholdelse av reglementet.</p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 md:w-2/3 w-full">
+              {checklistItems.map((item, i) => (
+                <button
+                  key={i}
+                  onClick={() => toggleItem(i)}
+                  className={cn(
+                    "flex items-center gap-4 p-5 rounded-xl border transition-all text-left group",
+                    checkedItems.includes(i)
+                      ? "bg-white text-[#7c3aed] border-white shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                      : "bg-white/10 text-white border-white/5 hover:bg-white/20"
+                  )}
+                >
+                  <Checkbox 
+                    checked={checkedItems.includes(i)}
+                    className={cn(
+                      "h-5 w-5 border-2 transition-colors",
+                      checkedItems.includes(i) 
+                        ? "border-[#7c3aed] data-[state=checked]:bg-[#7c3aed] data-[state=checked]:text-white" 
+                        : "border-white/30"
+                    )}
+                  />
+                  <span className={cn(
+                    "text-sm font-bold uppercase tracking-wide transition-opacity",
+                    checkedItems.includes(i) ? "opacity-100" : "opacity-80"
+                  )}>
+                    {item}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="mx-auto max-w-3xl">
+          <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-white md:text-4xl">Spørsmål & Svar</h2>
+          <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <Accordion key={i} type="single" collapsible>
-                <AccordionItem value={`faq-${i}`} className="border-b border-border">
-                  <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
-                    {faq.q}
+              <Accordion key={i} type="single" collapsible className="w-full">
+                <AccordionItem value={`faq-${i}`} className="border-none mb-2">
+                  <AccordionTrigger className="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:no-underline hover:bg-white/[0.02] px-6 rounded-xl group data-[state=open]:text-[#d2bbff] border border-white/5">
+                    <span className="text-left text-base font-semibold">{faq.q}</span>
                   </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground">
-                    {faq.a}
+                  <AccordionContent className="px-6 pb-6 pt-4">
+                    <div className="text-sm sm:text-base text-neutral-400 leading-relaxed bg-[#1b1b1e] p-6 rounded-xl border border-white/5">
+                      {faq.a}
+                    </div>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
             ))}
           </div>
-        </div>
-        <div className="mt-10 text-center">
-          <p className="text-lg font-bold text-foreground">Har du flere spørsmål?</p>
-          <p className="mt-1 text-sm text-muted-foreground">Kontakt veilederen din eller fagansatte ved universitetet ditt.</p>
-          <Button asChild variant="outline" className="mt-4">
-            <Link to="#">Kontakt</Link>
-          </Button>
-        </div>
-      </section>
-
-
-      {/* CTA Banner */}
-      <section className="relative z-10 bg-accent-secondary py-16 text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">Se det i praksis</h2>
-          <p className="mx-auto mt-3 max-w-lg text-primary-foreground/70">
-            Få et unikt innblikk i prosessene som styrer dagens kunstige intelligens.
-          </p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Button asChild variant="tertiary" className="transition-transform hover:scale-105">
-              <Link to="/interactive">Prøv selv</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Juridiske rammer */}
-      <section className="border-t border-border bg-muted/50 py-16">
-        <div className="container mx-auto max-w-3xl px-4">
-          <h2 className="section-fade-in mb-6 text-3xl font-bold text-foreground">Juridiske rammer</h2>
-          <div className="section-fade-in-delay-1 space-y-4 text-sm leading-relaxed text-muted-foreground">
-            <p>
-              AIGuidebook er utviklet for å hjelpe deg med å forstå AI-bruk i lys av gjeldende retningslinjer og regler.
-              Innholdet skal ikke brukes som juridisk rådgivning eller erstatte offisielle retningslinjer fra din utdanningsinstitusjon.
-            </p>
-            <p>
-              Personvernforordningen (GDPR) regulerer hvordan personopplysninger behandles, og dette gjelder også AI-verktøy som behandler slike data.
-              Åndsverkloven beskytter opphavsrett, og studenters innleveringer er beskyttet som åndsverk.
-            </p>
-            <p>
-              Universitetsloven inneholder viktige bestemmelser om akademisk integritet. Ved brudd på reglene kan studenter bli utestengt.
-            </p>
-          </div>
-        </div>
-      </section>
-    </>
+        </section>
+      </main>
+    </div>
   );
 };
 
