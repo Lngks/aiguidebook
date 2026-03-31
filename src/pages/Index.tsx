@@ -157,12 +157,12 @@ const Index = () => {
                   AI er her. Å vite hvordan du bruker det riktig betyr alt. AI Guidebook gir deg klare svar om hva som
                   er tillatt, hvordan du beskytter dataene dine, og hvordan du ivaretar akademisk integritet.
                 </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4 md:justify-start">
+                <div className="flex flex-row items-center justify-center gap-4 md:justify-start">
                   <Button
                     asChild
                     variant="custom"
                     size="lg"
-                    className="uppercase tracking-widest shadow-xl shadow-stitch-primary/10 dark:shadow-tertiary/10"
+                    className="uppercase tracking-widest"
                     style={{
                       "--btn-gradient-from": isDark ? "hsl(var(--tertiary))" : "hsl(var(--stitch-primary))",
                       "--btn-gradient-to": isDark ? "hsl(var(--tertiary))" : "hsl(var(--stitch-primary))"
