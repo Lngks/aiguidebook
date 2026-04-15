@@ -2,7 +2,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import ScrollToTop from "./components/ScrollToTop";
 import Layout from "./components/Layout";
 import Index from "./pages/Index";
@@ -11,6 +13,8 @@ import Guidelines from "./pages/Guidelines";
 import Privacy from "./pages/Privacy";
 import Interactive from "./pages/Interactive";
 import NotFound from "./pages/NotFound";
+import { InitialLoader } from "./components/InitialLoader";
+import { PageTransition } from "./components/PageTransition";
 
 const NoiseOverlay = () => (
   <svg
@@ -26,24 +30,56 @@ const NoiseOverlay = () => (
 
 const queryClient = new QueryClient();
 
+// The animated route container requires useLocation inside the BrowserRouter context.
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+        <Route path="/tools" element={<PageTransition><Tools /></PageTransition>} />
+        <Route path="/guidelines" element={<PageTransition><Guidelines /></PageTransition>} />
+        <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
+        <Route path="/interactive" element={<PageTransition><Interactive /></PageTransition>} />
+        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
+const AppContent = () => {
+  // Temporarily turned off sessionStorage for testing InitialLoader
+  const [showLoader, setShowLoader] = useState(true);
+
+  return (
+    <>
+      <AnimatePresence>
+        {showLoader && (
+          <InitialLoader 
+            onComplete={() => {
+              // sessionStorage.setItem("hasLoaded", "true");
+              setShowLoader(false);
+            }} 
+          />
+        )}
+      </AnimatePresence>
+      <NoiseOverlay />
+      <ScrollToTop />
+      <Layout>
+        <AnimatedRoutes />
+      </Layout>
+    </>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <NoiseOverlay />
-        <ScrollToTop />
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/tools" element={<Tools />} />
-            <Route path="/guidelines" element={<Guidelines />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/interactive" element={<Interactive />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
+        <AppContent />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -382,27 +382,23 @@ const Tools = () => {
 
       {/* FAQ */}
       <section className="container mx-auto px-4 py-24 sm:py-32 border-t border-border/10">
-        <div className="mb-16 flex flex-col items-start text-left max-w-2xl">
+        <div className="mb-16 flex flex-col items-center text-center mx-auto max-w-2xl">
           <p className="mb-3 text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-primary/40">Ofte stilte spørsmål</p>
           <h2 className="text-3xl font-bold text-foreground md:text-4xl tracking-tight">Det du måtte lure på</h2>
         </div>
-        <div className="mx-auto max-w-none">
-          <div className="grid gap-x-12 md:grid-cols-2">
+        <div className="mx-auto max-w-3xl">
+          <Accordion type="single" collapsible className="w-full space-y-4">
             {faqs.map((faq, i) => (
-              <Accordion key={i} type="single" collapsible className="w-full">
-                <AccordionItem value={`faq-${i}`} className="border-none mb-2">
-                  <AccordionTrigger className="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:no-underline hover:bg-muted/50 px-4 rounded-lg group data-[state=open]:text-stitch-primary">
-                    <span className="text-left text-sm sm:text-base font-semibold transition-colors">{faq.q}</span>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-6 pt-2">
-                    <div className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-6 rounded-xl border border-border">
-                      {faq.a}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              <AccordionItem key={i} value={`faq-${i}`} className="border border-stitch-outline-variant/30 rounded-lg px-6 bg-stitch-surface-container-low data-[state=open]:bg-stitch-surface-container-highest/50 transition-colors">
+                <AccordionTrigger className="text-lg font-medium hover:no-underline hover:text-stitch-primary data-[state=open]:text-stitch-primary transition-colors py-6 text-stitch-on-surface">
+                  {faq.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-stitch-on-surface-variant text-sm leading-relaxed pb-6">
+                  {faq.a}
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
       </section>
 

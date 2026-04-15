@@ -236,7 +236,7 @@ const Guidelines = () => {
                     "flex items-center gap-4 p-5 rounded-xl border transition-all text-left group",
                     checkedItems.includes(i)
                       ? "bg-white text-[#7c3aed] border-white shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-                      : "bg-white/10 text-white border-white/5 hover:bg-white/20"
+                      : "bg-white/15 text-white border-white/20 hover:bg-white/25"
                   )}
                 >
                   <Checkbox
@@ -250,7 +250,7 @@ const Guidelines = () => {
                   />
                   <span className={cn(
                     "text-sm font-bold uppercase tracking-wide transition-opacity",
-                    checkedItems.includes(i) ? "opacity-100" : "opacity-80"
+                    checkedItems.includes(i) ? "opacity-100" : "text-white opacity-100"
                   )}>
                     {item}
                   </span>
@@ -263,22 +263,18 @@ const Guidelines = () => {
         {/* FAQ Section */}
         <section className="mx-auto max-w-3xl">
           <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-foreground md:text-4xl">Spørsmål & Svar</h2>
-          <div className="space-y-4">
+          <Accordion type="single" collapsible className="w-full space-y-4">
             {faqs.map((faq, i) => (
-              <Accordion key={i} type="single" collapsible className="w-full">
-                <AccordionItem value={`faq-${i}`} className="border-none mb-2">
-                  <AccordionTrigger className="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:no-underline hover:bg-muted/50 px-6 rounded-xl group data-[state=open]:text-stitch-primary border border-border">
-                    <span className="text-left text-base font-semibold">{faq.q}</span>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6 pb-6 pt-4">
-                    <div className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-6 rounded-xl border border-border">
-                      {faq.a}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              <AccordionItem key={i} value={`faq-${i}`} className="border border-stitch-outline-variant/30 rounded-lg px-6 bg-stitch-surface-container-low data-[state=open]:bg-stitch-surface-container-highest/50 transition-colors">
+                <AccordionTrigger className="text-lg font-medium hover:no-underline hover:text-stitch-primary data-[state=open]:text-stitch-primary transition-colors py-6 text-stitch-on-surface">
+                  {faq.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-stitch-on-surface-variant text-sm leading-relaxed pb-6">
+                  {faq.a}
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </section>
       </main>
     </div>

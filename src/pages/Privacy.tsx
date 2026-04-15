@@ -211,7 +211,7 @@ const Privacy = () => {
         <Accordion type="single" collapsible className="w-full space-y-4">
           {faqs.map((faq, i) => (
             <AccordionItem key={i} value={`faq-${i}`} className="border border-stitch-outline-variant/30 rounded-lg px-6 bg-stitch-surface-container-low data-[state=open]:bg-stitch-surface-container-highest/50 transition-colors">
-              <AccordionTrigger className="text-lg font-medium hover:no-underline hover:text-stitch-primary transition-colors py-6 text-stitch-on-surface">
+              <AccordionTrigger className="text-lg font-medium hover:no-underline hover:text-stitch-primary data-[state=open]:text-stitch-primary transition-colors py-6 text-stitch-on-surface">
                 {faq.q}
               </AccordionTrigger>
               <AccordionContent className="text-stitch-on-surface-variant text-sm leading-relaxed pb-6">

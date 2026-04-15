@@ -128,7 +128,7 @@ const Index = () => {
                 frequency={1}
                 warpStrength={1}
                 mouseInfluence={0}
-                parallax={0.5}
+                parallax={0}
                 noise={0.1}
               />
             )}
@@ -298,20 +298,18 @@ const Index = () => {
             <h2 className="text-4xl font-bold uppercase tracking-tight text-foreground">Spørsmål & Svar</h2>
             <p className="mt-4 text-muted-foreground">Svar på det du lurer på om ansvarlig AI-bruk.</p>
           </div>
-          <div className="space-y-4">
+          <Accordion type="single" collapsible className="w-full space-y-4">
             {faqs.map((faq, i) => (
-              <Accordion key={i} type="single" collapsible>
-                <AccordionItem value={`faq-${i}`} className="overflow-hidden rounded-xl border border-border/10 bg-card/30">
-                  <AccordionTrigger className="p-6 text-left text-sm font-medium uppercase tracking-wide text-foreground hover:bg-muted/10 hover:no-underline [&[data-state=open]>svg]:text-tertiary">
-                    {faq.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6 pb-6 pt-2 text-sm leading-relaxed text-muted-foreground">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              <AccordionItem key={i} value={`faq-${i}`} className="border border-stitch-outline-variant/30 rounded-lg px-6 bg-stitch-surface-container-low data-[state=open]:bg-stitch-surface-container-highest/50 transition-colors">
+                <AccordionTrigger className="text-lg font-medium hover:no-underline hover:text-stitch-primary data-[state=open]:text-stitch-primary transition-colors py-6 text-stitch-on-surface">
+                  {faq.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-stitch-on-surface-variant text-sm leading-relaxed pb-6">
+                  {faq.a}
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
 
           <div className="mt-20 rounded-2xl border border-border/5 bg-card/50 p-10 text-center shadow-2xl">
             <h3 className="mb-3 text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
