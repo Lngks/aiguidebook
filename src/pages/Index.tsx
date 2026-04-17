@@ -105,7 +105,7 @@ const Index = () => {
   return (
     <>
       {/* Hero — sticky, stays behind */}
-      <div ref={heroRef} className="sticky top-0 z-0 bg-background text-foreground">
+    <div ref={heroRef} className="sticky top-0 z-0 bg-background text-foreground overflow-hidden">
         <section className="relative flex min-h-[90vh] flex-col justify-center overflow-hidden bg-background pb-32 pt-20 text-foreground md:pb-48 md:pt-28 dark:bg-secondary">
           <div className="absolute inset-0">
             {isDark ? (
@@ -168,10 +168,10 @@ const Index = () => {
                       "--btn-gradient-to": isDark ? "hsl(var(--tertiary))" : "hsl(var(--stitch-primary))"
                     } as React.CSSProperties}
                   >
-                    <Link to="/guidelines">Start</Link>
+                    <Link to="/guidelines" aria-label="Start lesing av retningslinjer">Start</Link>
                   </Button>
                   <Button asChild variant="secondary" size="lg" className="uppercase tracking-widest">
-                    <Link to="/tools">Les mer</Link>
+                    <Link to="/tools" aria-label="Utforsk alle AI-verktøy">Les mer</Link>
                   </Button>
                 </div>
               </div>
@@ -181,9 +181,9 @@ const Index = () => {
       </div>
 
       {/* Separator line + decorative tab */}
-      <div className="relative z-20">
+      <div className="relative z-20 overflow-hidden" aria-hidden="true">
         <div className="absolute top-0 left-0 w-full h-px bg-border/20" />
-        <div className="absolute top-[-28px] left-1/2 -translate-x-1/2 w-[1100px] h-[29px] pointer-events-none">
+        <div className="absolute top-[-28px] left-1/2 -translate-x-1/2 w-full max-w-[1100px] h-[29px] pointer-events-none px-4">
           <svg viewBox="0 0 640 48" preserveAspectRatio="none" className="w-full h-full text-background fill-current">
             <path d="M0 48 L 180 48 C 220 48 240 0 280 0 L 360 0 C 400 0 420 48 460 48 L 640 48 Z" />
           </svg>
@@ -275,7 +275,7 @@ const Index = () => {
             <div className="relative z-10 mx-auto max-w-4xl px-6">
               <h2 className="mb-6 text-4xl font-bold uppercase tracking-tight text-white">Se det i praksis</h2>
               <p className="mb-10 text-xl opacity-90 text-white/90">
-                Få et unikk innblikk i prosessene som styrer dagens kunstige intelligens.
+                Få et unikt innblikk i prosessene som styrer dagens kunstige intelligens.
               </p>
               <div className="flex flex-col justify-center gap-4 sm:flex-row">
                 <Button asChild variant="tertiary" size="lg" className="uppercase tracking-widest hover:scale-105 transition-all font-bold">

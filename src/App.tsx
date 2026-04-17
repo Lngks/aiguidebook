@@ -48,7 +48,7 @@ const AnimatedRoutes = () => {
   );
 };
 
-const AppContent = () => {
+export const AppContent = () => {
   // Temporarily turned off sessionStorage for testing InitialLoader
   const [showLoader, setShowLoader] = useState(true);
 

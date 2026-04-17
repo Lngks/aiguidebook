@@ -16,17 +16,17 @@ const FooterVariant1 = () => (
       </div>
 
       <div className="flex flex-col sm:flex-row gap-12 sm:gap-24 text-sm mt-4 md:mt-0">
-        <div className="flex flex-col gap-4">
-          <span className="font-bold text-foreground tracking-widest uppercase text-[10px]">Utforsk</span>
+        <nav className="flex flex-col gap-4" aria-label="Utforsk">
+          <span className="font-bold text-foreground tracking-widest uppercase text-[10px]" aria-hidden="true">Utforsk</span>
           <Link to="/guidelines" className="text-muted-foreground hover:text-foreground transition-colors">Retningslinjer</Link>
           <Link to="/interactive" className="text-muted-foreground hover:text-foreground transition-colors">AI-Pipeline</Link>
           <Link to="/tools" className="text-muted-foreground hover:text-foreground transition-colors">Verktøy</Link>
-        </div>
-        <div className="flex flex-col gap-4">
-          <span className="font-bold text-foreground tracking-widest uppercase text-[10px]">Juridisk</span>
+        </nav>
+        <nav className="flex flex-col gap-4" aria-label="Juridisk">
+          <span className="font-bold text-foreground tracking-widest uppercase text-[10px]" aria-hidden="true">Juridisk</span>
           <Link to="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">Personvern</Link>
           <Link to="#" className="text-muted-foreground hover:text-foreground transition-colors">Vilkår for bruk</Link>
-        </div>
+        </nav>
       </div>
     </div>
 
@@ -71,7 +71,7 @@ const FooterVariant3 = () => (
           Fremtidens <br /> <span className="italic font-serif opacity-70">læring.</span>
         </h2>
 
-        <div className="flex flex-col gap-1.5 font-mono text-xs opacity-70 text-background dark:text-[#27272a] tracking-[0.15em] uppercase text-right">
+        <div className="flex flex-col gap-1.5 font-mono text-xs opacity-70 text-background dark:text-[#27272a] tracking-[0.15em] uppercase text-right" aria-hidden="true">
           <div className="flex justify-end gap-3 items-center mb-2">
             <span>SYS_STATUS: ONLINE</span>
             <span className="w-2 h-2 rounded-full bg-green-500/80 animate-pulse"></span>

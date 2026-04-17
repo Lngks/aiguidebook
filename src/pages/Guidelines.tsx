@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -11,9 +11,10 @@ import {
   AlertTriangle,
   AlertCircle,
   CheckSquare,
-  ChevronDown
+  ChevronDown,
+  BookOpen
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ScrambleText } from "@/components/ScrambleText";
 import {
   Accordion,
@@ -107,12 +108,28 @@ const faqs = [
 const Guidelines = () => {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
+  const leftCardRef = useRef<HTMLDivElement>(null);
+  const leftCardInView = useInView(leftCardRef, { margin: "-35% 0px -35% 0px" });
+
+  const rightCardRef = useRef<HTMLDivElement>(null);
+  const rightCardInView = useInView(rightCardRef, { margin: "-35% 0px -35% 0px" });
+
+  const [announcement, setAnnouncement] = useState("");
+  
   const toggleItem = (index: number) => {
+    const isChecking = !checkedItems.includes(index);
+    const itemName = checklistItems[index];
+
     setCheckedItems(prev =>
-      prev.includes(index)
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
+      isChecking
+        ? [...prev, index]
+        : prev.filter(i => i !== index)
     );
+
+    setAnnouncement(`${isChecking ? "Markert som fullført" : "Avmarkert"}: ${itemName}`);
+    
+    // Clear announcement after a delay so it can be re-announced if needed
+    setTimeout(() => setAnnouncement(""), 2000);
   };
 
   return (
@@ -227,36 +244,161 @@ const Guidelines = () => {
               <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl text-white">Sjekkliste før innlevering</h2>
               <p className="text-white/80 font-medium">Gå gjennom disse punktene før du sender inn arbeidet ditt for å sikre full overholdelse av reglementet.</p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 md:w-2/3 w-full">
-              {checklistItems.map((item, i) => (
-                <button
-                  key={i}
-                  onClick={() => toggleItem(i)}
-                  className={cn(
-                    "flex items-center gap-4 p-5 rounded-xl border transition-all text-left group",
-                    checkedItems.includes(i)
-                      ? "bg-white text-[#7c3aed] border-white shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-                      : "bg-white/15 text-white border-white/20 hover:bg-white/25"
-                  )}
-                >
-                  <Checkbox
-                    checked={checkedItems.includes(i)}
-                    className={cn(
-                      "h-5 w-5 border-2 transition-colors",
-                      checkedItems.includes(i)
-                        ? "border-[#7c3aed] data-[state=checked]:bg-[#7c3aed] data-[state=checked]:text-white"
-                        : "border-white/30"
-                    )}
-                  />
-                  <span className={cn(
-                    "text-sm font-bold uppercase tracking-wide transition-opacity",
-                    checkedItems.includes(i) ? "opacity-100" : "text-white opacity-100"
-                  )}>
-                    {item}
-                  </span>
-                </button>
-              ))}
+            <div className="md:w-2/3 w-full relative">
+              <div 
+                className="sr-only" 
+                role="status" 
+                aria-live="polite" 
+                aria-atomic="true"
+              >
+                {announcement}
+              </div>
+              <ul className="grid gap-4 sm:grid-cols-2 w-full" role="group" aria-label="Sjekkliste før innlevering">
+                {checklistItems.map((item, i) => (
+                  <li key={i}>
+                    <label
+                      className={cn(
+                        "flex items-center gap-4 p-5 rounded-xl border transition-all text-left group cursor-pointer h-full",
+                        checkedItems.includes(i)
+                          ? "bg-white text-[#7c3aed] border-white shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                          : "bg-white/15 text-white border-white/20 hover:bg-white/25"
+                      )}
+                    >
+                      <Checkbox
+                        id={`checklist-item-${i}`}
+                        checked={checkedItems.includes(i)}
+                        onCheckedChange={() => toggleItem(i)}
+                        className={cn(
+                          "h-5 w-5 border-2 transition-colors",
+                          checkedItems.includes(i)
+                            ? "border-[#7c3aed] data-[state=checked]:bg-[#7c3aed] data-[state=checked]:text-white"
+                            : "border-white/30"
+                        )}
+                      />
+                      <span className={cn(
+                        "text-sm font-bold uppercase tracking-wide transition-opacity",
+                        checkedItems.includes(i) ? "opacity-100" : "text-white opacity-100"
+                      )}>
+                        {item}
+                      </span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
             </div>
+          </div>
+        </section>
+
+        {/* APA Reference Examples */}
+        <section className="mb-32">
+          <div className="flex items-center gap-4 mb-12 text-center text-xs">
+            <div className="h-px flex-grow bg-border/40"></div>
+            <h2 className="font-bold tracking-tight text-foreground uppercase tracking-widest px-4">Kildereferanser / APA 7</h2>
+            <div className="h-px flex-grow bg-border/40"></div>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <motion.div
+              ref={leftCardRef}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5 }}
+              className={cn(
+                "relative overflow-hidden rounded-2xl border bg-card p-8 shadow-sm transition-colors duration-500",
+                leftCardInView ? "border-[#7c3aed]/50" : "border-border"
+              )}
+            >
+              <div className="mb-6 flex items-center justify-between">
+                <h3 className="text-2xl font-black text-foreground tracking-tight">I teksten</h3>
+                <span className="rounded-full bg-[#7c3aed]/10 px-3 py-1 text-[10px] uppercase font-bold font-mono tracking-widest text-[#7c3aed] border border-[#7c3aed]/20">In-text</span>
+              </div>
+              <p className="mb-8 text-sm leading-relaxed font-medium text-muted-foreground">
+                Når du bruker AI-generert innhold, enten som støtte for argumentasjon eller som direkte sitat, skal kilden oppgis i parentes rett i teksten.
+              </p>
+              <div className="relative rounded-xl bg-muted/30 p-6 border border-border/50 backdrop-blur-sm">
+                <div className={cn(
+                  "absolute left-0 top-0 bottom-0 w-1 bg-[#7c3aed] rounded-l-xl transition-opacity duration-500",
+                  leftCardInView ? "opacity-100" : "opacity-50"
+                )}></div>
+                <div className="space-y-6 relative pl-2">
+                  <div>
+                    <p className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2">Generelt Format</p>
+                    <p className="font-mono text-sm text-foreground bg-background rounded-lg p-3 border border-border/50 shadow-sm">
+                      (Skaper, Årtall)
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-mono font-bold text-[#7c3aed] uppercase tracking-wider mb-2">Eksempler</p>
+                    <div className="space-y-3 font-mono text-xs md:text-sm text-foreground bg-background rounded-lg p-4 border border-border/50 shadow-sm leading-relaxed">
+                      <p>
+                        <span className="text-muted-foreground block text-[10px] uppercase tracking-wider mb-1">Parafrasering:</span>
+                        Læringseffekten forbedres bemerkelsesverdig med hyppig interaksjon <span className="text-[#7c3aed] font-bold">(OpenAI, 2024)</span>.
+                      </p>
+                      <div className="h-px bg-border/50 my-3"></div>
+                      <p>
+                        <span className="text-muted-foreground block text-[10px] uppercase tracking-wider mb-1">Direkte sitat:</span>
+                        "Bruk AI-verktøy som diskusjonspartner" <span className="text-[#7c3aed] font-bold">(Anthropic, 2024)</span>.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              ref={rightCardRef}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className={cn(
+                "relative overflow-hidden rounded-2xl border bg-card dark:bg-zinc-900 p-8 shadow-sm transition-colors duration-500",
+                rightCardInView ? "border-[#7c3aed]/50 dark:border-[#caf300]/50" : "border-border"
+              )}
+            >
+              <div className={cn(
+                "absolute -right-4 -top-4 transition-opacity duration-500 pointer-events-none",
+                rightCardInView ? "opacity-10" : "opacity-[0.03]"
+              )}>
+                <BookOpen className="h-40 w-40 text-[#7c3aed] dark:text-[#caf300]" />
+              </div>
+              <div className="mb-6 flex items-center justify-between relative z-10">
+                <h3 className="text-2xl font-black text-foreground dark:text-white tracking-tight">Kildelisten</h3>
+                <span className="rounded-full bg-[#7c3aed]/10 dark:bg-[#caf300]/10 px-3 py-1 text-[10px] uppercase font-bold font-mono tracking-widest text-[#7c3aed] dark:text-[#caf300] border border-[#7c3aed]/20 dark:border-[#caf300]/20">Reference</span>
+              </div>
+              <p className="mb-8 text-sm leading-relaxed font-medium text-muted-foreground dark:text-zinc-400 relative z-10">
+                I kildelisten/referanselisten skal du oppgi skaper, år, modellens navn, versjon, format og direkte url til modellen.
+              </p>
+              <div className="relative rounded-xl bg-muted/30 dark:bg-zinc-950 p-6 border border-border/50 dark:border-zinc-800 shadow-sm dark:shadow-[inset_0_2px_20px_rgba(0,0,0,0.5)] backdrop-blur-sm dark:backdrop-blur-none z-10">
+                <div className={cn(
+                  "absolute left-0 top-0 bottom-0 w-1 bg-[#7c3aed] dark:bg-[#caf300] rounded-l-xl transition-opacity duration-500",
+                  rightCardInView ? "opacity-100" : "opacity-50"
+                )}></div>
+                <div className="space-y-6 relative pl-2">
+                  <div>
+                    <p className="text-[10px] font-mono font-bold text-muted-foreground dark:text-zinc-500 uppercase tracking-wider mb-2">Generelt Format</p>
+                    <p className="font-mono text-sm text-foreground dark:text-zinc-300 bg-background dark:bg-black/50 rounded-lg p-3 border border-border/50 dark:border-zinc-800/80 shadow-sm dark:shadow-none">
+                      Skaper. (År). <i>Modellens navn</i> (Versjon) [Stor språkmodell]. URL
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-mono font-bold text-[#7c3aed] dark:text-[#caf300] uppercase tracking-wider mb-2">Eksempler</p>
+                    <div className="space-y-4 font-mono text-xs md:text-sm text-foreground dark:text-zinc-300 bg-background dark:bg-black/50 rounded-lg p-4 border border-border/50 dark:border-zinc-800/80 shadow-sm dark:shadow-none leading-relaxed">
+                      <div>
+                        OpenAI. (2024). <i>ChatGPT</i> (14. mars-versjon) [Stor språkmodell]. 
+                        <a href="#" className="text-[#7c3aed]/70 dark:text-[#caf300]/70 hover:text-[#7c3aed] dark:hover:text-[#caf300] transition-colors block mt-1 break-all">https://chat.openai.com/</a>
+                      </div>
+                      <div className="h-px bg-border/50 dark:bg-zinc-800/80 my-3"></div>
+                      <div>
+                        Anthropic. (2024). <i>Claude</i> (3.5 Sonnet) [Stor språkmodell]. 
+                        <a href="#" className="text-[#7c3aed]/70 dark:text-[#caf300]/70 hover:text-[#7c3aed] dark:hover:text-[#caf300] transition-colors block mt-1 break-all">https://claude.ai/</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 

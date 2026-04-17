@@ -42,6 +42,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-0 transition-all duration-500 pointer-events-none">
       <motion.header
+        role="banner"
         className={cn(
           "relative pointer-events-auto flex items-center overflow-hidden transition-all duration-500 ease-in-out",
           // Base mobile classes
@@ -87,12 +88,14 @@ const Navbar = () => {
 
           {/* Desktop nav */}
           <div className="hidden md:flex flex-1 items-center justify-between ml-8">
-            <ul className="flex items-center gap-8">
-              {navItems.map((item) => (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    className={cn(
+            <nav aria-label="Hovedmeny" className="flex-1">
+              <ul className="flex items-center gap-8">
+                {navItems.map((item) => (
+                  <li key={item.path}>
+                    <Link
+                      to={item.path}
+                      aria-current={location.pathname === item.path ? "page" : undefined}
+                      className={cn(
                       "text-xs font-medium transition-all duration-300 hover:text-primary relative group",
                       location.pathname === item.path ? "text-primary" : "text-muted-foreground",
                     )}
@@ -108,6 +111,7 @@ const Navbar = () => {
                 </li>
               ))}
             </ul>
+          </nav>
 
             <div className="flex items-center gap-4 shrink-0">
               <button
@@ -125,7 +129,9 @@ const Navbar = () => {
           <button
             className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:text-foreground md:hidden transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? "Lukk meny" : "Åpne meny"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -140,14 +146,17 @@ const Navbar = () => {
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="overflow-hidden border-t border-border/10 md:hidden w-full relative"
+              id="mobile-menu"
             >
-              <ul className="flex flex-col space-y-1 px-4 py-6">
-                {navItems.map((item) => (
-                  <li key={item.path}>
-                    <Link
-                      to={item.path}
-                      onClick={() => setMobileOpen(false)}
-                      className={cn(
+              <nav aria-label="Mobilmeny">
+                <ul className="flex flex-col space-y-1 px-4 py-6">
+                  {navItems.map((item) => (
+                    <li key={item.path}>
+                      <Link
+                        to={item.path}
+                        onClick={() => setMobileOpen(false)}
+                        aria-current={location.pathname === item.path ? "page" : undefined}
+                        className={cn(
                         "block rounded-lg px-4 py-3 text-base font-medium transition-all duration-200 hover:bg-primary/5",
                         location.pathname === item.path
                           ? "bg-primary/10 text-primary"
@@ -173,9 +182,10 @@ const Navbar = () => {
                   </button>
                 </li>
               </ul>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
       </motion.header>
     </div>
   );

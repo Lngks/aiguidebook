@@ -142,13 +142,15 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground font-sans;
 
-    overflow-x: clip;
+    overflow-x: hidden;
     width: 100%;
+    position: relative;
   }
 
   section[id] {
@@ -181,6 +183,16 @@
 
   .section-fade-in-delay-3 {
     animation: fade-in 0.6s ease-out 0.45s both;
+  }
+}
+
+@layer utilities {
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring;
   }
 }
 

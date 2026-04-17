@@ -161,7 +161,7 @@ const Privacy = () => {
               <div className="text-xs uppercase tracking-widest text-stitch-on-surface-variant font-bold mb-2">Tiltak</div>
               <p className="text-sm font-medium text-stitch-primary">Følg institusjonens spesifikke retningslinjer for AI-bruk.</p>
             </div>
-            <Link to="/guidelines" className="bg-stitch-surface-container-highest hover:bg-stitch-surface-bright text-stitch-on-surface text-xs font-bold py-2 px-4 rounded-full transition-colors flex items-center gap-2">
+            <Link to="https://www.usn.no/om-usn/regelverk/retningslinjer-for-bruk-av-kunstig-intelligens-ki-ved-eksamen-og-studentoppgaver" className="bg-stitch-surface-container-highest hover:bg-stitch-surface-bright text-stitch-on-surface text-xs font-bold py-2 px-4 rounded-full transition-colors flex items-center gap-2">
               Les retningslinjer <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
