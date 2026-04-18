@@ -49,8 +49,10 @@ const AnimatedRoutes = () => {
 };
 
 export const AppContent = () => {
-  // Temporarily turned off sessionStorage for testing InitialLoader
-  const [showLoader, setShowLoader] = useState(true);
+  const [showLoader, setShowLoader] = useState(() => {
+    // Check if the loader has already been shown in this session
+    return sessionStorage.getItem("hasLoaded") !== "true";
+  });
 
   return (
     <>
@@ -58,7 +60,7 @@ export const AppContent = () => {
         {showLoader && (
           <InitialLoader 
             onComplete={() => {
-              // sessionStorage.setItem("hasLoaded", "true");
+              sessionStorage.setItem("hasLoaded", "true");
               setShowLoader(false);
             }} 
           />
