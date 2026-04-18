@@ -296,7 +296,10 @@ const Tools = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col items-start text-left"
           >
-            <p className="mb-4 text-xs font-mono font-bold uppercase tracking-[0.2em] text-primary/40">Bibliotek / Ressurser</p>
+            <div className="uppercase tracking-[0.2em] text-stitch-secondary font-medium mb-4 flex items-center gap-2 text-sm">
+              <span className="w-8 h-[1px] bg-stitch-secondary"></span>
+              Bibliotek & Ressurser
+            </div>
             <h1 className="text-4xl md:text-6xl font-black text-foreground leading-[1.1]">
               Finn de rette <span className="text-stitch-primary">verktøyene</span> for din hverdag
             </h1>

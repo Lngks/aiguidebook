@@ -1,13 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "react-router-dom";
-import { ArrowRight, FileText, Lightbulb, Wrench, ShieldCheck, PenTool, Bot, Mail } from "lucide-react";
+import { ArrowRight, FileText, Lightbulb, Wrench, ShieldCheck, PenTool, Bot, Mail, MapPin, Phone } from "lucide-react";
 import DarkVeil from "@/components/DarkVeil/DarkVeil";
 import AsciiHero from "@/components/AsciiHero";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ScrambleText } from "@/components/ScrambleText";
 import ColorBends from "@/components/ui/ColorBends";
+import { useInView } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const overviewCards = [
   {
@@ -27,6 +33,29 @@ const overviewCards = [
     icon: Wrench,
   },
 ];
+
+const OverviewCard = ({ card }: { card: typeof overviewCards[0] }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { margin: "-25% 0px -25% 0px" });
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "relative rounded-xl border bg-card p-10 transition-all duration-500 dark:bg-card/30 dark:shadow-none",
+        inView
+          ? "border-tertiary/40 shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:border-tertiary/40"
+          : "border-border/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:border-border/10"
+      )}
+    >
+      <div className="mb-8 flex items-center transition-transform">
+        <card.icon className="h-8 w-8 text-tertiary transition-transform duration-500" style={{ transform: inView ? "scale(1.1)" : "scale(1)" }} />
+      </div>
+      <h3 className="mb-4 text-2xl font-bold uppercase tracking-tight text-foreground">{card.title}</h3>
+      <p className="text-sm leading-relaxed text-muted-foreground font-light">{card.description}</p>
+    </div>
+  );
+};
 
 const trustCards = [
   {
@@ -105,7 +134,7 @@ const Index = () => {
   return (
     <>
       {/* Hero — sticky, stays behind */}
-    <div ref={heroRef} className="sticky top-0 z-0 bg-background text-foreground overflow-hidden">
+      <div ref={heroRef} className="sticky top-0 z-0 bg-background text-foreground overflow-hidden">
         <section className="relative flex min-h-[90vh] flex-col justify-center overflow-hidden bg-background pb-32 pt-20 text-foreground md:pb-48 md:pt-28 dark:bg-secondary">
           <div className="absolute inset-0">
             {isDark ? (
@@ -192,7 +221,7 @@ const Index = () => {
       </div>
 
       {/* Key Points — Tre ting du må vite */}
-      <section className="relative z-10 bg-background px-4 pt-40 pb-40">
+      <section className="relative z-10 bg-background px-4 pt-32 pb-20">
         <div className="container mx-auto max-w-7xl">
           <div className="mb-16 text-center">
             <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-tertiary">Oppdag mulighetene</p>
@@ -203,16 +232,7 @@ const Index = () => {
           </div>
           <div className="grid gap-8 md:grid-cols-3">
             {overviewCards.map((card) => (
-              <div
-                key={card.title}
-                className="group relative rounded-xl border border-border/40 bg-card p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b-4 border-b-tertiary dark:border-border/10 dark:bg-card/30 dark:hover:bg-card/50 dark:shadow-none"
-              >
-                <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-lg bg-muted/20 transition-transform group-hover:scale-110">
-                  <card.icon className="h-8 w-8 text-tertiary" />
-                </div>
-                <h3 className="mb-4 text-2xl font-bold uppercase tracking-tight text-foreground">{card.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground font-light">{card.description}</p>
-              </div>
+              <OverviewCard key={card.title} card={card} />
             ))}
           </div>
           <div className="mt-16 text-center">
@@ -227,7 +247,7 @@ const Index = () => {
       </section>
 
       {/* Trust Section — Bruk AI med tillit */}
-      <section className="relative z-10 border-y border-border/10 bg-background py-32">
+      <section className="relative z-10 border-y border-border/10 bg-background py-24">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="mb-20 text-center">
             <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-tertiary">Trygghet</p>
@@ -274,7 +294,7 @@ const Index = () => {
             </div>
             <div className="relative z-10 mx-auto max-w-4xl px-6">
               <h2 className="mb-6 text-4xl font-bold uppercase tracking-tight text-white">Se det i praksis</h2>
-              <p className="mb-10 text-xl opacity-90 text-white/90">
+              <p className="mb-10 text-xl opacity-95 text-white">
                 Få et unikt innblikk i prosessene som styrer dagens kunstige intelligens.
               </p>
               <div className="flex flex-col justify-center gap-4 sm:flex-row">
@@ -314,12 +334,80 @@ const Index = () => {
           <div className="mt-20 rounded-2xl border border-border/5 bg-card/50 p-10 text-center shadow-2xl">
             <h3 className="mb-3 text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
             <p className="mb-6 text-sm text-muted-foreground">Kontakt instruktøren din eller les retningslinjene i detalj.</p>
-            <Link
-              to="/guidelines"
-              className="group flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-tertiary transition-all hover:text-foreground"
-            >
-              Kontakt oss i dag <Mail className="h-4 w-4" />
-            </Link>
+            <Dialog>
+              <DialogTrigger asChild>
+                <button
+                  className="group mx-auto flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-tertiary transition-all hover:text-foreground"
+                >
+                  Kontakt oss i dag <Mail className="h-4 w-4" />
+                </button>
+              </DialogTrigger>
+              <DialogContent className="w-[90vw] sm:max-w-[650px] p-0 overflow-hidden rounded-xl border border-border/40 shadow-2xl">
+                <div className="flex flex-col md:flex-row">
+                  {/* Left Side: USN Contact Info */}
+                  <div className="bg-muted/50 p-8 md:w-[45%] flex flex-col justify-between border-b md:border-b-0 md:border-r border-border/40">
+                    <div>
+                      <h4 className="font-bold text-xl mb-3 text-foreground">Ta kontakt med USN</h4>
+                      <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
+                        Har du spørsmål vedrørende AI-bruk, retningslinjer eller verktøyene vi nevner? Vi vil gjerne høre fra deg.
+                      </p>
+                      
+                      <div className="space-y-6">
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-tertiary/10">
+                            <MapPin className="h-4 w-4 text-tertiary" />
+                          </div>
+                          <div className="text-sm">
+                            <p className="font-bold text-foreground">Hovedkontor</p>
+                            <p className="text-muted-foreground">Raveien 215, 3184 Borre</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-tertiary/10">
+                            <Phone className="h-4 w-4 text-tertiary" />
+                          </div>
+                          <div className="text-sm">
+                            <p className="font-bold text-foreground">Telefon</p>
+                            <p className="text-muted-foreground">31 00 80 00</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-tertiary/10">
+                            <Mail className="h-4 w-4 text-tertiary" />
+                          </div>
+                          <div className="text-sm">
+                            <p className="font-bold text-foreground">E-post</p>
+                            <p className="text-muted-foreground">postmottak@usn.no</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Right Side: Form */}
+                  <div className="p-8 md:w-[55%] bg-card text-left">
+                    <h4 className="font-bold text-xl mb-6 text-foreground">Skriv en melding</h4>
+                    <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+                      <div className="space-y-2">
+                        <Label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Navn</Label>
+                        <Input id="name" placeholder="Ditt navn" className="bg-background/50 h-11" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">E-post</Label>
+                        <Input id="email" type="email" placeholder="din@epost.no" className="bg-background/50 h-11" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="message" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Melding</Label>
+                        <Textarea id="message" placeholder="Hva kan vi hjelpe deg med?" className="min-h-[120px] resize-none bg-background/50" />
+                      </div>
+                      <Button className="w-full mt-4 h-11 bg-tertiary hover:bg-tertiary/90 text-primary-foreground font-bold uppercase tracking-widest text-xs transition-transform active:scale-[0.98]" type="submit">
+                        Send Melding
+                      </Button>
+                    </form>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </section>

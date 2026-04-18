@@ -56,10 +56,10 @@ const Privacy = () => {
         {/* Risk 1: Data Privacy */}
         <div className="md:col-span-7 bg-stitch-surface-container-low rounded-xl p-8 border border-stitch-outline-variant/30 hover:bg-stitch-surface-container-highest/20 transition-all group flex flex-col hover:-translate-y-1">
           <div className="flex items-start justify-between mb-8">
-            <div className="bg-stitch-surface-container-highest p-4 rounded-lg">
-              <Shield className="text-stitch-primary w-8 h-8" />
+            <div className="inline-flex">
+              <Shield className="text-stitch-primary w-10 h-10" />
             </div>
-            <span className="text-stitch-primary-container font-bold text-4xl opacity-20">01</span>
+            <span className="text-stitch-primary font-bold text-4xl opacity-40">01</span>
           </div>
           <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface">Dataprivatliv</h3>
           <p className="text-stitch-on-surface-variant mb-6">Informasjonen du mater inn i AI-modeller kan bli brukt til fremtidig trening. Beskytt dine sensitive data.</p>
@@ -86,10 +86,10 @@ const Privacy = () => {
         {/* Risk 2: Bias */}
         <div className="md:col-span-5 bg-stitch-surface-container-low rounded-xl p-8 border border-stitch-outline-variant/30 hover:bg-stitch-surface-container-highest/20 transition-all group flex flex-col hover:-translate-y-1">
           <div className="flex items-start justify-between mb-8">
-            <div className="bg-stitch-surface-container-highest p-4 rounded-lg">
-              <Scale className="text-stitch-secondary w-8 h-8" />
+            <div className="inline-flex">
+              <Scale className="text-stitch-secondary w-10 h-10" />
             </div>
-            <span className="text-stitch-secondary font-bold text-4xl opacity-20">02</span>
+            <span className="text-stitch-secondary font-bold text-4xl opacity-40">02</span>
           </div>
           <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface">Skjevheter i AI</h3>
           <p className="text-stitch-on-surface-variant mb-6">AI-modeller gjenspeiler fordommer i treningsdataene sine, noe som kan føre til diskriminerende resultater.</p>
@@ -112,10 +112,10 @@ const Privacy = () => {
         {/* Risk 3: Hallucinations */}
         <div className="md:col-span-5 bg-stitch-surface-container-low rounded-xl p-8 border border-stitch-outline-variant/30 hover:bg-stitch-surface-container-highest/20 transition-all group flex flex-col hover:-translate-y-1">
           <div className="flex items-start justify-between mb-8">
-            <div className="bg-stitch-surface-container-highest p-4 rounded-lg">
-              <EyeOff className="text-stitch-error w-8 h-8" />
+            <div className="inline-flex">
+              <EyeOff className="text-stitch-error w-10 h-10" />
             </div>
-            <span className="text-stitch-error font-bold text-4xl opacity-20">03</span>
+            <span className="text-stitch-error font-bold text-4xl opacity-40">03</span>
           </div>
           <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface">Hallusinasjoner</h3>
           <p className="text-stitch-on-surface-variant mb-6">AI kan presentere falsk informasjon med stor selvsikkerhet. Dette er spesielt kritisk ved faktasjekking.</p>
@@ -139,10 +139,10 @@ const Privacy = () => {
         <div className="md:col-span-7 bg-stitch-surface-container-low rounded-xl p-8 border border-stitch-outline-variant/30 hover:bg-stitch-surface-container-highest/20 transition-all relative overflow-hidden flex flex-col group hover:-translate-y-1">
 
           <div className="flex items-start justify-between mb-8 relative z-10">
-            <div className="bg-stitch-surface-container-highest p-4 rounded-lg">
-              <GraduationCap className="text-stitch-primary w-8 h-8" />
+            <div className="inline-flex">
+              <GraduationCap className="text-stitch-primary w-10 h-10" />
             </div>
-            <span className="text-stitch-primary font-bold text-4xl opacity-20">04</span>
+            <span className="text-stitch-primary font-bold text-4xl opacity-40">04</span>
           </div>
           <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface relative z-10">Akademisk integritet</h3>
           <p className="text-stitch-on-surface-variant mb-6 relative z-10">Bruk av AI uten å oppgi kilde kan anses som plagiat. Balanser assistanse med original tenkning.</p>
@@ -178,22 +178,22 @@ const Privacy = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="text-center group">
-              <div className="w-16 h-16 bg-stitch-surface-container-highest rounded-full flex items-center justify-center mx-auto mb-6 border border-stitch-outline-variant/30 group-hover:scale-110 transition-transform shadow-sm">
-                <Lock className="text-stitch-secondary w-6 h-6" />
+              <div className="flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Lock className="text-stitch-secondary w-10 h-10" />
               </div>
               <h4 className="text-xl font-bold mb-4 text-stitch-on-surface">Minimumseksponering</h4>
               <p className="text-stitch-on-surface-variant text-sm leading-relaxed">Mat kun inn nødvendig data. Jo mindre informasjon du deler, desto mindre er risikoen for lekkasjer.</p>
             </div>
             <div className="text-center group">
-              <div className="w-16 h-16 bg-stitch-surface-container-highest rounded-full flex items-center justify-center mx-auto mb-6 border border-stitch-outline-variant/30 group-hover:scale-110 transition-transform shadow-sm">
-                <Eye className="text-stitch-secondary w-6 h-6" />
+              <div className="flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Eye className="text-stitch-secondary w-10 h-10" />
               </div>
               <h4 className="text-xl font-bold mb-4 text-stitch-on-surface">Menneskelig tilsyn</h4>
               <p className="text-stitch-on-surface-variant text-sm leading-relaxed">AI-generert innhold skal aldri publiseres eller brukes uten en grundig manuell kvalitetskontroll.</p>
             </div>
             <div className="text-center group">
-              <div className="w-16 h-16 bg-stitch-surface-container-highest rounded-full flex items-center justify-center mx-auto mb-6 border border-stitch-outline-variant/30 group-hover:scale-110 transition-transform shadow-sm">
-                <History className="text-stitch-secondary w-6 h-6" />
+              <div className="flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <History className="text-stitch-secondary w-10 h-10" />
               </div>
               <h4 className="text-xl font-bold mb-4 text-stitch-on-surface">Full sporbarhet</h4>
               <p className="text-stitch-on-surface-variant text-sm leading-relaxed">Dokumenter alle steg i prosessen der AI har blitt brukt til å forme det endelige resultatet.</p>
@@ -205,7 +205,7 @@ const Privacy = () => {
       {/* FAQ Section */}
       <section className="max-w-3xl mx-auto mb-24 section-fade-in-delay-3">
         <h2 className="text-4xl font-bold mb-12 text-center text-stitch-on-surface">
-          Ofte stilte <span className="text-stitch-primary italic">spørsmål</span>
+          Spørsmål & Svar
         </h2>
 
         <Accordion type="single" collapsible className="w-full space-y-4">
@@ -227,7 +227,7 @@ const Privacy = () => {
         <div className="bg-stitch-surface p-12 rounded-[0.9rem] flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="max-w-xl">
             <h3 className="text-3xl font-bold mb-4 text-stitch-on-surface">Fortsatt usikker på sikkerheten?</h3>
-            <p className="text-stitch-on-surface-variant">Vårt team av etikkeksperter står klare til å hjelpe deg med konkrete vurderinger av din organisasjons AI-strategi.</p>
+            <p className="text-stitch-on-surface-variant">Ta en titt på våre studierelaterte retningslinjer for å lære mer om trygg og etisk bruk av AI i din studiehverdag.</p>
           </div>
           <Link to="/guidelines" className="whitespace-nowrap bg-stitch-secondary text-stitch-surface px-8 py-4 rounded-lg font-bold hover:scale-105 transition-transform text-center shadow-md">
             Oppdag våre retningslinjer

@@ -115,7 +115,7 @@ const Guidelines = () => {
   const rightCardInView = useInView(rightCardRef, { margin: "-35% 0px -35% 0px" });
 
   const [announcement, setAnnouncement] = useState("");
-  
+
   const toggleItem = (index: number) => {
     const isChecking = !checkedItems.includes(index);
     const itemName = checklistItems[index];
@@ -127,7 +127,7 @@ const Guidelines = () => {
     );
 
     setAnnouncement(`${isChecking ? "Markert som fullført" : "Avmarkert"}: ${itemName}`);
-    
+
     // Clear announcement after a delay so it can be re-announced if needed
     setTimeout(() => setAnnouncement(""), 2000);
   };
@@ -143,7 +143,10 @@ const Guidelines = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col items-start text-left"
           >
-            <p className="mb-4 text-xs font-mono font-bold uppercase tracking-[0.2em] text-primary/40">Etikk / Ansvar</p>
+            <div className="uppercase tracking-[0.2em] text-stitch-secondary font-medium mb-4 flex items-center gap-2 text-sm">
+              <span className="w-8 h-[1px] bg-stitch-secondary"></span>
+              Etikk & Ansvar
+            </div>
             <h1 className="text-4xl md:text-6xl font-black text-foreground leading-[1.1]">
               Bruk AI <span className="text-stitch-primary">ansvarlig.</span>
             </h1>
@@ -175,8 +178,8 @@ const Guidelines = () => {
                   topic.borderColor
                 )}
               >
-                <div className="mb-6 inline-flex rounded-lg bg-muted p-3 border border-border">
-                  <topic.icon className={cn("h-6 w-6", topic.iconColor)} />
+                <div className="mb-6 inline-flex">
+                  <topic.icon className={cn("h-8 w-8", topic.iconColor)} />
                 </div>
                 <h3 className="mb-4 text-xl font-bold text-foreground">{topic.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-foreground font-medium">
@@ -245,10 +248,10 @@ const Guidelines = () => {
               <p className="text-white/80 font-medium">Gå gjennom disse punktene før du sender inn arbeidet ditt for å sikre full overholdelse av reglementet.</p>
             </div>
             <div className="md:w-2/3 w-full relative">
-              <div 
-                className="sr-only" 
-                role="status" 
-                aria-live="polite" 
+              <div
+                className="sr-only"
+                role="status"
+                aria-live="polite"
                 aria-atomic="true"
               >
                 {announcement}
@@ -386,12 +389,12 @@ const Guidelines = () => {
                     <p className="text-[10px] font-mono font-bold text-[#7c3aed] dark:text-[#caf300] uppercase tracking-wider mb-2">Eksempler</p>
                     <div className="space-y-4 font-mono text-xs md:text-sm text-foreground dark:text-zinc-300 bg-background dark:bg-black/50 rounded-lg p-4 border border-border/50 dark:border-zinc-800/80 shadow-sm dark:shadow-none leading-relaxed">
                       <div>
-                        OpenAI. (2024). <i>ChatGPT</i> (14. mars-versjon) [Stor språkmodell]. 
+                        OpenAI. (2024). <i>ChatGPT</i> (14. mars-versjon) [Stor språkmodell].
                         <a href="#" className="text-[#7c3aed]/70 dark:text-[#caf300]/70 hover:text-[#7c3aed] dark:hover:text-[#caf300] transition-colors block mt-1 break-all">https://chat.openai.com/</a>
                       </div>
                       <div className="h-px bg-border/50 dark:bg-zinc-800/80 my-3"></div>
                       <div>
-                        Anthropic. (2024). <i>Claude</i> (3.5 Sonnet) [Stor språkmodell]. 
+                        Anthropic. (2024). <i>Claude</i> (3.5 Sonnet) [Stor språkmodell].
                         <a href="#" className="text-[#7c3aed]/70 dark:text-[#caf300]/70 hover:text-[#7c3aed] dark:hover:text-[#caf300] transition-colors block mt-1 break-all">https://claude.ai/</a>
                       </div>
                     </div>
