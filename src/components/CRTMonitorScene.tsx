@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState, useCallback, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Text, RoundedBox, ScrollControls, useScroll, Html } from "@react-three/drei";
+import { Text, RoundedBox, ScrollControls, useScroll, Html, Billboard } from "@react-three/drei";
 import * as THREE from "three";
 
 /* ─── AI Pipeline stages with distinct colors ─── */
@@ -229,166 +229,102 @@ const CRTMonitor = ({ inputText, visible }: { inputText: string; visible: boolea
   );
 };
 
-/* ─── Wireframe terrain with dramatic heights ─── */
-const WireframeTerrain = () => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
-
-  const geo = useMemo(() => {
-    const g = new THREE.PlaneGeometry(80, 280, 120, 400);
-    const pos = g.attributes.position;
-    for (let i = 0; i < pos.count; i++) {
-      const x = pos.getX(i);
-      const z = pos.getY(i);
-      // More dramatic multi-octave terrain
-      const ridge = Math.abs(Math.sin(x * 0.2 + z * 0.05)) * 3.0;
-      const h =
-        ridge +
-        Math.sin(x * 0.15 + z * 0.08) * 2.5 +
-        Math.sin(x * 0.5 - z * 0.12) * 1.2 +
-        Math.cos(x * 0.08 + z * 0.2) * 2.0 +
-        Math.sin(x * 1.5 + z * 0.6) * 0.4 +
-        Math.sin(x * 0.05) * Math.cos(z * 0.03) * 4.0;
-      // Create valleys near the center path
-      const centerFalloff = Math.exp(-x * x * 0.01);
-      pos.setZ(i, h * (1 - centerFalloff * 0.6));
-    }
-    g.computeVertexNormals();
-    return g;
-  }, []);
-
-  // Shader for color-shifting terrain
-  const uniforms = useMemo(() => ({
-    uTime: { value: 0 },
-    uCameraZ: { value: 0 },
-    uStageColors: {
-      value: STAGES.map(s => new THREE.Color(s.color))
-    },
-    uStagePositions: {
-      value: STAGES.map(s => s.z)
-    },
-  }), []);
-
-  useFrame((state) => {
-    if (materialRef.current) {
-      materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-      materialRef.current.uniforms.uCameraZ.value = state.camera.position.z;
-    }
-  });
-
+/* ─── Flat Isometric Terrain ─── */
+const IsometricTerrain = () => {
   return (
-    <mesh ref={meshRef} geometry={geo} rotation={[-Math.PI / 2, 0, 0]} position={[0, -3, -110]}>
-      <shaderMaterial
-        ref={materialRef}
-        wireframe
-        transparent
-        uniforms={uniforms}
-        vertexShader={`
-          varying vec3 vWorldPos;
-          varying float vHeight;
-          void main() {
-            vec4 worldPos = modelMatrix * vec4(position, 1.0);
-            vWorldPos = worldPos.xyz;
-            vHeight = position.z; // height before rotation
-            gl_Position = projectionMatrix * viewMatrix * worldPos;
-          }
-        `}
-        fragmentShader={`
-          uniform float uTime;
-          uniform float uCameraZ;
-          uniform vec3 uStageColors[6];
-          uniform float uStagePositions[6];
-          varying vec3 vWorldPos;
-          varying float vHeight;
-          
-          void main() {
-            // Find closest stage for color
-            float worldZ = vWorldPos.z;
-            vec3 col = uStageColors[0];
-            for (int i = 0; i < 5; i++) {
-              if (worldZ < uStagePositions[i] && worldZ >= uStagePositions[i + 1]) {
-                float t = (worldZ - uStagePositions[i]) / (uStagePositions[i + 1] - uStagePositions[i]);
-                col = mix(uStageColors[i], uStageColors[i + 1], t);
-              }
+    <group position={[0, -1, -100]}>
+      {/* Base light terrain */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[120, 260]} />
+        <meshStandardMaterial color="#1c1d21" roughness={1} metalness={0} />
+      </mesh>
+
+      {/* Subtle dotted grid overlay using shader */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.05, 0]}>
+        <planeGeometry args={[120, 260]} />
+        <shaderMaterial
+          transparent
+          uniforms={{
+            uColor: { value: new THREE.Color("#363942") }
+          }}
+          vertexShader={`
+            varying vec2 vUv;
+            void main() {
+              vUv = uv;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
             }
-            if (worldZ < uStagePositions[5]) col = uStageColors[5];
-            
-            // Height-based brightness
-            float heightGlow = smoothstep(0.0, 4.0, vHeight) * 0.6;
-            
-            // Distance fade
-            float dist = abs(worldZ - uCameraZ);
-            float fade = smoothstep(50.0, 5.0, dist);
-            
-            // Pulse effect
-            float pulse = 0.7 + 0.3 * sin(uTime * 1.5 + worldZ * 0.05);
-            
-            float alpha = (0.15 + heightGlow) * fade * pulse;
-            gl_FragColor = vec4(col, alpha);
-          }
-        `}
-      />
-    </mesh>
-  );
-};
-
-/* ─── Glowing grid floor ─── */
-const GridFloor = () => {
-  return (
-    <group position={[0, -3.01, -100]}>
-      <gridHelper args={[280, 140, "#0a4a0a", "#062006"]} />
+          `}
+          fragmentShader={`
+            uniform vec3 uColor;
+            varying vec2 vUv;
+            void main() {
+              vec2 grid = fract(vUv * vec2(120.0, 260.0) * 0.5);
+              float dot = length(grid - 0.5);
+              float alpha = smoothstep(0.1, 0.05, dot) * 0.4;
+              gl_FragColor = vec4(uColor, alpha);
+            }
+          `}
+        />
+      </mesh>
     </group>
   );
 };
 
+/* ─── Grid floor removed for flat aesthetic ─── */
+const GridFloor = () => {
+  return null;
+};
+
 /* ─── Glowing progress line connecting all stations ─── */
 const ProgressLine = () => {
-  const lineRef = useRef<THREE.Line>(null);
   const glowRef = useRef<THREE.Mesh>(null);
   const progressRef = useRef(0);
 
   // Build the path curve through all stages
-  const { curve, tubeGeo } = useMemo(() => {
+  const { curve, tubeGeo, groundGeo } = useMemo(() => {
     const points: THREE.Vector3[] = [];
-    // Start from origin
-    points.push(new THREE.Vector3(0, -0.5, -5));
+    // Start from origin (inside the CRT monitor)
+    points.push(new THREE.Vector3(0, -0.9, -0.2));
+    points.push(new THREE.Vector3(0, -0.9, -2));
     STAGES.forEach((stage, i) => {
-      const side = i % 2 === 0 ? -6 : 6;
-      points.push(new THREE.Vector3(side * 0.3, -0.5, stage.z + 5));
-      points.push(new THREE.Vector3(side, -1, stage.z));
-      points.push(new THREE.Vector3(side * 0.3, -0.5, stage.z - 5));
+      const side = i % 2 === 0 ? -3 : 3;
+      points.push(new THREE.Vector3(0, -0.9, stage.z + 10));
+      points.push(new THREE.Vector3(side, -0.9, stage.z));
+      points.push(new THREE.Vector3(0, -0.9, stage.z - 10));
     });
-    points.push(new THREE.Vector3(0, 0, -185));
+    points.push(new THREE.Vector3(0, -0.9, -185));
 
     const c = new THREE.CatmullRomCurve3(points);
-    const tg = new THREE.TubeGeometry(c, 300, 0.06, 8, false);
-    return { curve: c, tubeGeo: tg };
+    // Sharp angular look is harder with CatmullRom, but we can reduce segments for a slightly jagged circuit feel
+    const tg = new THREE.TubeGeometry(c, 200, 0.08, 6, false);
+    const gg = new THREE.TubeGeometry(c, 200, 0.15, 6, false);
+    return { curve: c, tubeGeo: tg, groundGeo: gg };
   }, []);
 
   // Progress indicator sphere
   useFrame((state) => {
     const camZ = state.camera.position.z;
-    // Map camera Z to progress (0 at z=0, 1 at z=-185)
-    const t = Math.max(0, Math.min(1, camZ / -185));
+    // Map camera Z to progress
+    const t = Math.max(0, Math.min(1, (camZ - 5) / -185));
     progressRef.current = t;
 
     if (glowRef.current) {
       const point = curve.getPoint(t);
       glowRef.current.position.copy(point);
-      const s = 1 + Math.sin(state.clock.elapsedTime * 3) * 0.3;
+      const s = 1 + Math.sin(state.clock.elapsedTime * 8) * 0.1;
       glowRef.current.scale.set(s, s, s);
     }
   });
 
   return (
     <group>
-      {/* Full path line (dim) */}
-      <mesh geometry={tubeGeo}>
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.08} />
+      {/* Full path ground trench / circuit path */}
+      <mesh geometry={groundGeo} position={[0, -0.05, 0]}>
+        <meshStandardMaterial color="#2d2f36" roughness={0.9} />
       </mesh>
 
       {/* Glowing active path — rendered with shader for progress effect */}
-      <mesh geometry={tubeGeo}>
+      <mesh geometry={tubeGeo} position={[0, 0.02, 0]}>
         <shaderMaterial
           transparent
           uniforms={{
@@ -417,13 +353,13 @@ const ProgressLine = () => {
             void main() {
               float t = vUv.x;
               // Only show up to current progress
-              float show = smoothstep(uProgress + 0.02, uProgress - 0.01, t);
+              float show = smoothstep(uProgress + 0.05, uProgress - 0.02, t);
               // Color gradient
               vec3 col = mix(uColor1, uColor2, t);
               // Energy pulse along the line
-              float pulse = 0.6 + 0.4 * sin(t * 40.0 - uTime * 5.0);
+              float pulse = 0.5 + 0.5 * sin(t * 80.0 - uTime * 10.0);
               float glow = show * pulse;
-              gl_FragColor = vec4(col, glow * 0.7);
+              gl_FragColor = vec4(col, glow * 0.9);
             }
           `}
           ref={(mat: THREE.ShaderMaterial | null) => {
@@ -439,83 +375,136 @@ const ProgressLine = () => {
         />
       </mesh>
 
-      {/* Progress indicator sphere */}
+      {/* Progress Data Packet */}
       <mesh ref={glowRef}>
-        <sphereGeometry args={[0.25, 16, 16]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.9} />
-      </mesh>
-      {/* Outer glow */}
-      <mesh ref={(m) => {
-        if (m && glowRef.current) {
-          // Sync with glow ref via parent
-        }
-      }}>
-        <sphereGeometry args={[0.5, 16, 16]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.15} />
+        <boxGeometry args={[0.4, 0.2, 0.4]} />
+        <meshBasicMaterial color="#ffffff" />
+        {/* Helper PointLight for tracing */}
+        <pointLight color="#ffffff" intensity={1} distance={5} />
       </mesh>
     </group>
   );
 };
 
-/* ─── Stage marker with unique color ─── */
+/* ─── Brutalist Stage Marker Abstract Buildings ─── */
 const StageMarker = ({ stage, index }: { stage: typeof STAGES[0]; index: number }) => {
   const groupRef = useRef<THREE.Group>(null);
   const glowRef = useRef<THREE.Mesh>(null);
-  const ringRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.position.y = -1 + Math.sin(state.clock.elapsedTime * 0.7 + index) * 0.3;
-    }
     if (glowRef.current) {
-      const s = 1 + Math.sin(state.clock.elapsedTime * 2 + index * 0.5) * 0.2;
+      const s = 1 + Math.sin(state.clock.elapsedTime * 2 + index * 0.5) * 0.05;
       glowRef.current.scale.set(s, s, s);
-    }
-    if (ringRef.current) {
-      ringRef.current.rotation.z = state.clock.elapsedTime * 0.5 + index;
-      ringRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.3;
     }
   });
 
   const side = index % 2 === 0 ? -6 : 6;
   const color = stage.color;
 
-  return (
-    <group ref={groupRef} position={[side, -1, stage.z]}>
-      {/* Inner glowing orb */}
-      <mesh ref={glowRef}>
-        <sphereGeometry args={[0.4, 16, 16]} />
-        <meshBasicMaterial color={color} transparent opacity={0.8} />
-      </mesh>
-      {/* Outer glow */}
-      <mesh>
-        <sphereGeometry args={[0.7, 16, 16]} />
-        <meshBasicMaterial color={color} transparent opacity={0.12} />
-      </mesh>
-      {/* Orbiting ring */}
-      <mesh ref={ringRef}>
-        <torusGeometry args={[0.9, 0.02, 8, 32]} />
-        <meshBasicMaterial color={color} transparent opacity={0.4} />
-      </mesh>
+  // Brutalist materials - Varied Grey theme
+  const shades = ["#32343b", "#41444d", "#515560", "#626775"];
+  const concreteMaterial = <meshStandardMaterial color={shades[2]} roughness={0.7} metalness={0.05} />;
+  const concreteDarkMaterial = <meshStandardMaterial color={shades[0]} roughness={0.8} metalness={0.05} />;
+  const glowMaterial = <meshBasicMaterial color={color} transparent opacity={0.6} />;
 
-      {/* Vertical beam */}
-      <mesh position={[0, -1.5, 0]}>
-        <cylinderGeometry args={[0.03, 0.03, 3, 8]} />
-        <meshBasicMaterial color={color} transparent opacity={0.25} />
+  const renderBuilding = () => {
+    switch (index) {
+      case 0: // Input - Monolithic gateway
+        return (
+          <group>
+            <mesh position={[-2, 3, 0]}><boxGeometry args={[1.5, 6, 1.5]} />{concreteMaterial}</mesh>
+            <mesh position={[2, 3, 0]}><boxGeometry args={[1.5, 6, 1.5]} />{concreteMaterial}</mesh>
+            <mesh position={[0, 6.5, 0]}><boxGeometry args={[6, 1, 1.5]} />{concreteDarkMaterial}</mesh>
+            <mesh position={[0, 3, 0]} ref={glowRef}><boxGeometry args={[1, 4, 1]} />{glowMaterial}</mesh>
+          </group>
+        );
+      case 1: // Tokenisering - Split block cluster
+        return (
+          <group>
+            {Array.from({ length: 12 }).map((_, i) => (
+              <mesh key={i} position={[(Math.random() - 0.5) * 4, Math.random() * 5 + 0.5, (Math.random() - 0.5) * 4]}>
+                <boxGeometry args={[0.8, 0.8 + Math.random() * 3, 0.8]} />
+                {i % 4 === 0 ? glowMaterial : <meshStandardMaterial color={shades[i % 4]} roughness={0.7} metalness={0.05} />}
+              </mesh>
+            ))}
+            <mesh position={[0, 2, 0]} ref={glowRef}><boxGeometry args={[1.5, 1.5, 1.5]} />{glowMaterial}</mesh>
+          </group>
+        );
+      case 2: // Embedding - Deep Grid monolith
+        return (
+          <group>
+            <mesh position={[0, 3.5, 0]}><boxGeometry args={[3.5, 7, 3.5]} />{concreteDarkMaterial}</mesh>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <mesh key={i} position={[0, i * 1.2 + 0.8, 0]}>
+                <boxGeometry args={[3.8, 0.25, 3.8]} />
+                <meshStandardMaterial color={shades[i % 2 === 0 ? 3 : 1]} roughness={0.7} metalness={0.05} />
+              </mesh>
+            ))}
+            <mesh position={[0, 3.5, 0]} ref={glowRef}><boxGeometry args={[3.6, 6, 3.6]} /><meshBasicMaterial color={color} transparent opacity={0.15} wireframe /></mesh>
+          </group>
+        );
+      case 3: // Attention - Interconnected spires
+        return (
+          <group>
+            <mesh position={[-2, 4, -2]}><cylinderGeometry args={[0.6, 1, 8, 4]} />{concreteMaterial}</mesh>
+            <mesh position={[2, 4, 2]}><cylinderGeometry args={[0.6, 1, 8, 4]} />{concreteMaterial}</mesh>
+            <mesh position={[-2, 4, 2]}><cylinderGeometry args={[0.6, 1, 8, 4]} />{concreteMaterial}</mesh>
+            <mesh position={[2, 4, -2]}><cylinderGeometry args={[0.6, 1, 8, 4]} />{concreteMaterial}</mesh>
+            <mesh position={[0, 6, 0]} ref={glowRef}><sphereGeometry args={[1, 16, 16]} />{glowMaterial}</mesh>
+            <mesh position={[0, 3, 0]} rotation={[0.6, 0.6, 0]}><cylinderGeometry args={[0.1, 0.1, 6]} />{glowMaterial}</mesh>
+            <mesh position={[0, 3, 0]} rotation={[-0.6, 0.6, 0]}><cylinderGeometry args={[0.1, 0.1, 6]} />{glowMaterial}</mesh>
+          </group>
+        );
+      case 4: // Generering - Stacked staggered tower
+        return (
+          <group>
+            {Array.from({ length: 8 }).map((_, i) => (
+              <mesh key={i} position={[Math.sin(i) * 0.8, i * 1.2 + 0.6, Math.cos(i) * 0.8]} rotation={[0, i * 0.3, 0]}>
+                <boxGeometry args={[3 - i * 0.2, 1.2, 3 - i * 0.2]} />
+                <meshStandardMaterial color={shades[i % 4]} roughness={0.7} metalness={0.05} />
+              </mesh>
+            ))}
+            <mesh position={[0, 9, 0]} ref={glowRef}><boxGeometry args={[1, 2.5, 1]} />{glowMaterial}</mesh>
+          </group>
+        );
+      default: // Output - Massive concrete core
+        return (
+          <group>
+            <mesh position={[0, 4, 0]}><boxGeometry args={[5, 8, 5]} />{concreteDarkMaterial}</mesh>
+            <mesh position={[0, 4, 0]}><boxGeometry args={[5.2, 2, 5.2]} />{concreteMaterial}</mesh>
+            <mesh position={[0, 4, 0]} ref={glowRef}><boxGeometry args={[2.5, 8.5, 2.5]} />{glowMaterial}</mesh>
+          </group>
+        );
+    }
+  };
+
+  return (
+    <group ref={groupRef} position={[side, -1.05, stage.z]}>
+      <group rotation={[0, Math.PI, 0]}>
+        {renderBuilding()}
+      </group>
+
+      {/* Base Platform */}
+      <mesh position={[0, -0.2, 0]}>
+        <boxGeometry args={[8, 0.5, 8]} />
+        <meshStandardMaterial color="#272930" roughness={1.0} />
       </mesh>
 
       {/* Point light for stage glow */}
-      <pointLight color={color} intensity={2} distance={12} />
+      <pointLight color={color} intensity={1} distance={20} position={[0, 4, 0]} />
 
-      {/* Title */}
-      <Text position={[0, 1.6, 0]} fontSize={0.55} color={color} anchorX="center" anchorY="middle" fontWeight="bold">
-        {stage.title}
-      </Text>
+      {/* Text perfectly facing camera via Billboard */}
+      <Billboard position={[0, 9.6, 0]}>
+        {/* Title */}
+        <Text position={[0, 0.4, 0]} fontSize={0.65} color="#ffffff" anchorX="center" anchorY="middle" fontWeight="bold">
+          {stage.title}
+        </Text>
 
-      {/* Description */}
-      <Text position={[0, 0.9, 0]} fontSize={0.25} color={color} anchorX="center" anchorY="middle" maxWidth={6} fillOpacity={0.7}>
-        {stage.desc}
-      </Text>
+        {/* Description */}
+        <Text position={[0, -0.3, 0]} fontSize={0.35} color="#a0a0a0" anchorX="center" anchorY="middle" maxWidth={7} fillOpacity={0.9}>
+          {stage.desc}
+        </Text>
+      </Billboard>
     </group>
   );
 };
@@ -664,43 +653,67 @@ const FloatingParticles = () => {
 };
 
 /* ─── Camera controller driven by scroll ─── */
-const CameraController = ({ journeyStarted, onJourneyComplete }: { journeyStarted: boolean; onJourneyComplete: () => void }) => {
+const CameraController = ({ journeyStarted, introDone, setIntroDone, onJourneyComplete }: { journeyStarted: boolean; introDone: boolean; setIntroDone: (b: boolean) => void; onJourneyComplete: () => void }) => {
   const scroll = useScroll();
   const { camera } = useThree();
   const completedRef = useRef(false);
+  const introTime = useRef(0);
 
-  useFrame(() => {
+  useFrame((state, delta) => {
     if (!journeyStarted) {
       camera.position.set(0, 0.3, 4.5);
       camera.lookAt(0, 0, 0);
       return;
     }
 
-    const t = scroll.offset;
-
-    if (t < 0.08) {
-      const p = t / 0.08;
+    // Automatic swoop animation over 1.5 seconds right after pressing Enter
+    if (!introDone) {
+      introTime.current += delta;
+      const p = Math.min(1, introTime.current / 1.5);
       const ease = p * p * (3 - 2 * p);
-      camera.position.set(
-        THREE.MathUtils.lerp(0, 12, ease),
-        THREE.MathUtils.lerp(0.3, 14, ease),
-        THREE.MathUtils.lerp(4.5, 12, ease)
-      );
+
+      const camX = THREE.MathUtils.lerp(0, 25, ease);
+      const camY = THREE.MathUtils.lerp(0.3, 20, ease);
+      // Swing Z all the way to negative offset to look backwards up the path
+      const camZ = THREE.MathUtils.lerp(4.5, -35, ease);
+
+      camera.position.set(camX, camY, camZ);
+
       const lookZ = THREE.MathUtils.lerp(0, -10, ease);
       camera.lookAt(0, 0, lookZ);
+
+      if (p >= 1) {
+        setIntroDone(true);
+      }
+      return;
+    }
+
+    const t = scroll.offset;
+
+    // 0 to 0.90: Steady Isometric scroll forward
+    if (t < 0.90) {
+      const landscapeT = t / 0.90;
+      const z = THREE.MathUtils.lerp(-10, -170, landscapeT);
+      // Offset -25 puts camera AHEAD of the target, looking backwards (Bottom Right path)
+      camera.position.set(25, 20, z - 25);
+      camera.lookAt(0, 0, z);
+
+      // 0.90 to 1.0: Transition back to center and dive out
     } else {
-      const landscapeT = (t - 0.08) / 0.92;
-      const z = THREE.MathUtils.lerp(0, -185, landscapeT);
+      const p = (t - 0.90) / 0.10;
+      const ease = p * p * (3 - 2 * p);
 
-      // Isometric-style elevated offset view
-      const isoX = 12 + Math.sin(landscapeT * Math.PI * 2) * 3;
-      const isoY = 14 + Math.sin(landscapeT * Math.PI * 1.5) * 2;
+      const z = THREE.MathUtils.lerp(-170, -195, ease);
 
-      camera.position.set(isoX, isoY, z + 12);
-      camera.lookAt(0, -2, z - 10);
+      // Pull back down and forward to look at the front of the End CRT screen
+      const camX = THREE.MathUtils.lerp(25, 0, ease);
+      const camY = THREE.MathUtils.lerp(20, 0.3, ease);
+      const camZ = THREE.MathUtils.lerp(z - 25, z + 4.5, ease);
 
-      // Trigger journey complete when near the end (deferred to avoid unmounting during useFrame)
-      if (landscapeT > 0.95 && !completedRef.current) {
+      camera.position.set(camX, camY, camZ);
+      camera.lookAt(0, 0.2, z);
+
+      if (t > 0.98 && !completedRef.current) {
         completedRef.current = true;
         setTimeout(() => onJourneyComplete(), 0);
       }
@@ -710,18 +723,22 @@ const CameraController = ({ journeyStarted, onJourneyComplete }: { journeyStarte
   return null;
 };
 
-/* ─── Tunnel ring at transition point ─── */
+/* ─── Removed Tunnel Rings per flat design ─── */
 const TunnelRings = () => {
-  return (
-    <group>
-      {Array.from({ length: 20 }).map((_, i) => (
-        <mesh key={i} position={[0, 0, -i * 3 - 5]} rotation={[0, 0, i * 0.1]}>
-          <torusGeometry args={[3 + Math.sin(i * 0.5) * 0.5, 0.02, 8, 32]} />
-          <meshBasicMaterial color="#0aff0a" transparent opacity={0.15 - i * 0.005} />
-        </mesh>
-      ))}
-    </group>
-  );
+  return null;
+};
+
+/* ─── Reverse Camera animation on end screen ─── */
+const EndCameraController = () => {
+  const { camera } = useThree();
+  useFrame((state) => {
+    // Zoom out over 1.5 seconds to simulate reversing out of the screen
+    const t = Math.min(1, state.clock.elapsedTime / 1.5);
+    const ease = 1 - Math.pow(1 - t, 3); // cubic ease out
+    camera.position.set(0, 0.3, THREE.MathUtils.lerp(-3.0, 4.5, ease));
+    camera.lookAt(0, 0.2, 0);
+  });
+  return null;
 };
 
 /* ─── End CRT Monitor showing AI response ─── */
@@ -771,32 +788,32 @@ const EndScreenContent = ({ question, response, isLoading, error }: { question: 
 
 
 /* ─── Complete scene ─── */
-const FullScene = ({ inputText, journeyStarted, onJourneyComplete }: { inputText: string; journeyStarted: boolean; onJourneyComplete: () => void }) => {
+const FullScene = ({ inputText, journeyStarted, introDone, setIntroDone, onJourneyComplete }: { inputText: string; journeyStarted: boolean; introDone: boolean; setIntroDone: (b: boolean) => void; onJourneyComplete: () => void }) => {
   return (
     <>
-      <color attach="background" args={["#050a05"]} />
-      <fog attach="fog" args={["#050a05", 10, 50]} />
+      <color attach="background" args={["#1c1d21"]} />
+      <fog attach="fog" args={["#1c1d21", 40, 150]} />
 
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[3, 4, 5]} intensity={0.6} color="#ffffff" />
-      <pointLight position={[0, 0, 3]} intensity={0.8} color="#0aff0a" distance={8} />
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[10, 15, 10]} intensity={1.5} color="#ffffff" castShadow />
+      <pointLight position={[0, 5, 0]} intensity={1.0} color="#ffffff" distance={20} />
 
-      <CameraController journeyStarted={journeyStarted} onJourneyComplete={onJourneyComplete} />
+      <CameraController journeyStarted={journeyStarted} introDone={introDone} setIntroDone={setIntroDone} onJourneyComplete={onJourneyComplete} />
 
       <CRTMonitor inputText={inputText} visible={!journeyStarted} />
+
       {!journeyStarted && <FloatingParticles />}
 
       {!journeyStarted && (
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.6, 0]}>
-          <planeGeometry args={[20, 20]} />
-          <meshStandardMaterial color="#050a05" roughness={0.3} metalness={0.8} />
+          <planeGeometry args={[40, 40]} />
+          <meshStandardMaterial color="#1c1d21" roughness={1.0} metalness={0.0} />
         </mesh>
       )}
 
       {journeyStarted && (
         <>
-          <TunnelRings />
-          <WireframeTerrain />
+          <IsometricTerrain />
           <GridFloor />
           <DataStream />
           <ProgressLine />
@@ -805,14 +822,13 @@ const FullScene = ({ inputText, journeyStarted, onJourneyComplete }: { inputText
             <StageMarker key={i} stage={stage} index={i} />
           ))}
 
-          {/* Distant glow pillars */}
+          {/* Subtle Distant block pillars instead of cylinders */}
           {Array.from({ length: 15 }).map((_, i) => (
-            <group key={`pillar-${i}`} position={[(i % 2 === 0 ? -1 : 1) * (14 + Math.random() * 5), -3, -i * 14 - 10]}>
+            <group key={`pillar-${i}`} position={[(i % 2 === 0 ? -1 : 1) * (18 + Math.random() * 8), -1, -i * 14 - 10]}>
               <mesh>
-                <cylinderGeometry args={[0.05, 0.05, 10 + Math.random() * 5, 8]} />
-                <meshBasicMaterial color={STAGES[i % STAGES.length].color} transparent opacity={0.1} />
+                <boxGeometry args={[2 + Math.random() * 2, 8 + Math.random() * 8, 2 + Math.random() * 2]} />
+                <meshStandardMaterial color="#32343b" transparent opacity={0.6} roughness={1.0} />
               </mesh>
-              <pointLight position={[0, 4, 0]} intensity={0.4} color={STAGES[i % STAGES.length].color} distance={8} />
             </group>
           ))}
         </>
@@ -827,6 +843,7 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 const CRTMonitorScene = () => {
   const [inputText, setInputText] = useState("");
   const [journeyStarted, setJourneyStarted] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
   const [journeyComplete, setJourneyComplete] = useState(false);
   const [aiResponse, setAiResponse] = useState("");
   const [isLoadingAI, setIsLoadingAI] = useState(false);
@@ -984,10 +1001,13 @@ const CRTMonitorScene = () => {
             gl={{ antialias: true, alpha: false }}
             dpr={[1, 2]}
           >
-            <color attach="background" args={["#050a05"]} />
-            <ambientLight intensity={0.4} />
-            <directionalLight position={[3, 4, 5]} intensity={0.6} color="#ffffff" />
-            <pointLight position={[0, 0, 3]} intensity={0.8} color="#0aff0a" distance={8} />
+            <color attach="background" args={["#1c1d21"]} />
+            <fog attach="fog" args={["#1c1d21", 40, 150]} />
+            <ambientLight intensity={0.8} />
+            <directionalLight position={[10, 15, 10]} intensity={1.5} color="#ffffff" />
+            <pointLight position={[0, 5, 0]} intensity={1.0} color="#ffffff" distance={20} />
+
+            <EndCameraController />
 
             {/* Same CRT monitor as start, but showing the answer */}
             <group position={[0, 0.2, 0]}>
@@ -1025,18 +1045,16 @@ const CRTMonitorScene = () => {
 
             <FloatingParticles />
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.6, 0]}>
-              <planeGeometry args={[20, 20]} />
-              <meshStandardMaterial color="#050a05" roughness={0.3} metalness={0.8} />
+              <planeGeometry args={[40, 40]} />
+              <meshStandardMaterial color="#1c1d21" roughness={1.0} metalness={0.0} />
             </mesh>
           </Canvas>
 
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
             <p className="font-mono text-xs text-[#0aff0a]/50 text-center">
-              Trykk på AI-logoen for å starte på nytt
+              Trykk på skjermen for å starte på nytt
             </p>
           </div>
-
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#050a05_100%)]" />
         </div>
       </div>
     );
@@ -1050,8 +1068,8 @@ const CRTMonitorScene = () => {
           gl={{ antialias: true, alpha: false }}
           dpr={[1, 2]}
         >
-          <ScrollControls pages={journeyStarted ? 5 : 0} damping={0.25}>
-            <FullScene inputText={inputText} journeyStarted={journeyStarted} onJourneyComplete={handleJourneyComplete} />
+          <ScrollControls pages={journeyStarted && introDone ? 5 : 0} damping={0.25}>
+            <FullScene inputText={inputText} journeyStarted={journeyStarted} introDone={introDone} setIntroDone={setIntroDone} onJourneyComplete={handleJourneyComplete} />
           </ScrollControls>
         </Canvas>
 
@@ -1063,7 +1081,7 @@ const CRTMonitorScene = () => {
           </div>
         )}
 
-        {journeyStarted && (
+        {journeyStarted && introDone && (
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce">
             <div className="flex flex-col items-center gap-1">
               <p className="font-mono text-xs text-[#0aff0a]/50">Scroll for å utforske</p>
@@ -1074,7 +1092,6 @@ const CRTMonitorScene = () => {
           </div>
         )}
 
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#050a05_100%)]" />
       </div>
     </div>
   );
