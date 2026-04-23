@@ -356,7 +356,7 @@ const Guidelines = () => {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className={cn(
-                "relative overflow-hidden rounded-2xl border bg-card dark:bg-zinc-900 p-8 shadow-sm transition-colors duration-500",
+                "relative overflow-hidden rounded-2xl border bg-card p-8 shadow-sm transition-colors duration-500",
                 rightCardInView ? "border-[#7c3aed]/50 dark:border-[#caf300]/50" : "border-border"
               )}
             >
@@ -373,7 +373,7 @@ const Guidelines = () => {
               <p className="mb-8 text-sm leading-relaxed font-medium text-muted-foreground dark:text-zinc-400 relative z-10">
                 I kildelisten/referanselisten skal du oppgi skaper, år, modellens navn, versjon, format og direkte url til modellen.
               </p>
-              <div className="relative rounded-xl bg-muted/30 dark:bg-zinc-950 p-6 border border-border/50 dark:border-zinc-800 shadow-sm dark:shadow-[inset_0_2px_20px_rgba(0,0,0,0.5)] backdrop-blur-sm dark:backdrop-blur-none z-10">
+              <div className="relative rounded-xl bg-muted/30 p-6 border border-border/50 backdrop-blur-sm z-10">
                 <div className={cn(
                   "absolute left-0 top-0 bottom-0 w-1 bg-[#7c3aed] dark:bg-[#caf300] rounded-l-xl transition-opacity duration-500",
                   rightCardInView ? "opacity-100" : "opacity-50"
@@ -381,13 +381,13 @@ const Guidelines = () => {
                 <div className="space-y-6 relative pl-2">
                   <div>
                     <p className="text-[10px] font-mono font-bold text-muted-foreground dark:text-zinc-500 uppercase tracking-wider mb-2">Generelt Format</p>
-                    <p className="font-mono text-sm text-foreground dark:text-zinc-300 bg-background dark:bg-black/50 rounded-lg p-3 border border-border/50 dark:border-zinc-800/80 shadow-sm dark:shadow-none">
+                    <p className="font-mono text-sm text-foreground bg-background rounded-lg p-3 border border-border/50 shadow-sm">
                       Skaper. (År). <i>Modellens navn</i> (Versjon) [Stor språkmodell]. URL
                     </p>
                   </div>
                   <div>
                     <p className="text-[10px] font-mono font-bold text-[#7c3aed] dark:text-[#caf300] uppercase tracking-wider mb-2">Eksempler</p>
-                    <div className="space-y-4 font-mono text-xs md:text-sm text-foreground dark:text-zinc-300 bg-background dark:bg-black/50 rounded-lg p-4 border border-border/50 dark:border-zinc-800/80 shadow-sm dark:shadow-none leading-relaxed">
+                    <div className="space-y-4 font-mono text-xs md:text-sm text-foreground bg-background rounded-lg p-4 border border-border/50 shadow-sm leading-relaxed">
                       <div>
                         OpenAI. (2024). <i>ChatGPT</i> (14. mars-versjon) [Stor språkmodell].
                         <a href="#" className="text-[#7c3aed]/70 dark:text-[#caf300]/70 hover:text-[#7c3aed] dark:hover:text-[#caf300] transition-colors block mt-1 break-all">https://chat.openai.com/</a>
