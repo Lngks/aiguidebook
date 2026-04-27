@@ -81,6 +81,10 @@ const risks = [
     title: "Utdatert info",
     description: "Mange modeller har en kunnskapsstopp som gjør dem upålitelige for dagsaktuelle saker.",
   },
+  {
+    title: "Falske kilder",
+    description: "Verktøyet kan dikte opp referanser og studier som ser helt ekte ut, men som faktisk ikke eksisterer.",
+  },
 ];
 
 const checklistItems = [
@@ -223,7 +227,7 @@ const Guidelines = () => {
             <div className="absolute -right-8 -top-8 opacity-5">
               <AlertTriangle className="h-40 w-40 text-destructive" />
             </div>
-            <h2 className="mb-8 text-3xl font-bold tracking-tight text-foreground">Kjenn farene</h2>
+            <h2 className="mb-10 text-3xl font-bold tracking-tight text-foreground">Kjenn farene</h2>
             <ul className="relative z-10 space-y-6">
               {risks.map((risk, i) => (
                 <li key={risk.title} className="flex gap-4">

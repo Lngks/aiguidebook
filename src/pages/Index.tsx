@@ -177,7 +177,7 @@ const Index = () => {
                 <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.4)_0%,transparent_80%)] blur-2xl pointer-events-none scale-150" />
 
                 <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-stitch-primary dark:text-tertiary">
-                  AIGuidebook
+
                 </p>
                 <h1 className="mb-8 text-5xl font-bold leading-[0.9] tracking-tighter md:text-7xl">
                   Mestre <br /> <span className="italic text-stitch-primary dark:text-tertiary"><ScrambleText text="fremtidens" /></span><br /> studieteknikk.
@@ -351,29 +351,29 @@ const Index = () => {
                       <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
                         Har du spørsmål vedrørende AI-bruk, retningslinjer eller verktøyene vi nevner? Vi vil gjerne høre fra deg.
                       </p>
-                      
+
                       <div className="space-y-6">
-                        <div className="flex items-start gap-4">
-                          <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-tertiary/10">
-                            <MapPin className="h-4 w-4 text-tertiary" />
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center justify-center">
+                            <MapPin className="h-5 w-5 text-tertiary" />
                           </div>
                           <div className="text-sm">
                             <p className="font-bold text-foreground">Hovedkontor</p>
                             <p className="text-muted-foreground">Raveien 215, 3184 Borre</p>
                           </div>
                         </div>
-                        <div className="flex items-start gap-4">
-                          <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-tertiary/10">
-                            <Phone className="h-4 w-4 text-tertiary" />
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center justify-center">
+                            <Phone className="h-5 w-5 text-tertiary" />
                           </div>
                           <div className="text-sm">
                             <p className="font-bold text-foreground">Telefon</p>
                             <p className="text-muted-foreground">31 00 80 00</p>
                           </div>
                         </div>
-                        <div className="flex items-start gap-4">
-                          <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-tertiary/10">
-                            <Mail className="h-4 w-4 text-tertiary" />
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center justify-center">
+                            <Mail className="h-5 w-5 text-tertiary" />
                           </div>
                           <div className="text-sm">
                             <p className="font-bold text-foreground">E-post</p>
@@ -383,7 +383,7 @@ const Index = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Right Side: Form */}
                   <div className="p-8 md:w-[55%] bg-card text-left">
                     <h4 className="font-bold text-xl mb-6 text-foreground">Skriv en melding</h4>

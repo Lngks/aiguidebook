@@ -167,7 +167,7 @@ const ExpandableCard = ({ tool, onExpand, index }: { tool: any; onExpand: (id: s
       transition={{ duration: 0.5, delay: index * 0.1 }}
       onClick={() => onExpand(tool.id)}
       className={cn(
-        "cursor-pointer group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-6 shadow-sm transition-all hover:bg-muted border border-border/50 hover:border-border hover:shadow-lg",
+        "cursor-pointer group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-6 shadow-sm transition-all hover:bg-muted dark:hover:bg-white/5 border border-border/50 hover:border-border hover:shadow-lg",
         tool.colSpan
       )}
     >
@@ -227,58 +227,60 @@ const Tools = () => {
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                 className="relative w-full max-w-2xl bg-card rounded-2xl p-8 border border-border shadow-2xl overflow-hidden"
+                style={{
+                  borderTopWidth: '4px',
+                  borderTopColor: selectedTool?.gradientFrom || 'transparent'
+                }}
               >
                 <button
                   onClick={() => setExpandedId(null)}
-                  className="absolute top-4 right-4 p-2 rounded-full hover:bg-muted transition-colors"
+                  className="absolute top-6 right-6 p-2 rounded-full hover:bg-muted transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
 
-                <div className="flex flex-col md:flex-row gap-8 items-start">
-                  <div
-                    className={cn("inline-flex rounded-xl p-6", selectedTool?.color)}
-                  >
-                    {selectedTool?.image ? (
-                      <img
-                        src={selectedTool.image}
-                        alt={selectedTool.name}
-                        className="h-12 w-12 object-contain"
-                      />
-                    ) : (
-                      selectedTool && <selectedTool.icon className={cn("h-12 w-12", selectedTool.iconColor)} />
-                    )}
+                <div className="flex flex-col mt-2">
+                  {/* Header */}
+                  <div className="flex items-center gap-5 pb-6 border-b border-border/40">
+                    <div className="inline-flex shrink-0">
+                      {selectedTool?.image ? (
+                        <img
+                          src={selectedTool.image}
+                          alt={selectedTool.name}
+                          className="h-14 w-14 object-contain"
+                        />
+                      ) : (
+                        selectedTool && <selectedTool.icon className={cn("h-14 w-14", selectedTool.iconColor)} />
+                      )}
+                    </div>
+                    <div className="pr-8 text-left">
+                      <h3 className="text-3xl font-bold text-foreground">
+                        {selectedTool?.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-1 max-w-lg">
+                        {selectedTool?.description}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex-1">
-                    <h3
-                      className="text-3xl font-bold text-foreground mb-4"
-                    >
-                      {selectedTool?.name}
-                    </h3>
-                    <p
-                      className="text-muted-foreground mb-6"
-                    >
-                      {selectedTool?.description}
+                  {/* Body */}
+                  <div className="py-6 space-y-3 text-left">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-foreground">Om verktøyet</h4>
+                    <p className="text-muted-foreground leading-relaxed text-sm max-w-xl">
+                      {selectedTool?.longDescription}
                     </p>
+                  </div>
 
-                    <div className="space-y-4">
-                      <h4 className="font-semibold text-foreground">Om verktøyet</h4>
-                      <p className="text-muted-foreground leading-relaxed">
-                        {selectedTool?.longDescription}
-                      </p>
-
-                      <div className="pt-6">
-                        <a
-                          href={selectedTool?.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={cn("inline-flex items-center gap-2 text-sm font-mono font-bold tracking-widest uppercase transition-opacity hover:opacity-80", selectedTool?.actionColor)}
-                        >
-                          ÅPNE VERKTØY <ArrowRight className="h-4 w-4" />
-                        </a>
-                      </div>
-                    </div>
+                  {/* Footer / Action */}
+                  <div className="pt-2 text-left">
+                    <a
+                      href={selectedTool?.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn("inline-flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase transition-all hover:opacity-80 group", selectedTool?.iconColor)}
+                    >
+                      ÅPNE VERKTØY <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                    </a>
                   </div>
                 </div>
               </motion.div>
@@ -330,7 +332,7 @@ const Tools = () => {
               href={tool.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-8 shadow-sm transition-all hover:bg-muted border border-border/50"
+              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-8 shadow-sm transition-all hover:bg-muted dark:hover:bg-white/5 border border-border/50"
             >
               <div>
                 <div className="mb-10 h-10 w-10 flex-shrink-0">
@@ -405,14 +407,7 @@ const Tools = () => {
         </div>
       </section>
 
-      {/* Trenger du mer hjelp */}
-      <section className="container mx-auto px-4 pb-10 text-center">
-        <h3 className="text-2xl font-bold text-foreground">Trenger du mer hjelp?</h3>
-        <p className="mt-2 text-muted-foreground">Les våre retningslinjer eller kontakt universitetet ditt.</p>
-        <Link to="/guidelines" className="mt-4 inline-flex rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
-          Kontakt oss
-        </Link>
-      </section>
+
     </>
   );
 };
