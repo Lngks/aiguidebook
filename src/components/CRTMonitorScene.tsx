@@ -31,9 +31,12 @@ function getStageColor(z: number): THREE.Color {
 /* ─── Glitchy CRT shader with static/noise ─── */
 const ScanlineMaterial = () => {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const uniforms = useMemo(() => ({
-    uTime: { value: 0 },
-  }), []);
+  const uniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+    }),
+    [],
+  );
 
   useFrame((_, delta) => {
     if (materialRef.current) materialRef.current.uniforms.uTime.value += delta;
@@ -140,19 +143,24 @@ const ScreenContent = ({ inputText }: { inputText: string }) => {
   return (
     <group ref={groupRef} position={[0, 0, 0.01]}>
       {/* Logo rendered via Html overlay with CRT glitch effects */}
-      <Html position={[0, 0.45, 0]} center transform distanceFactor={2.2}
-        style={{ pointerEvents: 'none' }}
-      >
-        <div className="crt-logo-wrap" style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
-        }}>
+      <Html position={[0, 0.45, 0]} center transform distanceFactor={2.2} style={{ pointerEvents: "none" }}>
+        <div
+          className="crt-logo-wrap"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "4px",
+          }}
+        >
           <img
             src="/crt-logo.svg?v=2"
             alt="AI Guidebook"
             style={{
-              width: '200px', height: 'auto',
-              filter: 'drop-shadow(0 0 8px #0aff0a)',
-              animation: 'crt-glitch 3s infinite',
+              width: "200px",
+              height: "auto",
+              filter: "drop-shadow(0 0 8px #0aff0a)",
+              animation: "crt-glitch 3s infinite",
             }}
           />
         </div>
@@ -201,7 +209,15 @@ const CRTMonitor = ({ inputText, visible }: { inputText: string; visible: boolea
       </mesh>
       <mesh position={[0, 0.05, 0.465]}>
         <planeGeometry args={[1.9, 1.45]} />
-        <meshPhysicalMaterial color="#000000" transparent opacity={0.08} roughness={0.05} metalness={0.5} clearcoat={1} clearcoatRoughness={0.1} />
+        <meshPhysicalMaterial
+          color="#000000"
+          transparent
+          opacity={0.08}
+          roughness={0.05}
+          metalness={0.5}
+          clearcoat={1}
+          clearcoatRoughness={0.1}
+        />
       </mesh>
       <group position={[0, 0.05, 0.47]}>
         <ScreenContent inputText={inputText} />
@@ -245,7 +261,7 @@ const IsometricTerrain = () => {
         <shaderMaterial
           transparent
           uniforms={{
-            uColor: { value: new THREE.Color("#363942") }
+            uColor: { value: new THREE.Color("#363942") },
           }}
           vertexShader={`
             varying vec2 vUv;
@@ -387,7 +403,7 @@ const ProgressLine = () => {
 };
 
 /* ─── Brutalist Stage Marker Abstract Buildings ─── */
-const StageMarker = ({ stage, index }: { stage: typeof STAGES[0]; index: number }) => {
+const StageMarker = ({ stage, index }: { stage: (typeof STAGES)[0]; index: number }) => {
   const groupRef = useRef<THREE.Group>(null);
   const glowRef = useRef<THREE.Mesh>(null);
 
@@ -412,10 +428,22 @@ const StageMarker = ({ stage, index }: { stage: typeof STAGES[0]; index: number 
       case 0: // Input - Monolithic gateway
         return (
           <group>
-            <mesh position={[-2, 3, 0]}><boxGeometry args={[1.5, 6, 1.5]} />{concreteMaterial}</mesh>
-            <mesh position={[2, 3, 0]}><boxGeometry args={[1.5, 6, 1.5]} />{concreteMaterial}</mesh>
-            <mesh position={[0, 6.5, 0]}><boxGeometry args={[6, 1, 1.5]} />{concreteDarkMaterial}</mesh>
-            <mesh position={[0, 3, 0]} ref={glowRef}><boxGeometry args={[1, 4, 1]} />{glowMaterial}</mesh>
+            <mesh position={[-2, 3, 0]}>
+              <boxGeometry args={[1.5, 6, 1.5]} />
+              {concreteMaterial}
+            </mesh>
+            <mesh position={[2, 3, 0]}>
+              <boxGeometry args={[1.5, 6, 1.5]} />
+              {concreteMaterial}
+            </mesh>
+            <mesh position={[0, 6.5, 0]}>
+              <boxGeometry args={[6, 1, 1.5]} />
+              {concreteDarkMaterial}
+            </mesh>
+            <mesh position={[0, 3, 0]} ref={glowRef}>
+              <boxGeometry args={[1, 4, 1]} />
+              {glowMaterial}
+            </mesh>
           </group>
         );
       case 1: // Tokenisering - Split block cluster
@@ -424,35 +452,69 @@ const StageMarker = ({ stage, index }: { stage: typeof STAGES[0]; index: number 
             {Array.from({ length: 12 }).map((_, i) => (
               <mesh key={i} position={[(Math.random() - 0.5) * 4, Math.random() * 5 + 0.5, (Math.random() - 0.5) * 4]}>
                 <boxGeometry args={[0.8, 0.8 + Math.random() * 3, 0.8]} />
-                {i % 4 === 0 ? glowMaterial : <meshStandardMaterial color={shades[i % 4]} roughness={0.7} metalness={0.05} />}
+                {i % 4 === 0 ? (
+                  glowMaterial
+                ) : (
+                  <meshStandardMaterial color={shades[i % 4]} roughness={0.7} metalness={0.05} />
+                )}
               </mesh>
             ))}
-            <mesh position={[0, 2, 0]} ref={glowRef}><boxGeometry args={[1.5, 1.5, 1.5]} />{glowMaterial}</mesh>
+            <mesh position={[0, 2, 0]} ref={glowRef}>
+              <boxGeometry args={[1.5, 1.5, 1.5]} />
+              {glowMaterial}
+            </mesh>
           </group>
         );
       case 2: // Embedding - Deep Grid monolith
         return (
           <group>
-            <mesh position={[0, 3.5, 0]}><boxGeometry args={[3.5, 7, 3.5]} />{concreteDarkMaterial}</mesh>
+            <mesh position={[0, 3.5, 0]}>
+              <boxGeometry args={[3.5, 7, 3.5]} />
+              {concreteDarkMaterial}
+            </mesh>
             {Array.from({ length: 6 }).map((_, i) => (
               <mesh key={i} position={[0, i * 1.2 + 0.8, 0]}>
                 <boxGeometry args={[3.8, 0.25, 3.8]} />
                 <meshStandardMaterial color={shades[i % 2 === 0 ? 3 : 1]} roughness={0.7} metalness={0.05} />
               </mesh>
             ))}
-            <mesh position={[0, 3.5, 0]} ref={glowRef}><boxGeometry args={[3.6, 6, 3.6]} /><meshBasicMaterial color={color} transparent opacity={0.15} wireframe /></mesh>
+            <mesh position={[0, 3.5, 0]} ref={glowRef}>
+              <boxGeometry args={[3.6, 6, 3.6]} />
+              <meshBasicMaterial color={color} transparent opacity={0.15} wireframe />
+            </mesh>
           </group>
         );
       case 3: // Attention - Interconnected spires
         return (
           <group>
-            <mesh position={[-2, 4, -2]}><cylinderGeometry args={[0.6, 1, 8, 4]} />{concreteMaterial}</mesh>
-            <mesh position={[2, 4, 2]}><cylinderGeometry args={[0.6, 1, 8, 4]} />{concreteMaterial}</mesh>
-            <mesh position={[-2, 4, 2]}><cylinderGeometry args={[0.6, 1, 8, 4]} />{concreteMaterial}</mesh>
-            <mesh position={[2, 4, -2]}><cylinderGeometry args={[0.6, 1, 8, 4]} />{concreteMaterial}</mesh>
-            <mesh position={[0, 6, 0]} ref={glowRef}><sphereGeometry args={[1, 16, 16]} />{glowMaterial}</mesh>
-            <mesh position={[0, 3, 0]} rotation={[0.6, 0.6, 0]}><cylinderGeometry args={[0.1, 0.1, 6]} />{glowMaterial}</mesh>
-            <mesh position={[0, 3, 0]} rotation={[-0.6, 0.6, 0]}><cylinderGeometry args={[0.1, 0.1, 6]} />{glowMaterial}</mesh>
+            <mesh position={[-2, 4, -2]}>
+              <cylinderGeometry args={[0.6, 1, 8, 4]} />
+              {concreteMaterial}
+            </mesh>
+            <mesh position={[2, 4, 2]}>
+              <cylinderGeometry args={[0.6, 1, 8, 4]} />
+              {concreteMaterial}
+            </mesh>
+            <mesh position={[-2, 4, 2]}>
+              <cylinderGeometry args={[0.6, 1, 8, 4]} />
+              {concreteMaterial}
+            </mesh>
+            <mesh position={[2, 4, -2]}>
+              <cylinderGeometry args={[0.6, 1, 8, 4]} />
+              {concreteMaterial}
+            </mesh>
+            <mesh position={[0, 6, 0]} ref={glowRef}>
+              <sphereGeometry args={[1, 16, 16]} />
+              {glowMaterial}
+            </mesh>
+            <mesh position={[0, 3, 0]} rotation={[0.6, 0.6, 0]}>
+              <cylinderGeometry args={[0.1, 0.1, 6]} />
+              {glowMaterial}
+            </mesh>
+            <mesh position={[0, 3, 0]} rotation={[-0.6, 0.6, 0]}>
+              <cylinderGeometry args={[0.1, 0.1, 6]} />
+              {glowMaterial}
+            </mesh>
           </group>
         );
       case 4: // Generering - Stacked staggered tower
@@ -464,15 +526,27 @@ const StageMarker = ({ stage, index }: { stage: typeof STAGES[0]; index: number 
                 <meshStandardMaterial color={shades[i % 4]} roughness={0.7} metalness={0.05} />
               </mesh>
             ))}
-            <mesh position={[0, 9, 0]} ref={glowRef}><boxGeometry args={[1, 2.5, 1]} />{glowMaterial}</mesh>
+            <mesh position={[0, 9, 0]} ref={glowRef}>
+              <boxGeometry args={[1, 2.5, 1]} />
+              {glowMaterial}
+            </mesh>
           </group>
         );
       default: // Output - Massive concrete core
         return (
           <group>
-            <mesh position={[0, 4, 0]}><boxGeometry args={[5, 8, 5]} />{concreteDarkMaterial}</mesh>
-            <mesh position={[0, 4, 0]}><boxGeometry args={[5.2, 2, 5.2]} />{concreteMaterial}</mesh>
-            <mesh position={[0, 4, 0]} ref={glowRef}><boxGeometry args={[2.5, 8.5, 2.5]} />{glowMaterial}</mesh>
+            <mesh position={[0, 4, 0]}>
+              <boxGeometry args={[5, 8, 5]} />
+              {concreteDarkMaterial}
+            </mesh>
+            <mesh position={[0, 4, 0]}>
+              <boxGeometry args={[5.2, 2, 5.2]} />
+              {concreteMaterial}
+            </mesh>
+            <mesh position={[0, 4, 0]} ref={glowRef}>
+              <boxGeometry args={[2.5, 8.5, 2.5]} />
+              {glowMaterial}
+            </mesh>
           </group>
         );
     }
@@ -480,9 +554,7 @@ const StageMarker = ({ stage, index }: { stage: typeof STAGES[0]; index: number 
 
   return (
     <group ref={groupRef} position={[side, -1.05, stage.z]}>
-      <group rotation={[0, Math.PI, 0]}>
-        {renderBuilding()}
-      </group>
+      <group rotation={[0, Math.PI, 0]}>{renderBuilding()}</group>
 
       {/* Base Platform */}
       <mesh position={[0, -0.2, 0]}>
@@ -496,12 +568,27 @@ const StageMarker = ({ stage, index }: { stage: typeof STAGES[0]; index: number 
       {/* Text perfectly facing camera via Billboard */}
       <Billboard position={[0, 9.6, 0]}>
         {/* Title */}
-        <Text position={[0, 0.4, 0]} fontSize={0.65} color="#ffffff" anchorX="center" anchorY="middle" fontWeight="bold">
+        <Text
+          position={[0, 0.4, 0]}
+          fontSize={0.65}
+          color="#ffffff"
+          anchorX="center"
+          anchorY="middle"
+          fontWeight="bold"
+        >
           {stage.title}
         </Text>
 
         {/* Description */}
-        <Text position={[0, -0.3, 0]} fontSize={0.35} color="#a0a0a0" anchorX="center" anchorY="middle" maxWidth={7} fillOpacity={0.9}>
+        <Text
+          position={[0, -0.3, 0]}
+          fontSize={0.35}
+          color="#a0a0a0"
+          anchorX="center"
+          anchorY="middle"
+          maxWidth={7}
+          fillOpacity={0.9}
+        >
           {stage.desc}
         </Text>
       </Billboard>
@@ -557,10 +644,13 @@ const DataStream = () => {
     }
   });
 
-  const uniforms = useMemo(() => ({
-    uTime: { value: 0 },
-    uCameraZ: { value: 0 },
-  }), []);
+  const uniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uCameraZ: { value: 0 },
+    }),
+    [],
+  );
 
   return (
     <points ref={pointsRef}>
@@ -653,7 +743,17 @@ const FloatingParticles = () => {
 };
 
 /* ─── Camera controller driven by scroll ─── */
-const CameraController = ({ journeyStarted, introDone, setIntroDone, onJourneyComplete }: { journeyStarted: boolean; introDone: boolean; setIntroDone: (b: boolean) => void; onJourneyComplete: () => void }) => {
+const CameraController = ({
+  journeyStarted,
+  introDone,
+  setIntroDone,
+  onJourneyComplete,
+}: {
+  journeyStarted: boolean;
+  introDone: boolean;
+  setIntroDone: (b: boolean) => void;
+  onJourneyComplete: () => void;
+}) => {
   const scroll = useScroll();
   const { camera } = useThree();
   const completedRef = useRef(false);
@@ -691,8 +791,8 @@ const CameraController = ({ journeyStarted, introDone, setIntroDone, onJourneyCo
     const t = scroll.offset;
 
     // 0 to 0.90: Steady Isometric scroll forward
-    if (t < 0.90) {
-      const landscapeT = t / 0.90;
+    if (t < 0.9) {
+      const landscapeT = t / 0.9;
       const z = THREE.MathUtils.lerp(-10, -170, landscapeT);
       // Offset -25 puts camera AHEAD of the target, looking backwards (Bottom Right path)
       camera.position.set(25, 20, z - 25);
@@ -700,7 +800,7 @@ const CameraController = ({ journeyStarted, introDone, setIntroDone, onJourneyCo
 
       // 0.90 to 1.0: Transition back to center and dive out
     } else {
-      const p = (t - 0.90) / 0.10;
+      const p = (t - 0.9) / 0.1;
       const ease = p * p * (3 - 2 * p);
 
       const z = THREE.MathUtils.lerp(-170, -195, ease);
@@ -742,17 +842,23 @@ const EndCameraController = () => {
 };
 
 /* ─── End CRT Monitor showing AI response ─── */
-const EndScreenContent = ({ question, response, isLoading, error }: { question: string; response: string; isLoading: boolean; error: string | null }) => {
+const EndScreenContent = ({
+  question,
+  response,
+  isLoading,
+  error,
+}: {
+  question: string;
+  response: string;
+  isLoading: boolean;
+  error: string | null;
+}) => {
   const groupRef = useRef<THREE.Group>(null);
   useFrame((state) => {
     if (groupRef.current) groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.02;
   });
 
-  const displayText = error
-    ? `Feil: ${error}`
-    : isLoading && !response
-      ? "Laster svar..."
-      : response || "";
+  const displayText = error ? `Feil: ${error}` : isLoading && !response ? "Laster svar..." : response || "";
 
   // Truncate for display in 3D text
   const truncated = displayText.length > 300 ? displayText.slice(0, 300) + "..." : displayText;
@@ -760,7 +866,7 @@ const EndScreenContent = ({ question, response, isLoading, error }: { question: 
   return (
     <group ref={groupRef} position={[0, 0, 0.01]}>
       <Text position={[0, 0.55, 0]} fontSize={0.18} color="#0aff0a" anchorX="center" anchorY="middle">
-        AI Svar
+        AIGuidebook
       </Text>
       <mesh position={[0, 0.42, 0]}>
         <planeGeometry args={[1.6, 0.003]} />
@@ -773,7 +879,15 @@ const EndScreenContent = ({ question, response, isLoading, error }: { question: 
         <planeGeometry args={[1.4, 0.002]} />
         <meshBasicMaterial color="#0aff0a" opacity={0.15} transparent />
       </mesh>
-      <Text position={[-0.78, 0.08, 0]} fontSize={0.05} color="#0aff0a" anchorX="left" anchorY="top" maxWidth={1.5} lineHeight={1.4}>
+      <Text
+        position={[-0.78, 0.08, 0]}
+        fontSize={0.05}
+        color="#0aff0a"
+        anchorX="left"
+        anchorY="top"
+        maxWidth={1.5}
+        lineHeight={1.4}
+      >
         {truncated}
       </Text>
       {isLoading && <BlinkingCursor x={-0.78 + Math.min((truncated.length % 40) * 0.033, 0.72)} />}
@@ -786,9 +900,20 @@ const EndScreenContent = ({ question, response, isLoading, error }: { question: 
   );
 };
 
-
 /* ─── Complete scene ─── */
-const FullScene = ({ inputText, journeyStarted, introDone, setIntroDone, onJourneyComplete }: { inputText: string; journeyStarted: boolean; introDone: boolean; setIntroDone: (b: boolean) => void; onJourneyComplete: () => void }) => {
+const FullScene = ({
+  inputText,
+  journeyStarted,
+  introDone,
+  setIntroDone,
+  onJourneyComplete,
+}: {
+  inputText: string;
+  journeyStarted: boolean;
+  introDone: boolean;
+  setIntroDone: (b: boolean) => void;
+  onJourneyComplete: () => void;
+}) => {
   return (
     <>
       <color attach="background" args={["#1c1d21"]} />
@@ -798,7 +923,12 @@ const FullScene = ({ inputText, journeyStarted, introDone, setIntroDone, onJourn
       <directionalLight position={[10, 15, 10]} intensity={1.5} color="#ffffff" castShadow />
       <pointLight position={[0, 5, 0]} intensity={1.0} color="#ffffff" distance={20} />
 
-      <CameraController journeyStarted={journeyStarted} introDone={introDone} setIntroDone={setIntroDone} onJourneyComplete={onJourneyComplete} />
+      <CameraController
+        journeyStarted={journeyStarted}
+        introDone={introDone}
+        setIntroDone={setIntroDone}
+        onJourneyComplete={onJourneyComplete}
+      />
 
       <CRTMonitor inputText={inputText} visible={!journeyStarted} />
 
@@ -851,19 +981,19 @@ const CRTMonitorScene = () => {
 
   // Helper to generate a simple browser fingerprint
   const getFingerprint = useCallback(() => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
     if (ctx) {
-      ctx.textBaseline = 'top';
-      ctx.font = '14px Arial';
-      ctx.fillStyle = '#f60';
+      ctx.textBaseline = "top";
+      ctx.font = "14px Arial";
+      ctx.fillStyle = "#f60";
       ctx.fillRect(125, 1, 62, 20);
-      ctx.fillStyle = '#069';
-      ctx.fillText('fingerprint', 2, 15);
-      ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
-      ctx.fillText('fingerprint', 4, 17);
+      ctx.fillStyle = "#069";
+      ctx.fillText("fingerprint", 2, 15);
+      ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+      ctx.fillText("fingerprint", 4, 17);
     }
-    return (canvas.toDataURL().slice(-50) + navigator.userAgent.slice(0, 50)).replace(/[^a-zA-Z0-9]/g, '');
+    return (canvas.toDataURL().slice(-50) + navigator.userAgent.slice(0, 50)).replace(/[^a-zA-Z0-9]/g, "");
   }, []);
 
   const startAIStream = useCallback(async (question: string) => {
@@ -872,8 +1002,11 @@ const CRTMonitorScene = () => {
     setAiError(null);
 
     try {
+      // Get session OR use anonymous fingerprint
       const { supabase } = await import("@/integrations/supabase/client");
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
@@ -882,6 +1015,7 @@ const CRTMonitorScene = () => {
       if (session) {
         headers["Authorization"] = `Bearer ${session.access_token}`;
       } else {
+        // Anonymous access
         headers["Authorization"] = `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`;
         headers["x-client-fingerprint"] = getFingerprint();
       }
@@ -892,32 +1026,61 @@ const CRTMonitorScene = () => {
         body: JSON.stringify({ question }),
       });
 
-      const data = await resp.json().catch(() => ({}));
-
-      if (!resp.ok) {
-        throw new Error(data?.error || `Feil ${resp.status}`);
+      if (!resp.ok || !resp.body) {
+        const errData = await resp.json().catch(() => ({}));
+        throw new Error(errData.error || `Feil ${resp.status}`);
       }
 
-      const fullText: string = data?.answer ?? "";
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let textBuffer = "";
+      let streamDone = false;
 
-      // Progressive reveal for the CRT typewriter feel
-      if (!fullText) {
-        setAiResponse("");
-      } else {
-        await new Promise<void>((resolve) => {
-          let i = 0;
-          const step = Math.max(1, Math.ceil(fullText.length / 120));
-          const timer = setInterval(() => {
-            i += step;
-            if (i >= fullText.length) {
-              setAiResponse(fullText);
-              clearInterval(timer);
-              resolve();
-            } else {
-              setAiResponse(fullText.slice(0, i));
-            }
-          }, 20);
-        });
+      while (!streamDone) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        textBuffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") {
+            streamDone = true;
+            break;
+          }
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) setAiResponse((prev) => prev + content);
+          } catch {
+            textBuffer = line + "\n" + textBuffer;
+            break;
+          }
+        }
+      }
+
+      // Final flush
+      if (textBuffer.trim()) {
+        for (let raw of textBuffer.split("\n")) {
+          if (!raw) continue;
+          if (raw.endsWith("\r")) raw = raw.slice(0, -1);
+          if (raw.startsWith(":") || raw.trim() === "") continue;
+          if (!raw.startsWith("data: ")) continue;
+          const jsonStr = raw.slice(6).trim();
+          if (jsonStr === "[DONE]") continue;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) setAiResponse((prev) => prev + content);
+          } catch {
+            /* ignore */
+          }
+        }
       }
     } catch (e) {
       console.error("AI stream error:", e);
@@ -925,7 +1088,7 @@ const CRTMonitorScene = () => {
     } finally {
       setIsLoadingAI(false);
     }
-  }, [getFingerprint]);
+  }, []);
 
   const handleJourneyComplete = useCallback(() => {
     setJourneyComplete(true);
@@ -937,7 +1100,7 @@ const CRTMonitorScene = () => {
 
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
-        setInputText(prev => {
+        setInputText((prev) => {
           if (prev.trim()) {
             setJourneyStarted(true);
             startAIStream(prev.trim());
@@ -947,11 +1110,11 @@ const CRTMonitorScene = () => {
         return;
       }
       if (e.key === "Backspace") {
-        setInputText(prev => prev.slice(0, -1));
+        setInputText((prev) => prev.slice(0, -1));
         return;
       }
       if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-        setInputText(prev => prev + e.key);
+        setInputText((prev) => prev + e.key);
       }
     };
 
@@ -961,20 +1124,12 @@ const CRTMonitorScene = () => {
 
   // Show answer CRT screen when journey is complete
   if (journeyComplete) {
-    const displayText = aiError
-      ? `Feil: ${aiError}`
-      : isLoadingAI && !aiResponse
-        ? ""
-        : aiResponse || "";
+    const displayText = aiError ? `Feil: ${aiError}` : isLoadingAI && !aiResponse ? "" : aiResponse || "";
 
     return (
       <div className="relative w-full" style={{ height: "85vh" }}>
         <div className="sticky top-0 h-screen w-full">
-          <Canvas
-            camera={{ position: [0, 0.3, 4.5], fov: 45 }}
-            gl={{ antialias: true, alpha: false }}
-            dpr={[1, 2]}
-          >
+          <Canvas camera={{ position: [0, 0.3, 4.5], fov: 45 }} gl={{ antialias: true, alpha: false }} dpr={[1, 2]}>
             <color attach="background" args={["#1c1d21"]} />
             <fog attach="fog" args={["#1c1d21", 40, 150]} />
             <ambientLight intensity={0.8} />
@@ -997,7 +1152,15 @@ const CRTMonitorScene = () => {
               </mesh>
               <mesh position={[0, 0.05, 0.465]}>
                 <planeGeometry args={[1.9, 1.45]} />
-                <meshPhysicalMaterial color="#000000" transparent opacity={0.08} roughness={0.05} metalness={0.5} clearcoat={1} clearcoatRoughness={0.1} />
+                <meshPhysicalMaterial
+                  color="#000000"
+                  transparent
+                  opacity={0.08}
+                  roughness={0.05}
+                  metalness={0.5}
+                  clearcoat={1}
+                  clearcoatRoughness={0.1}
+                />
               </mesh>
               <group position={[0, 0.05, 0.47]}>
                 <EndScreenContent question={inputText} response={displayText} isLoading={isLoadingAI} error={aiError} />
@@ -1025,9 +1188,7 @@ const CRTMonitorScene = () => {
           </Canvas>
 
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-            <p className="font-mono text-xs text-[#0aff0a]/50 text-center">
-              Trykk på skjermen for å starte på nytt
-            </p>
+            <p className="font-mono text-xs text-[#0aff0a]/50 text-center">Trykk på skjermen for å starte på nytt</p>
           </div>
         </div>
       </div>
@@ -1037,21 +1198,21 @@ const CRTMonitorScene = () => {
   return (
     <div className="relative w-full" style={{ height: journeyStarted ? "500vh" : "85vh" }}>
       <div className="sticky top-0 h-screen w-full">
-        <Canvas
-          camera={{ position: [0, 0.3, 4.5], fov: 45 }}
-          gl={{ antialias: true, alpha: false }}
-          dpr={[1, 2]}
-        >
+        <Canvas camera={{ position: [0, 0.3, 4.5], fov: 45 }} gl={{ antialias: true, alpha: false }} dpr={[1, 2]}>
           <ScrollControls pages={journeyStarted && introDone ? 5 : 0} damping={0.25}>
-            <FullScene inputText={inputText} journeyStarted={journeyStarted} introDone={introDone} setIntroDone={setIntroDone} onJourneyComplete={handleJourneyComplete} />
+            <FullScene
+              inputText={inputText}
+              journeyStarted={journeyStarted}
+              introDone={introDone}
+              setIntroDone={setIntroDone}
+              onJourneyComplete={handleJourneyComplete}
+            />
           </ScrollControls>
         </Canvas>
 
         {!journeyStarted && (
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-            <p className="font-mono text-xs text-[#0aff0a]/50 text-center">
-              Skriv et spørsmål og trykk Enter
-            </p>
+            <p className="font-mono text-xs text-[#0aff0a]/50 text-center">Skriv et spørsmål og trykk Enter</p>
           </div>
         )}
 
@@ -1065,7 +1226,6 @@ const CRTMonitorScene = () => {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );
