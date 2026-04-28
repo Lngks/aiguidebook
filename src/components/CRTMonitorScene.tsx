@@ -857,62 +857,66 @@ const EndScreenContent = ({
 
   const displayText = error ? `Feil: ${error}` : isLoading && !response ? "Laster svar..." : response || "";
 
-  // Truncate for display in 3D text
-  const truncated = displayText.length > 300 ? displayText.slice(0, 300) + "..." : displayText;
-
   return (
     <group ref={groupRef} position={[0, 0, 0.01]}>
-      <Html position={[0, 0.55, 0]} center transform distanceFactor={2.2} style={{ pointerEvents: "none" }}>
+      <Html
+        position={[0, 0, 0]}
+        transform
+        distanceFactor={1.2}
+        style={{ pointerEvents: "auto" }}
+      >
         <div
-          className="crt-logo-wrap"
           style={{
+            width: "640px",
+            height: "480px",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            gap: "4px",
+            padding: "20px 24px",
+            fontFamily: "'VT323', 'Courier New', monospace",
+            color: "#0aff0a",
+            textShadow: "0 0 4px #0aff0a, 0 0 8px rgba(10,255,10,0.5)",
+            boxSizing: "border-box",
           }}
         >
-          <img
-            src="/crt-logo.svg?v=2"
-            alt="AI Guidebook"
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "8px" }}>
+            <img
+              src="/crt-logo.svg?v=2"
+              alt="AI Guidebook"
+              style={{
+                width: "180px",
+                height: "auto",
+                filter: "drop-shadow(0 0 8px #0aff0a)",
+                animation: "crt-glitch 3s infinite",
+              }}
+            />
+          </div>
+          <div style={{ borderTop: "1px solid rgba(10,255,10,0.3)", margin: "4px 0 8px" }} />
+          <div style={{ fontSize: "22px", color: "#15cc15", marginBottom: "8px", lineHeight: 1.3 }}>
+            {">"} {question}
+          </div>
+          <div style={{ borderTop: "1px solid rgba(10,255,10,0.15)", margin: "4px 0 8px" }} />
+          <div
             style={{
-              width: "160px",
-              height: "auto",
-              filter: "drop-shadow(0 0 8px #0aff0a)",
-              animation: "crt-glitch 3s infinite",
+              flex: 1,
+              overflowY: "auto",
+              fontSize: "22px",
+              lineHeight: 1.4,
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+              paddingRight: "8px",
             }}
-          />
+            className="crt-scroll"
+          >
+            {displayText}
+            {isLoading && <span style={{ animation: "crt-blink 1s steps(1) infinite" }}>▊</span>}
+          </div>
+          {!isLoading && !error && (
+            <div style={{ fontSize: "16px", color: "#0a990a", marginTop: "8px", textAlign: "center" }}>
+              FERDIG — Scroll opp for å starte på nytt
+            </div>
+          )}
         </div>
       </Html>
-      <mesh position={[0, 0.42, 0]}>
-        <planeGeometry args={[1.6, 0.003]} />
-        <meshBasicMaterial color="#0aff0a" opacity={0.3} transparent />
-      </mesh>
-      <Text position={[-0.78, 0.3, 0]} fontSize={0.045} color="#15cc15" anchorX="left" anchorY="top" maxWidth={1.5} material-depthTest={false}>
-        {">"} {question}
-      </Text>
-      <mesh position={[0, 0.15, 0]}>
-        <planeGeometry args={[1.4, 0.002]} />
-        <meshBasicMaterial color="#0aff0a" opacity={0.15} transparent />
-      </mesh>
-      <Text
-        position={[-0.78, 0.08, 0]}
-        fontSize={0.05}
-        color="#0aff0a"
-        anchorX="left"
-        anchorY="top"
-        maxWidth={1.55}
-        lineHeight={1.4}
-        material-depthTest={false}
-      >
-        {truncated}
-      </Text>
-      {isLoading && <BlinkingCursor x={-0.78 + Math.min((truncated.length % 40) * 0.033, 0.72)} />}
-      {!isLoading && !error && (
-        <Text position={[-0.78, -0.65, 0]} fontSize={0.04} color="#0a990a" anchorX="left" anchorY="middle" material-depthTest={false}>
-          FERDIG — Scroll opp for å starte på nytt
-        </Text>
-      )}
     </group>
   );
 };
