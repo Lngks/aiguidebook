@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      anonymous_chat_usage: {
+        Row: {
+          created_at: string
+          fingerprint: string
+          id: string
+          ip_address: unknown
+          last_asked_at: string
+          questions_asked: number
+        }
+        Insert: {
+          created_at?: string
+          fingerprint: string
+          id?: string
+          ip_address: unknown
+          last_asked_at?: string
+          questions_asked?: number
+        }
+        Update: {
+          created_at?: string
+          fingerprint?: string
+          id?: string
+          ip_address?: unknown
+          last_asked_at?: string
+          questions_asked?: number
+        }
+        Relationships: []
+      }
       audit_log: {
         Row: {
           action: string
@@ -232,6 +259,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_anonymous_rate_limit: {
+        Args: {
+          p_fingerprint: string
+          p_ip_address: unknown
+          p_max_questions?: number
+          p_window_hours?: number
+        }
+        Returns: Json
+      }
+      cleanup_old_anonymous_usage: { Args: never; Returns: number }
       is_superuser: { Args: { user_id: string }; Returns: boolean }
       superuser_grant_access: {
         Args: { target_email: string }

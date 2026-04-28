@@ -1,44 +1,49 @@
+## Goal
 
+Make the AI on `/interactive` actually respond, and constrain it to answer **only** from two sources:
+1. USN's official guidelines page: `https://www.usn.no/om-usn/regelverk/retningslinjer-for-bruk-av-kunstig-intelligens-ki-ved-eksamen-og-studentoppgaver`
+2. This site's own pages (Index, Guidelines, Tools, Privacy)
 
-## Parallax Scroll System Between Sections
+## Why it's currently broken
 
-### Overview
-Add a parallax scrolling effect throughout the Index page where sections animate and move at different speeds as the user scrolls, creating depth and visual interest between each section.
+The `/interactive` UI is wired up correctly and calls the `chat` edge function. The edge function calls a Postgres RPC `check_anonymous_rate_limit` for anonymous users — but **that function and its table were never actually applied to the database** (the migration file exists in `supabase/migrations/` but was never run). So every anonymous request fails with a 500 "Feil ved sjekk av begrensninger". That's why nothing comes back.
 
-### Approach
-Create a reusable `useParallax` hook and a `ParallaxSection` wrapper component. Each section on the page will be wrapped in this component, which uses `IntersectionObserver` for triggering entrance animations and a scroll event listener for the parallax translate effect.
+## Plan
 
-### What will change
+### 1. Apply the missing rate-limit migration
+Run a migration that creates `anonymous_chat_usage` table + `check_anonymous_rate_limit` and `cleanup_old_anonymous_usage` functions (contents already drafted in `supabase/migrations/20260214_anonymous_chat_usage.sql`). Allows 3 anonymous questions per fingerprint+IP per 24h.
 
-**1. New file: `src/hooks/use-parallax.ts`**
-- A custom React hook that tracks the scroll position relative to a given element ref
-- Returns a `y` offset value that can be applied as a CSS transform
-- Uses `requestAnimationFrame` for smooth performance
-- Accepts a `speed` parameter (e.g. 0.1 = subtle, 0.5 = strong parallax)
+### 2. Build the grounded knowledge base
+Create a new file `supabase/functions/chat/knowledge.ts` containing:
+- A trimmed, plain-text snapshot of the USN KI-guidelines page (fetched from the URL above, headers/footers/nav removed, kept ~3–6 KB).
+- A trimmed plain-text summary of this site's own content (Guidelines, Tools, Privacy, Index — extracted from the existing TSX pages).
 
-**2. New file: `src/components/ParallaxSection.tsx`**
-- A wrapper component that combines:
-  - **Scroll-triggered fade-in**: Uses `IntersectionObserver` to detect when the section enters the viewport and applies a fade+slide-up animation
-  - **Parallax offset**: Uses the `useParallax` hook to translate the section content at a different rate than the scroll, creating the depth illusion
-- Props: `speed` (parallax intensity), `className`, `children`, `as` (HTML tag)
+Embedding once at build time keeps latency low, costs nothing per request, and makes the assistant deterministic.
 
-**3. Updated file: `src/pages/Index.tsx`**
-- Import and wrap each section with `ParallaxSection`, assigning different speeds to create layered depth:
-  - Hero: speed 0.1 (slow, background feel)
-  - "Tre ting du ma vite": speed 0.15
-  - "Bruk AI med tillit": speed 0.2
-  - CTA banner: speed 0.1
-  - Placeholder image: speed 0.25
-  - FAQ: speed 0.15
-  - "Trenger du mer hjelp": speed 0.1
-- Replace existing `section-fade-in` CSS classes with the component's built-in scroll-triggered animation (so animations fire when sections scroll into view, not on page load)
+### 3. Rewrite the chat edge function in strict mode
+Update `supabase/functions/chat/index.ts`:
+- Import the knowledge text.
+- Replace the current Norwegian system prompt with a strict one (in Norwegian) that:
+  - Tells the model it is "AI Guidebook-assistenten for USN".
+  - Provides the USN guidelines and site content as the only allowed sources.
+  - Requires answers in Norwegian, max 4 sentences, plain text.
+  - Instructs: if the question can't be answered from the sources, reply with a short fallback (e.g. *"Det står ikke i USNs retningslinjer eller på denne siden. Sjekk usn.no for mer."*) and a link to the USN guidelines page.
+  - Forbids inventing rules, citing other universities, or speculation.
+- Keep streaming, CORS, auth, and rate-limit logic unchanged.
+- Bump model to `google/gemini-2.5-flash` for slightly better instruction-following on grounded Q&A (still cheap/fast).
 
-**4. Updated file: `src/index.css`**
-- Add a utility class for the parallax entrance animation (opacity + translateY transition driven by a CSS custom property or class toggle)
+### 4. Verify
+After deploy, test via the edge function tester with a sample question ("Får jeg bruke ChatGPT på eksamen?") and confirm a streamed answer appears in the CRT monitor.
 
-### Technical Notes
-- No external dependencies needed -- pure React hooks + IntersectionObserver + transform
-- `will-change: transform` applied for GPU acceleration
-- Parallax is disabled on mobile (`prefers-reduced-motion` media query respected) for accessibility and performance
-- The existing `section-fade-in` keyframe animations are preserved but the parallax sections will use the new scroll-triggered approach instead
+## Technical notes
 
+- No frontend changes required — `CRTMonitorScene.tsx` already streams correctly.
+- USN page text is embedded as a static string; refreshing it later means re-pasting from the source URL (acceptable since these guidelines change rarely).
+- Rate limit (3/day anonymous) stays in place; logged-in users are unlimited.
+- Strict mode applies only to the `chat` function — no other functionality is affected.
+
+## Files touched
+
+- New migration to create `anonymous_chat_usage` + RPC functions
+- New: `supabase/functions/chat/knowledge.ts`
+- Edited: `supabase/functions/chat/index.ts`

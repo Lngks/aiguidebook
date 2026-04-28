@@ -1,0 +1,2 @@
+REVOKE EXECUTE ON FUNCTION public.check_anonymous_rate_limit(text, inet, integer, integer) FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.cleanup_old_anonymous_usage() FROM PUBLIC, anon, authenticated;
