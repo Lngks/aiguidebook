@@ -87,13 +87,9 @@ serve(async (req) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-3-flash-preview",
+          model: "google/gemini-2.5-flash",
           messages: [
-            {
-              role: "system",
-              content:
-                "Du er en hjelpsom AI-assistent som svarer på norsk. Hold svarene korte og konsise (maks 3-4 setninger). Svar i ren tekst uten markdown-formatering.",
-            },
+            { role: "system", content: SYSTEM_PROMPT },
             { role: "user", content: question },
           ],
           stream: true,
