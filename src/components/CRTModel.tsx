@@ -6,7 +6,9 @@ Command: npx gltfjsx@6.5.3 public/assets/CRT.glb -o src/components/CRTModel.tsx
 import * as THREE from 'three'
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
-import { GLTF } from 'three-stdlib'
+import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js'
+
+type GLTFAction = THREE.AnimationClip
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -25,7 +27,7 @@ type GLTFResult = GLTF & {
 }
 
 export function Model(props: JSX.IntrinsicElements['group']) {
-  const { nodes, materials } = useGLTF('/CRT.glb') as GLTFResult
+  const { nodes, materials } = useGLTF('/CRT.glb') as unknown as GLTFResult
   return (
     <group {...props} dispose={null}>
       <group scale={0.01}>
