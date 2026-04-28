@@ -92,7 +92,7 @@ serve(async (req) => {
             { role: "system", content: SYSTEM_PROMPT },
             { role: "user", content: question },
           ],
-          stream: true,
+          stream: false,
         }),
       }
     );
@@ -118,9 +118,13 @@ serve(async (req) => {
       );
     }
 
-    return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
-    });
+    const data = await response.json();
+    const answer = data?.choices?.[0]?.message?.content ?? "";
+
+    return new Response(
+      JSON.stringify({ answer }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   } catch (e) {
     console.error("chat error:", e);
     return new Response(
