@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState, useCallback, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Text, RoundedBox, ScrollControls, useScroll, Html, Billboard } from "@react-three/drei";
+import { Text, RoundedBox, ScrollControls, useScroll, Html, Billboard, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 /* ─── AI Pipeline stages with distinct colors ─── */
@@ -45,6 +45,8 @@ const ScanlineMaterial = () => {
   return (
     <shaderMaterial
       ref={materialRef}
+      depthTest={false}
+      blending={THREE.AdditiveBlending}
       uniforms={uniforms}
       vertexShader={`
         varying vec2 vUv;
@@ -169,27 +171,47 @@ const ScreenContent = ({ inputText }: { inputText: string }) => {
         <planeGeometry args={[1.6, 0.003]} />
         <meshBasicMaterial color="#0aff0a" opacity={0.3} transparent />
       </mesh>
-      <Text position={[-0.78, 0.05, 0]} fontSize={0.055} color="#089a08" anchorX="left" anchorY="middle">
+      <Text position={[-0.78, 0.05, 0]} fontSize={0.055} color="#15cc15" anchorX="left" anchorY="middle" material-depthTest={false}>
         {">"} Skriv inn spørsmålet ditt:
       </Text>
-      <Text position={[-0.78, -0.1, 0]} fontSize={0.06} color="#0aff0a" anchorX="left" anchorY="middle" maxWidth={1.5}>
+      <Text position={[-0.78, -0.1, 0]} fontSize={0.06} color="#0aff0a" anchorX="left" anchorY="middle" maxWidth={1.5} material-depthTest={false}>
         {inputText || ""}
       </Text>
       <BlinkingCursor x={-0.78 + (inputText?.length || 0) * 0.033} />
-      <Text position={[-0.78, -0.65, 0]} fontSize={0.04} color="#056605" anchorX="left" anchorY="middle">
-        READY — Trykk ENTER for å starte reisen
+      <Text position={[-0.78, -0.65, 0]} fontSize={0.04} color="#0a990a" anchorX="left" anchorY="middle" material-depthTest={false}>
+        READY — Trykk ENTER
       </Text>
     </group>
   );
 };
 
 /* ─── CRT Monitor body ─── */
-const CRTMonitor = ({ inputText, visible }: { inputText: string; visible: boolean }) => {
+const CRTMonitor = ({
+  visible,
+  inputText,
+  journeyStarted,
+  aiResponse,
+  isLoadingAI,
+  aiError,
+}: {
+  visible: boolean;
+  inputText: string;
+  journeyStarted: boolean;
+  aiResponse: string;
+  isLoadingAI: boolean;
+  aiError: string | null;
+}) => {
   const monitorRef = useRef<THREE.Group>(null);
+  const { scene } = useGLTF("/assets/CRT.glb");
+  const model = useMemo(() => scene.clone(), [scene]);
+
   useFrame((state) => {
     if (monitorRef.current && visible) {
-      monitorRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.03;
-      monitorRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.01 - 0.05;
+      const targetRotationY = (state.pointer.x * Math.PI) / 15;
+      const targetRotationX = -(state.pointer.y * Math.PI) / 20 - 0.05;
+
+      monitorRef.current.rotation.y = THREE.MathUtils.lerp(monitorRef.current.rotation.y, targetRotationY, 0.1);
+      monitorRef.current.rotation.x = THREE.MathUtils.lerp(monitorRef.current.rotation.x, targetRotationX, 0.1);
     }
   });
 
@@ -197,50 +219,25 @@ const CRTMonitor = ({ inputText, visible }: { inputText: string; visible: boolea
 
   return (
     <group ref={monitorRef} position={[0, 0.2, 0]}>
-      <RoundedBox args={[2.6, 2.0, 1.2]} radius={0.08} position={[0, 0, -0.3]}>
-        <meshStandardMaterial color="#4a4a4a" roughness={0.7} metalness={0.15} />
-      </RoundedBox>
-      <RoundedBox args={[2.5, 1.9, 0.15]} radius={0.05} position={[0, 0, 0.38]}>
-        <meshStandardMaterial color="#5a5a5a" roughness={0.5} metalness={0.2} />
-      </RoundedBox>
-      <mesh position={[0, 0.05, 0.46]}>
-        <planeGeometry args={[1.9, 1.45]} />
-        <ScanlineMaterial />
-      </mesh>
-      <mesh position={[0, 0.05, 0.465]}>
-        <planeGeometry args={[1.9, 1.45]} />
-        <meshPhysicalMaterial
-          color="#000000"
-          transparent
-          opacity={0.08}
-          roughness={0.05}
-          metalness={0.5}
-          clearcoat={1}
-          clearcoatRoughness={0.1}
-        />
-      </mesh>
-      <group position={[0, 0.05, 0.47]}>
-        <ScreenContent inputText={inputText} />
-      </group>
-      <mesh position={[0.95, -0.75, 0.46]}>
-        <circleGeometry args={[0.03, 16]} />
-        <meshBasicMaterial color="#0aff0a" />
-      </mesh>
-      <RoundedBox args={[0.4, 0.3, 0.4]} radius={0.03} position={[0, -1.15, 0]}>
-        <meshStandardMaterial color="#4a4a4a" roughness={0.7} metalness={0.15} />
-      </RoundedBox>
-      <RoundedBox args={[1.2, 0.08, 0.7]} radius={0.03} position={[0, -1.34, 0.1]}>
-        <meshStandardMaterial color="#505050" roughness={0.6} metalness={0.2} />
-      </RoundedBox>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <mesh key={i} position={[1.31, 0.3 - i * 0.15, -0.1]} rotation={[0, Math.PI / 2, 0]}>
-          <planeGeometry args={[0.4, 0.02]} />
-          <meshStandardMaterial color="#3a3a3a" />
+      <primitive object={model} scale={7.5} position={[0, -1.4, -0.6]} rotation={[0, Math.PI, 0]} />
+      <group scale={0.85} position={[-0.12, 0.42, -0.35]}>
+        <mesh position={[0, 0, 0]}>
+          <planeGeometry args={[2.2, 1.7]} />
+          <ScanlineMaterial />
         </mesh>
-      ))}
-      <Text position={[0, -0.78, 0.46]} fontSize={0.06} color="#666666" anchorX="center">
-        AIGuidebook CRT-2024
-      </Text>
+        <group position={[0, 0, 0.01]}>
+          {journeyStarted ? (
+            <EndScreenContent
+              question={inputText}
+              response={aiResponse}
+              isLoading={isLoadingAI}
+              error={aiError}
+            />
+          ) : (
+            <ScreenContent inputText={inputText} />
+          )}
+        </group>
+      </group>
     </group>
   );
 };
@@ -865,14 +862,33 @@ const EndScreenContent = ({
 
   return (
     <group ref={groupRef} position={[0, 0, 0.01]}>
-      <Text position={[0, 0.55, 0]} fontSize={0.18} color="#0aff0a" anchorX="center" anchorY="middle">
-        AIGuidebook
-      </Text>
+      <Html position={[0, 0.55, 0]} center transform distanceFactor={2.2} style={{ pointerEvents: "none" }}>
+        <div
+          className="crt-logo-wrap"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "4px",
+          }}
+        >
+          <img
+            src="/crt-logo.svg?v=2"
+            alt="AI Guidebook"
+            style={{
+              width: "160px",
+              height: "auto",
+              filter: "drop-shadow(0 0 8px #0aff0a)",
+              animation: "crt-glitch 3s infinite",
+            }}
+          />
+        </div>
+      </Html>
       <mesh position={[0, 0.42, 0]}>
         <planeGeometry args={[1.6, 0.003]} />
         <meshBasicMaterial color="#0aff0a" opacity={0.3} transparent />
       </mesh>
-      <Text position={[-0.78, 0.3, 0]} fontSize={0.045} color="#078a07" anchorX="left" anchorY="top" maxWidth={1.5}>
+      <Text position={[-0.78, 0.3, 0]} fontSize={0.045} color="#15cc15" anchorX="left" anchorY="top" maxWidth={1.5} material-depthTest={false}>
         {">"} {question}
       </Text>
       <mesh position={[0, 0.15, 0]}>
@@ -885,14 +901,15 @@ const EndScreenContent = ({
         color="#0aff0a"
         anchorX="left"
         anchorY="top"
-        maxWidth={1.5}
+        maxWidth={1.55}
         lineHeight={1.4}
+        material-depthTest={false}
       >
         {truncated}
       </Text>
       {isLoading && <BlinkingCursor x={-0.78 + Math.min((truncated.length % 40) * 0.033, 0.72)} />}
       {!isLoading && !error && (
-        <Text position={[-0.78, -0.65, 0]} fontSize={0.04} color="#056605" anchorX="left" anchorY="middle">
+        <Text position={[-0.78, -0.65, 0]} fontSize={0.04} color="#0a990a" anchorX="left" anchorY="middle" material-depthTest={false}>
           FERDIG — Scroll opp for å starte på nytt
         </Text>
       )}
@@ -907,12 +924,18 @@ const FullScene = ({
   introDone,
   setIntroDone,
   onJourneyComplete,
+  aiResponse,
+  isLoadingAI,
+  aiError,
 }: {
   inputText: string;
   journeyStarted: boolean;
   introDone: boolean;
   setIntroDone: (b: boolean) => void;
   onJourneyComplete: () => void;
+  aiResponse: string;
+  isLoadingAI: boolean;
+  aiError: string | null;
 }) => {
   return (
     <>
@@ -923,24 +946,32 @@ const FullScene = ({
       <directionalLight position={[10, 15, 10]} intensity={1.5} color="#ffffff" castShadow />
       <pointLight position={[0, 5, 0]} intensity={1.0} color="#ffffff" distance={20} />
 
+      {/* TEMP DISABLED FOR CHATBOT TESTING
       <CameraController
         journeyStarted={journeyStarted}
         introDone={introDone}
         setIntroDone={setIntroDone}
         onJourneyComplete={onJourneyComplete}
       />
+      */}
 
-      <CRTMonitor inputText={inputText} visible={!journeyStarted} />
+      <CRTMonitor
+        inputText={inputText}
+        visible={true}
+        journeyStarted={journeyStarted}
+        aiResponse={aiResponse}
+        isLoadingAI={isLoadingAI}
+        aiError={aiError}
+      />
 
-      {!journeyStarted && <FloatingParticles />}
+      <FloatingParticles />
 
-      {!journeyStarted && (
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.6, 0]}>
-          <planeGeometry args={[40, 40]} />
-          <meshStandardMaterial color="#1c1d21" roughness={1.0} metalness={0.0} />
-        </mesh>
-      )}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.6, 0]}>
+        <planeGeometry args={[40, 40]} />
+        <meshStandardMaterial color="#1c1d21" roughness={1.0} metalness={0.0} />
+      </mesh>
 
+      {/* TEMP DISABLED FOR CHATBOT TESTING
       {journeyStarted && (
         <>
           <IsometricTerrain />
@@ -952,7 +983,6 @@ const FullScene = ({
             <StageMarker key={i} stage={stage} index={i} />
           ))}
 
-          {/* Subtle Distant block pillars instead of cylinders */}
           {Array.from({ length: 15 }).map((_, i) => (
             <group key={`pillar-${i}`} position={[(i % 2 === 0 ? -1 : 1) * (18 + Math.random() * 8), -1, -i * 14 - 10]}>
               <mesh>
@@ -963,6 +993,7 @@ const FullScene = ({
           ))}
         </>
       )}
+      */}
     </>
   );
 };
@@ -1206,6 +1237,9 @@ const CRTMonitorScene = () => {
               introDone={introDone}
               setIntroDone={setIntroDone}
               onJourneyComplete={handleJourneyComplete}
+              aiResponse={aiResponse}
+              isLoadingAI={isLoadingAI}
+              aiError={aiError}
             />
           </ScrollControls>
         </Canvas>

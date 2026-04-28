@@ -62,7 +62,7 @@ const innerVariants = cva(
         destructive: "bg-background/95 group-hover:bg-background/10",
         secondary: "bg-background/95 group-hover:bg-background/10",
         tertiary: "bg-background/95 group-hover:bg-background/10 group-hover:text-background",
-        custom: "bg-background/95 group-hover:bg-background/10",
+        custom: "bg-background/95 group-hover:bg-background/10 dark:group-hover:text-black",
         // These variants handle their own background in buttonVariants
         outline: "",
         ghost: "",
