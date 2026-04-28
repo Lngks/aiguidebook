@@ -171,14 +171,36 @@ const ScreenContent = ({ inputText }: { inputText: string }) => {
         <planeGeometry args={[1.6, 0.003]} />
         <meshBasicMaterial color="#0aff0a" opacity={0.3} transparent />
       </mesh>
-      <Text position={[-0.78, 0.05, 0]} fontSize={0.055} color="#15cc15" anchorX="left" anchorY="middle" material-depthTest={false}>
+      <Text
+        position={[-0.78, 0.05, 0]}
+        fontSize={0.055}
+        color="#15cc15"
+        anchorX="left"
+        anchorY="middle"
+        material-depthTest={false}
+      >
         {">"} Skriv inn spørsmålet ditt:
       </Text>
-      <Text position={[-0.78, -0.1, 0]} fontSize={0.06} color="#0aff0a" anchorX="left" anchorY="middle" maxWidth={1.5} material-depthTest={false}>
+      <Text
+        position={[-0.78, -0.1, 0]}
+        fontSize={0.06}
+        color="#0aff0a"
+        anchorX="left"
+        anchorY="middle"
+        maxWidth={1.5}
+        material-depthTest={false}
+      >
         {inputText || ""}
       </Text>
       <BlinkingCursor x={-0.78 + (inputText?.length || 0) * 0.033} />
-      <Text position={[-0.78, -0.65, 0]} fontSize={0.04} color="#0a990a" anchorX="left" anchorY="middle" material-depthTest={false}>
+      <Text
+        position={[-0.78, -0.65, 0]}
+        fontSize={0.04}
+        color="#0a990a"
+        anchorX="left"
+        anchorY="middle"
+        material-depthTest={false}
+      >
         READY — Trykk ENTER
       </Text>
     </group>
@@ -227,12 +249,7 @@ const CRTMonitor = ({
         </mesh>
         <group position={[0, 0, 0.01]}>
           {journeyStarted ? (
-            <EndScreenContent
-              question={inputText}
-              response={aiResponse}
-              isLoading={isLoadingAI}
-              error={aiError}
-            />
+            <EndScreenContent question={inputText} response={aiResponse} isLoading={isLoadingAI} error={aiError} />
           ) : (
             <ScreenContent inputText={inputText} />
           )}
@@ -888,7 +905,15 @@ const EndScreenContent = ({
         <planeGeometry args={[1.6, 0.003]} />
         <meshBasicMaterial color="#0aff0a" opacity={0.3} transparent />
       </mesh>
-      <Text position={[-0.78, 0.3, 0]} fontSize={0.045} color="#15cc15" anchorX="left" anchorY="top" maxWidth={1.5} material-depthTest={false}>
+      <Text
+        position={[-0.78, 0.3, 0]}
+        fontSize={0.045}
+        color="#15cc15"
+        anchorX="left"
+        anchorY="top"
+        maxWidth={1.5}
+        material-depthTest={false}
+      >
         {">"} {question}
       </Text>
       <mesh position={[0, 0.15, 0]}>
@@ -909,8 +934,15 @@ const EndScreenContent = ({
       </Text>
       {isLoading && <BlinkingCursor x={-0.78 + Math.min((truncated.length % 40) * 0.033, 0.72)} />}
       {!isLoading && !error && (
-        <Text position={[-0.78, -0.65, 0]} fontSize={0.04} color="#0a990a" anchorX="left" anchorY="middle" material-depthTest={false}>
-          FERDIG — Scroll opp for å starte på nytt
+        <Text
+          position={[-0.78, -0.65, 0]}
+          fontSize={0.04}
+          color="#0a990a"
+          anchorX="left"
+          anchorY="middle"
+          material-depthTest={false}
+        >
+          FERDIG — Trykk på Logo oppe til høyre
         </Text>
       )}
     </group>
