@@ -52,7 +52,7 @@ serve(async (req) => {
 
       const { data: limitCheck, error: limitError } = await adminClient.rpc(
         'check_anonymous_rate_limit',
-        { p_fingerprint: fingerprint, p_ip_address: ip }
+        { p_fingerprint: fingerprint, p_ip_address: ip, p_max_questions: 6 }
       );
 
       if (limitError) {
