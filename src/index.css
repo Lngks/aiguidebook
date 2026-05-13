@@ -243,3 +243,26 @@
     filter: brightness(1.2) contrast(1.1);
   }
 }
+
+/* Custom scrollbar for CRT screen */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(10, 255, 10, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(10, 255, 10, 0.3);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(10, 255, 10, 0.5);
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(10, 255, 10, 0.3) rgba(10, 255, 10, 0.05);
+}

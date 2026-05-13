@@ -11,7 +11,7 @@ import Index from "./pages/Index";
 import Tools from "./pages/Tools";
 import Guidelines from "./pages/Guidelines";
 import Privacy from "./pages/Privacy";
-import Interactive from "./pages/Interactive";
+import AIChat from "./pages/AIChat";
 import NotFound from "./pages/NotFound";
 import { InitialLoader } from "./components/InitialLoader";
 import { PageTransition } from "./components/PageTransition";
@@ -41,7 +41,7 @@ const AnimatedRoutes = () => {
         <Route path="/tools" element={<PageTransition><Tools /></PageTransition>} />
         <Route path="/guidelines" element={<PageTransition><Guidelines /></PageTransition>} />
         <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
-        <Route path="/interactive" element={<PageTransition><Interactive /></PageTransition>} />
+        <Route path="/interactive" element={<PageTransition><AIChat /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
