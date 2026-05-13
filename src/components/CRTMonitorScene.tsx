@@ -138,13 +138,8 @@ const BlinkingCursor = ({ x }: { x: number }) => {
 
 /* ─── Screen text content ─── */
 const ScreenContent = ({ inputText }: { inputText: string }) => {
-  const groupRef = useRef<THREE.Group>(null);
-  useFrame((state) => {
-    if (groupRef.current) groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.005;
-  });
-
   return (
-    <group ref={groupRef} position={[0, 0, 0.01]}>
+    <group position={[0, 0, 0.01]}>
       {/* Logo rendered via Html overlay with CRT glitch effects */}
       <Html position={[0, 0.45, 0]} center transform distanceFactor={2.2} style={{ pointerEvents: "none" }}>
         <div
@@ -880,15 +875,10 @@ const EndScreenContent = ({
   error: string | null;
   onAbort?: () => void;
 }) => {
-  const groupRef = useRef<THREE.Group>(null);
-  useFrame((state) => {
-    if (groupRef.current) groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.005;
-  });
-
   const displayText = error ? `Feil: ${error}` : isLoading && !response ? "Laster svar..." : response || "";
 
   return (
-    <group ref={groupRef} position={[0, 0, 0.01]}>
+    <group position={[0, 0, 0.01]}>
       <Html position={[0, 0.55, 0]} center transform distanceFactor={2.2} style={{ pointerEvents: "none" }}>
         <div
           className="crt-logo-wrap"
@@ -1111,8 +1101,8 @@ const CRTMonitorScene = ({
     useEffect(() => {
       const isMobile = size.width < 768;
       if (camera instanceof THREE.PerspectiveCamera) {
-        camera.position.set(0, 0.3, isMobile ? 5.5 : 4.5);
-        camera.fov = isMobile ? 50 : 45;
+        camera.position.set(0, isMobile ? 0.1 : 0.3, isMobile ? 5.0 : 4.5);
+        camera.fov = isMobile ? 48 : 45;
         camera.updateProjectionMatrix();
       }
     }, [size.width, camera]);
